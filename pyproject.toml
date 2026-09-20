@@ -1,7 +1,26 @@
 [project]
-name = "bdg3"
-version = "0.1.0"
-description = "Add your description here"
+name = "bg3-tools"
+version = "0.2.0"
+description = "Baldur's Gate 3 savegames uitlezen, op de PC en op de server"
 readme = "README.md"
 requires-python = ">=3.11"
-dependencies = []
+
+# Alleen de webapp heeft deze nodig. De losse scripts blijven zelfstandig
+# draaien via hun PEP 723-blok (`uv run bg3_sheet.py ...`), zonder deze
+# omgeving en zonder installatie.
+dependencies = [
+    "python-fasthtml>=0.12",
+    "lz4>=4.3",
+    "zstandard>=0.22",
+]
+
+[tool.uv]
+# Geen wheel bouwen: dit is een verzameling scripts plus één webapp, geen
+# bibliotheek die iemand installeert. Scheelt een buildbackend in de image.
+package = false
+
+[dependency-groups]
+dev = ["pytest>=8"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

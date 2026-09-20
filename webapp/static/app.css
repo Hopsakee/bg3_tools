@@ -1,0 +1,174 @@
+/*
+ * Opzettelijk één thema: zwart op wit, harde randen, geen schaduwen, geen
+ * animaties, geen hover-afhankelijke informatie.
+ *
+ * De primaire lezer is een Boox e-inkscherm. Daar kost elke pixelverandering
+ * een verversing, is grijs onder ongeveer #555 niet meer van wit te
+ * onderscheiden, en bestaat hover niet. Wat daar goed leest, leest op een
+ * telefoon en een monitor ook prima -- andersom niet. Een donker thema is
+ * daarom bewust weggelaten: op e-ink is dat onleesbaar.
+ */
+
+:root {
+  --ink: #000;
+  --soft: #444;          /* de lichtste grijstint die op e-ink nog leest */
+  --line: #000;
+  --hair: #bbb;
+  --zebra: #f1f1f1;
+  --fill: #e6e6e6;
+  --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --mono: ui-monospace, "SF Mono", "Cascadia Code", Consolas, monospace;
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: #fff;
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 17px;          /* groot genoeg om op armlengte te lezen */
+  line-height: 1.5;
+}
+
+a { color: var(--ink); text-underline-offset: 3px; }
+a:focus-visible, button:focus-visible, input:focus-visible,
+select:focus-visible, textarea:focus-visible {
+  outline: 3px solid var(--ink); outline-offset: 2px;
+}
+
+/* ------------------------------------------------------------- layout */
+
+.wrap { max-width: 1100px; margin: 0 auto; padding: 0 16px 96px; }
+
+.top {
+  border-bottom: 2px solid var(--line);
+  margin-bottom: 20px;
+}
+.top .wrap { padding-bottom: 0; }
+.brand {
+  display: flex; flex-wrap: wrap; align-items: baseline;
+  gap: 10px; padding: 14px 0 10px;
+}
+.brand b { font-family: var(--serif); font-size: 22px; font-weight: 600; }
+.brand .who { margin-left: auto; font-family: var(--mono); font-size: 12px;
+               color: var(--soft); }
+nav { display: flex; flex-wrap: wrap; gap: 0; }
+nav a {
+  padding: 9px 14px; text-decoration: none; border: 1px solid var(--hair);
+  border-bottom: none; margin-right: -1px; font-size: 15px;
+}
+nav a[aria-current="page"] { border-color: var(--line); border-width: 2px;
+  border-bottom: 2px solid #fff; font-weight: 700; margin-bottom: -2px; }
+
+h1 { font-family: var(--serif); font-size: clamp(26px, 5vw, 34px);
+     font-weight: 600; margin: 18px 0 4px; }
+h2 { font-family: var(--serif); font-size: 21px; font-weight: 600;
+     margin: 30px 0 10px; padding-bottom: 6px; border-bottom: 2px solid var(--line); }
+h3 { font-size: 16px; margin: 18px 0 6px; }
+.deck { color: var(--soft); margin: 0 0 18px; font-size: 15px; }
+
+/* ------------------------------------------------------------- blokken */
+
+.card { border: 2px solid var(--line); padding: 14px 16px; margin-bottom: 16px; }
+.card h3 { margin-top: 0; }
+.grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+.rows { display: flex; flex-wrap: wrap; gap: 8px 20px; }
+
+.kv { display: grid; grid-template-columns: max-content 1fr; gap: 2px 14px;
+      font-size: 15px; margin: 0; }
+.kv dt { color: var(--soft); }
+.kv dd { margin: 0; }
+
+.muted { color: var(--soft); }
+.small { font-size: 13px; }
+.mono { font-family: var(--mono); font-size: 12.5px; }
+.stack > * + * { margin-top: 10px; }
+
+/* ------------------------------------------------------------- tabellen */
+
+table { border-collapse: collapse; width: 100%; font-size: 15px; }
+th, td { border: 1px solid var(--hair); padding: 6px 9px; text-align: left;
+         vertical-align: top; }
+thead th { border-bottom: 2px solid var(--line); white-space: nowrap;
+           font-size: 13px; text-transform: uppercase; letter-spacing: .04em; }
+thead th a { text-decoration: none; }
+thead th a::after { content: ""; }
+tbody tr:nth-child(even) { background: var(--zebra); }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+.scroll { overflow-x: auto; }
+
+/* Op een telefoon is een brede tabel onleesbaar; dan wordt elke rij een
+   blokje met labels ervoor. De labels komen uit data-l op de cel. */
+@media (max-width: 640px) {
+  .stackable thead { display: none; }
+  .stackable tr { display: block; border: 2px solid var(--line);
+                  margin-bottom: 10px; padding: 4px; background: #fff !important; }
+  .stackable td { display: flex; gap: 10px; border: none;
+                  border-bottom: 1px dotted var(--hair); padding: 5px 4px; }
+  .stackable td:last-child { border-bottom: none; }
+  /* Een kolom vol streepjes is op een breed scherm uitlijning en op een smal
+     scherm ruis. Uitgeklapt verdwijnen de lege cellen dus. */
+  .stackable td.empty { display: none; }
+  .stackable td::before { content: attr(data-l); color: var(--soft);
+                          flex: 0 0 9em; font-size: 13px; }
+  .stackable td.num { text-align: left; }
+}
+
+/* --------------------------------------------------------------- labels */
+
+.tag { display: inline-block; border: 1.5px solid var(--line); padding: 0 7px;
+       font-size: 12.5px; font-family: var(--mono); white-space: nowrap;
+       line-height: 1.7; }
+.tag.fill { background: var(--ink); color: #fff; }
+.tag.warn { border-style: dashed; }
+
+.bar { border: 1.5px solid var(--line); height: 12px; min-width: 90px; }
+.bar > i { display: block; height: 100%; background: var(--ink); }
+
+/* ------------------------------------------------------------ formulier */
+
+label { display: block; font-size: 13px; color: var(--soft);
+        text-transform: uppercase; letter-spacing: .05em; margin-bottom: 3px; }
+input[type=text], input[type=search], input[type=file], select, textarea {
+  font: inherit;
+  font-size: 16px;                 /* onder 16px zoomt iOS bij focus in */
+  width: 100%; padding: 8px 10px;
+  border: 1.5px solid var(--line); border-radius: 0; background: #fff;
+  color: var(--ink);
+}
+textarea { min-height: 7em; line-height: 1.45; resize: vertical; }
+.field + .field { margin-top: 10px; }
+.inline { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-end; }
+.inline .field { margin-top: 0; }
+.inline .field.grow { flex: 1 1 220px; }
+
+button, .btn {
+  font: inherit; font-size: 16px; cursor: pointer;
+  padding: 9px 16px; border: 2px solid var(--line); background: #fff;
+  color: var(--ink); text-decoration: none; display: inline-block;
+  min-height: 44px;                /* duimformaat, ook op de Boox */
+}
+button.primary { background: var(--ink); color: #fff; }
+button.danger { border-style: dashed; }
+.btn.small, button.small { min-height: 0; padding: 3px 10px; font-size: 14px; }
+
+.flash { border: 2px solid var(--line); padding: 10px 14px; margin: 0 0 16px; }
+.flash.bad { border-style: dashed; }
+.flash b { font-family: var(--mono); }
+
+/* ---------------------------------------------------------------- rest */
+
+.shot { max-width: 100%; border: 2px solid var(--line); display: block; }
+.spark { display: block; width: 100%; height: auto; border: 1.5px solid var(--hair); }
+footer { margin-top: 40px; border-top: 1px solid var(--hair); padding-top: 12px; }
+
+@media print {
+  .top, form, footer, .noprint { display: none !important; }
+  body { font-size: 11pt; }
+  .wrap { max-width: none; padding: 0; }
+  .card { break-inside: avoid; }
+}

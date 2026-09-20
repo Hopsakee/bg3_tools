@@ -227,6 +227,20 @@ def load_stats(sources, verbose=True):
     return out
 
 
+def slim(stats):
+    """
+    Houd alleen over wat een lezer nodig heeft: type, bron en de leesbare
+    velden. De ruwe `fields` en de `using`-keten zijn alleen nuttig tijdens het
+    inlezen zelf, en ze verdubbelen de omvang van een export.
+
+    Dit is het formaat dat de webapp verwacht bij `Itemstats uploaden`.
+    """
+    return {name: {"type": entry["type"],
+                   "source": entry["source"],
+                   "display": entry["display"]}
+            for name, entry in stats.items()}
+
+
 def damage_range(dice):
     """"1d8" of "2d6+1" -> (min, max, gemiddeld). None als het niet te lezen is."""
     if not dice:
@@ -266,6 +280,9 @@ if __name__ == "__main__":
     ap.add_argument("-o", "--out", help="schrijf alles naar dit JSON-bestand")
     ap.add_argument("-q", "--query", nargs="*", default=[],
                     help="toon alleen deze entries, bijvoorbeeld WPN_Handaxe")
+    ap.add_argument("--slim", action="store_true",
+                    help="exporteer alleen wat de webapp gebruikt (type, bron, "
+                         "leesbare velden) -- scheelt ongeveer de helft")
     args = ap.parse_args()
 
     stats = load_stats(args.sources)
@@ -281,6 +298,9 @@ if __name__ == "__main__":
             print("   %-20s %s" % (label, value))
 
     if args.out:
+        payload = slim(stats) if args.slim else stats
         with open(args.out, "w", encoding="utf-8") as fh:
-            json.dump(stats, fh, indent=1, ensure_ascii=False)
-        print("\n-> %s" % args.out)
+            json.dump(payload, fh, indent=None if args.slim else 1,
+                      ensure_ascii=False)
+        print("\n-> %s (%d entries%s)"
+              % (args.out, len(payload), ", slim" if args.slim else ""))

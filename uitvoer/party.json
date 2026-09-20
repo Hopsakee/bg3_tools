@@ -1,0 +1,1322 @@
+{
+  "game": {
+    "save_name": "A Nautiloid in Hell - 1h 34m",
+    "game_version": "4.1.1.7398727",
+    "platform": "Steam",
+    "difficulty": [
+      "DifficultyEasy",
+      "RulesetLarian"
+    ],
+    "current_level": "TUT_Avernus_C",
+    "source_file": "save.lsv",
+    "character_name_from_folder": null,
+    "game_time_seconds": 11824,
+    "game_id": "46906af5-a1bb-9d04-061d-f89cd11f9afa",
+    "modded": false,
+    "has_unofficial_mods": false,
+    "mods": [
+      "GustavX"
+    ]
+  },
+  "party": [
+    {
+      "origin": "Generic",
+      "race": "Human",
+      "class": "Ranger",
+      "subclass": null,
+      "level": 1,
+      "xp_total": 78,
+      "xp_this_level": 78,
+      "position": [
+        -53.85,
+        17.23,
+        -388.09
+      ],
+      "level_name": "TUT_Avernus_C",
+      "template_id": "80d0ef19-f11e-482f-ab96-84f146a98e0b",
+      "statuses": [
+        "PLAYER_BONUSES_EASYMODE",
+        "TUT_NO_CRIT_MISS"
+      ],
+      "item_count": 32,
+      "items_by_group": {
+        "Wapenrusting": [
+          "ARM_Amulet_Necklace_B_Bronze_A",
+          "ARM_Amulet_Necklace_C_Bronze_A",
+          "ARM_Boots_Leather",
+          "ARM_Camp_Body",
+          "ARM_Camp_Shoes",
+          "ARM_Leather_Body",
+          "ARM_Robe_Body",
+          "ARM_Underwear_Humans"
+        ],
+        "Overig": [
+          "COL_BrainJar_Memory"
+        ],
+        "Verbruik en gereedschap": [
+          "OBJ_Backpack_CampSupplies",
+          "OBJ_Bag_AlchemyPouch",
+          "OBJ_Camp_Pack",
+          "OBJ_Candle",
+          "OBJ_Chest_Wood",
+          "OBJ_GenericLootItem",
+          "OBJ_Keychain",
+          "OBJ_MindflayerBulb_Vacuum"
+        ],
+        "Munten en edelstenen": [
+          "OBJ_GoldCoin",
+          "OBJ_GoldPile",
+          "OBJ_Malachite",
+          "OBJ_Onyx",
+          "OBJ_Pearl"
+        ],
+        "Drankjes": [
+          "OBJ_Potion_Healing",
+          "OBJ_Potion_Healing"
+        ],
+        "Perkamentrollen": [
+          "OBJ_Scroll_Revivify"
+        ],
+        "Wapens": [
+          "WPN_Handaxe",
+          "WPN_LightCrossbow",
+          "WPN_LightCrossbow",
+          "WPN_Scimitar",
+          "WPN_Shortbow",
+          "WPN_Shortsword",
+          "WPN_Shortsword"
+        ]
+      },
+      "matched_in_globals": true
+    },
+    {
+      "origin": "Laezel",
+      "race": "Githyanki",
+      "class": "Fighter",
+      "subclass": null,
+      "level": 1,
+      "xp_total": 78,
+      "xp_this_level": 78,
+      "position": [
+        -50.63,
+        16.06,
+        -388.87
+      ],
+      "level_name": "TUT_Avernus_C",
+      "template_id": "58a69333-40bf-8358-171d-f2ffd74012fb",
+      "statuses": [
+        "PLAYER_BONUSES_EASYMODE",
+        "TUT_NO_CRIT_MISS"
+      ],
+      "item_count": 19,
+      "items_by_group": {
+        "Wapenrusting": [
+          "ARM_Boots_Metal_Githyanki",
+          "ARM_Camp_Body_Laezel",
+          "ARM_Camp_Shoes_Wyll",
+          "ARM_HalfPlate_Body_Githyanki",
+          "ARM_Underwear_Laezel"
+        ],
+        "Overig": [
+          "COL_BrainJar_Memory",
+          "Cup_Metal",
+          "PUZ_Key"
+        ],
+        "Verbruik en gereedschap": [
+          "OBJ_Backpack_CampSupplies",
+          "OBJ_Bag_AlchemyPouch",
+          "OBJ_Camp_Pack",
+          "OBJ_Keychain"
+        ],
+        "Munten en edelstenen": [
+          "OBJ_GoldCoin"
+        ],
+        "Drankjes": [
+          "OBJ_Potion_Healing"
+        ],
+        "Perkamentrollen": [
+          "OBJ_Scroll_Revivify"
+        ],
+        "Wapens": [
+          "WPN_Longsword",
+          "WPN_Scimitar",
+          "WPN_Shortbow",
+          "WPN_Shortsword"
+        ]
+      },
+      "matched_in_globals": true
+    },
+    {
+      "origin": "Shadowheart",
+      "race": "HalfElf_High",
+      "class": "Cleric",
+      "subclass": "TrickeryDomain",
+      "level": 1,
+      "xp_total": 78,
+      "xp_this_level": 78,
+      "position": [
+        -46.64,
+        15.58,
+        -388.07
+      ],
+      "level_name": "TUT_Avernus_C",
+      "template_id": "3ed74f06-3c60-42dc-f683-34f047cb79c6",
+      "statuses": [
+        "PLAYER_BONUSES_EASYMODE",
+        "SHIELD_OF_FAITH",
+        "TUT_NO_CRIT_MISS"
+      ],
+      "item_count": 16,
+      "items_by_group": {
+        "Wapenrusting": [
+          "ARM_Boots_Leather",
+          "ARM_Camp_Body_Shadowheart",
+          "ARM_Camp_Shoes_Shadowheart",
+          "ARM_ChainShirt_Body_Shar",
+          "ARM_Shield",
+          "ARM_Underwear_Shadowheart"
+        ],
+        "Verbruik en gereedschap": [
+          "OBJ_Backpack_CampSupplies",
+          "OBJ_Bag_AlchemyPouch",
+          "OBJ_Camp_Pack",
+          "OBJ_Keychain"
+        ],
+        "Drankjes": [
+          "OBJ_Potion_Healing"
+        ],
+        "Perkamentrollen": [
+          "OBJ_Scroll_DetectThoughts",
+          "OBJ_Scroll_Revivify"
+        ],
+        "Unieke voorwerpen": [
+          "UNI_CONT_DEVIL_PuzzleBox_A",
+          "UNI_ShadowheartCirclet"
+        ],
+        "Wapens": [
+          "WPN_Mace"
+        ]
+      },
+      "matched_in_globals": true
+    }
+  ],
+  "item_stats": {
+    "ARM_Amulet_Necklace_B_Bronze_A": {
+      "type": "Armor",
+      "source": "Shared.pak!Public/Shared/Stats/Generated/Data/Armor.txt",
+      "fields": {
+        "Slot": "Amulet",
+        "Value level": "1",
+        "Weight": "0.05",
+        "Armour type": "None",
+        "AC ability": "None",
+        "Root template": "fda631e5-83f5-4ae4-b28f-cf4da102e3be"
+      }
+    },
+    "ARM_Amulet_Necklace_C_Bronze_A": {
+      "type": "Armor",
+      "source": "Shared.pak!Public/Shared/Stats/Generated/Data/Armor.txt",
+      "fields": {
+        "Slot": "Amulet",
+        "Value level": "1",
+        "Weight": "0.05",
+        "Armour type": "None",
+        "AC ability": "None",
+        "Root template": "032c0c5e-158f-4c51-8fbe-f7658f43c853"
+      }
+    },
+    "ARM_Boots_Leather": {
+      "type": "Armor",
+      "source": "Shared.pak!Public/Shared/Stats/Generated/Data/Armor.txt",
+      "fields": {
+        "Slot": "Boots",
+        "Value level": "1",
+        "Weight": "0.55",
+        "Armour type": "Leather",
+        "AC ability": "None",
+        "Root template": "969bab00-b269-46a5-a7e9-dd4887814719"
+      }
+    },
+    "ARM_Boots_Metal_Githyanki": {
+      "type": "Armor",
+      "source": "Shared.pak!Public/Shared/Stats/Generated/Data/Armor.txt",
+      "fields": {
+        "Slot": "Boots",
+        "Value level": "4",
+        "Weight": "2",
+        "Armour type": "Plate",
+        "AC ability": "None",
+        "Root template": "319c625a-cfb7-4e44-ac3f-370a00c0d4ef",
+        "Boosts": "Skill(Athletics,1)",
+        "Proficiency": "MediumArmor"
+      }
+    },
+    "ARM_Camp_Body": {
+      "type": "Armor",
+      "source": "Shared.pak!Public/Shared/Stats/Generated/Data/Armor.txt",
+      "fields": {
+        "Slot": "VanityBody",
+        "Value level": "1",
+        "Weight": "1",
+        "Armour type": "None",
+        "AC ability": "None",
+        "Root template": "f369f4fa-2da7-4693-a147-16cfaf02bca5",
+        "Armour class": "10"
+      }
+    },
+    "ARM_Camp_Body_Laezel": {
+      "type": "Armor",
+      "source": "Gustav.pak!Public/Gustav/Stats/Generated/Data/Armor.txt",
+      "fields": {
+        "Slot": "VanityBody",
+        "Value level": "1",
+        "Weight": "1",
+        "Armour type": "None",
+        "AC ability": "None",
+        "Root template": "54de4a07-c57c-421e-912c-7e8bd93ca0c4",
+        "Armour class": "10"
+      }
+    },
+    "ARM_Camp_Body_Shadowheart": {
+      "type": "Armor",
+      "source": "Gustav.pak!Public/Gustav/Stats/Generated/Data/Armor.txt",
+      "fields": {
+        "Slot": "VanityBody",
+        "Value level": "1",
+        "Weight": "1",
+        "Armour type": "None",
+        "AC ability": "None",
+        "Root template": "7062410b-439c-4f2f-bc48-1c16ab1ace20",
+        "Armour class": "10"
+      }
+    },
+    "ARM_Camp_Shoes": {
+      "type": "Armor",
+      "source": "Shared.pak!Public/Shared/Stats/Generated/Data/Armor.txt",
+      "fields": {
+        "Slot": "VanityBoots",
+        "Value level": "1",
+        "Weight": "0.55",
+        "Armour type": "None",
+        "AC ability": "None",
+        "Root template": "6bb7a595-7646-48a9-9c44-d39f16c1c5cb"
+      }
+    },
+    "ARM_Camp_Shoes_Shadowheart": {
+      "type": "Armor",
+      "source": "Gustav.pak!Public/Gustav/Stats/Generated/Data/Armor.txt",
+      "fields": {
+        "Slot": "VanityBoots",
+        "Value level": "1",
+        "Weight": "0.55",
+        "Armour type": "None",
+        "AC ability": "None",
+        "Root template": "e92e4dad-8e96-4f27-aacb-cc430df0bc75"
+      }
+    },
+    "ARM_Camp_Shoes_Wyll": {
+      "type": "Armor",
+      "source": "Gustav.pak!Public/Gustav/Stats/Generated/Data/Armor.txt",
+      "fields": {
+        "Slot": "VanityBoots",
+        "Value level": "1",
+        "Weight": "0.55",
+        "Armour type": "None",
+        "AC ability": "None",
+        "Root template": "b307af36-a2da-4c01-aac3-a31771edd407"
+      }
+    },
+    "ARM_ChainShirt_Body_Shar": {
+      "type": "Armor",
+      "source": "Shared.pak!Public/Shared/Stats/Generated/Data/Armor.txt",
+      "fields": {
+        "Slot": "Breast",
+        "Value level": "2",
+        "Weight": "9",
+        "Armour type": "ChainShirt",
+        "AC ability": "Dexterity",
+        "Root template": "0c0c1031-4a04-4e8f-ba8a-8aafa2a396e8",
+        "Armour class": "13",
+        "AC ability cap": "2",
+        "Proficiency": "MediumArmor"
+      }
+    },
+    "ARM_HalfPlate_Body_Githyanki": {
+      "type": "Armor",
+      "source": "Shared.pak!Public/Shared/Stats/Generated/Data/Armor.txt",
+      "fields": {
+        "Slot": "Breast",
+        "Value level": "7",
+        "Weight": "12",
+        "Armour type": "HalfPlate",
+        "AC ability": "Dexterity",
+        "Root template": "38c63f49-3c50-46d0-90d3-68b247542c36",
+        "Armour class": "15",
+        "Boosts": "IF(not HasPassive('MediumArmorMaster', context.Source)):Disadvantage(Skill,Stealth)",
+        "AC ability cap": "2",
+        "Proficiency": "MediumArmor"
+      }
+    },
+    "ARM_Leather_Body": {
+      "type": "Armor",
+      "source": "Shared.pak!Public/Shared/Stats/Generated/Data/Armor.txt",
+      "fields": {
+        "Slot": "Breast",
+        "Value level": "1",
+        "Weight": "4.5",
+        "Armour type": "Leather",
+        "AC ability": "Dexterity",
+        "Root template": "02ae5d88-8044-43df-8363-02a2900776db",
+        "Armour class": "11",
+        "Proficiency": "LightArmor"
+      }
+    },
+    "ARM_Robe_Body": {
+      "type": "Armor",
+      "source": "Shared.pak!Public/Shared/Stats/Generated/Data/Armor.txt",
+      "fields": {
+        "Slot": "Breast",
+        "Value level": "1",
+        "Weight": "1.8",
+        "Armour type": "None",
+        "AC ability": "Dexterity",
+        "Root template": "168b9099-19f5-44e4-b55c-e64ceb60b71f",
+        "Armour class": "10"
+      }
+    },
+    "ARM_Shield": {
+      "type": "Armor",
+      "source": "Shared.pak!Public/Shared/Stats/Generated/Data/Armor.txt",
+      "fields": {
+        "Slot": "Melee Offhand Weapon",
+        "Value level": "1",
+        "Weight": "2.7",
+        "Armour type": "None",
+        "AC ability": "None",
+        "Proficiency": "Shields",
+        "Root template": "d2af60ea-1b72-4d25-a188-6d8bc4fe255b",
+        "Armour class": "2"
+      }
+    },
+    "ARM_Underwear_Humans": {
+      "type": "Armor",
+      "source": "Shared.pak!Public/Shared/Stats/Generated/Data/Armor.txt",
+      "fields": {
+        "Slot": "Underwear",
+        "Value level": "1",
+        "Weight": "0.1",
+        "Armour type": "None",
+        "AC ability": "None",
+        "Root template": "d40b567d-6b66-447e-8923-2bbd0d7aea00"
+      }
+    },
+    "ARM_Underwear_Laezel": {
+      "type": "Armor",
+      "source": "Gustav.pak!Public/Gustav/Stats/Generated/Data/Armor.txt",
+      "fields": {
+        "Slot": "Underwear",
+        "Value level": "1",
+        "Weight": "0.1",
+        "Armour type": "None",
+        "AC ability": "None",
+        "Root template": "185ab1be-e93d-4518-b053-d6d4d7168d68"
+      }
+    },
+    "ARM_Underwear_Shadowheart": {
+      "type": "Armor",
+      "source": "Gustav.pak!Public/Gustav/Stats/Generated/Data/Armor.txt",
+      "fields": {
+        "Slot": "Underwear",
+        "Value level": "1",
+        "Weight": "0.1",
+        "Armour type": "None",
+        "AC ability": "None",
+        "Root template": "b460bd0c-58fe-4a56-831c-af92fd4ba7e2"
+      }
+    },
+    "COL_BrainJar_Memory": {
+      "type": "Object",
+      "source": "Gustav.pak!Public/GustavDev/Stats/Generated/Data/Object.txt",
+      "fields": {
+        "Value level": "1",
+        "Weight": "5",
+        "Default boosts": "CriticalHit(AttackTarget,Failure,Never);CriticalHit(AttackTarget,Success,Never)",
+        "Root template": "25386dbf-d8e5-470e-8b5a-1f05fdd93a67"
+      }
+    },
+    "Cup_Metal": {
+      "type": "Object",
+      "source": "Shared.pak!Public/Shared/Stats/Generated/Data/Object.txt",
+      "fields": {
+        "Value level": "1",
+        "Weight": "0.05",
+        "Default boosts": "CriticalHit(AttackTarget,Failure,Never);CriticalHit(AttackTarget,Success,Never)",
+        "Root template": "2add6f00-eb1c-4f86-bf7f-73e2c68ad5de"
+      }
+    },
+    "OBJ_Backpack_CampSupplies": {
+      "type": "Object",
+      "source": "Shared.pak!Public/Shared/Stats/Generated/Data/Object.txt",
+      "fields": {
+        "Value level": "1",
+        "Weight": "0.1",
+        "Default boosts": "CriticalHit(AttackTarget,Failure,Never);CriticalHit(AttackTarget,Success,Never)",
+        "Root template": "efcb70b7-868b-4214-968a-e23f6ad586bc"
+      }
+    },
+    "OBJ_Bag_AlchemyPouch": {
+      "type": "Object",
+      "source": "Shared.pak!Public/Shared/Stats/Generated/Data/Object.txt",
+      "fields": {
+        "Value level": "1",
+        "Weight": "0.1",
+        "Default boosts": "CriticalHit(AttackTarget,Failure,Never);CriticalHit(AttackTarget,Success,Never)",
+        "Root template": "b7543ff4-5010-4c01-9bcd-4da1047aebfc"
+      }
+    },
+    "OBJ_Camp_Pack": {
+      "type": "Object",
+      "source": "Shared.pak!Public/Shared/Stats/Generated/Data/Object.txt",
+      "fields": {
+        "Value level": "1",
+        "Weight": "2",
+        "Default boosts": "Tag(CAMPSUPPLIES)",
+        "Root template": "398e7328-ce90-4c02-94a2-93341fac499a"
+      }
+    },
+    "OBJ_Candle": {
+      "type": "Object",
+      "source": "Shared.pak!Public/Shared/Stats/Generated/Data/Object.txt",
+      "fields": {
+        "Value level": "1",
+        "Weight": "0.05",
+        "Default boosts": "CriticalHit(AttackTarget,Failure,Never);CriticalHit(AttackTarget,Success,Never)",
+        "Root template": "34df8770-06c5-4752-a7b6-25d4f64d64dc"
+      }
+    },
+    "OBJ_Chest_Wood": {
+      "type": "Object",
+      "source": "Shared.pak!Public/Shared/Stats/Generated/Data/Object.txt",
+      "fields": {
+        "Value level": "1",
+        "Weight": "20",
+        "Default boosts": "CriticalHit(AttackTarget,Failure,Never);CriticalHit(AttackTarget,Success,Never)",
+        "Root template": "5f089bb9-1816-43b8-8e44-f2d58804ea23"
+      }
+    },
+    "OBJ_GenericLootItem": {
+      "type": "Object",
+      "source": "Shared.pak!Public/Shared/Stats/Generated/Data/Object.txt",
+      "fields": {
+        "Value level": "1",
+        "Weight": "0.2",
+        "Default boosts": "CriticalHit(AttackTarget,Failure,Never);CriticalHit(AttackTarget,Success,Never)"
+      }
+    },
+    "OBJ_GoldCoin": {
+      "type": "Object",
+      "source": "Shared.pak!Public/Shared/Stats/Generated/Data/Object.txt",
+      "fields": {
+        "Value level": "1",
+        "Weight": "0.001",
+        "Default boosts": "CriticalHit(AttackTarget,Failure,Never);CriticalHit(AttackTarget,Success,Never)",
+        "Root template": "1c3c9c74-34a1-4685-989e-410dc080be6f"
+      }
+    },
+    "OBJ_GoldPile": {
+      "type": "Object",
+      "source": "Shared.pak!Public/Shared/Stats/Generated/Data/Object.txt",
+      "fields": {
+        "Value level": "1",
+        "Weight": "0.001",
+        "Default boosts": "CriticalHit(AttackTarget,Failure,Never);CriticalHit(AttackTarget,Success,Never)",
+        "Root template": "1c3c9c74-34a1-4685-989e-410dc080be6f"
+      }
+    },
+    "OBJ_Keychain": {
+      "type": "Object",
+      "source": "Shared.pak!Public/SharedDev/Stats/Generated/Data/Object.txt",
+      "fields": {
+        "Value level": "1",
+        "Weight": "0.1",
+        "Default boosts": "CriticalHit(AttackTarget,Failure,Never);CriticalHit(AttackTarget,Success,Never)",
+        "Root template": "ee329627-dbee-405f-b9a6-b260de9ad34c"
+      }
+    },
+    "OBJ_Malachite": {
+      "type": "Object",
+      "source": "Shared.pak!Public/Shared/Stats/Generated/Data/Object.txt",
+      "fields": {
+        "Value level": "1",
+        "Weight": "0.01",
+        "Default boosts": "CriticalHit(AttackTarget,Failure,Never);CriticalHit(AttackTarget,Success,Never)",
+        "Root template": "560e773d-6825-4cbd-83c1-9d8e4f53a704"
+      }
+    },
+    "OBJ_MindflayerBulb_Vacuum": {
+      "type": "Object",
+      "source": "Shared.pak!Public/Shared/Stats/Generated/Data/Object.txt",
+      "fields": {
+        "Value level": "1",
+        "Weight": "0.3",
+        "Default boosts": "CriticalHit(AttackTarget,Failure,Never);CriticalHit(AttackTarget,Success,Never)",
+        "Root template": "10b6acda-aa4e-46b1-aa9a-e45ab914a28d"
+      }
+    },
+    "OBJ_Onyx": {
+      "type": "Object",
+      "source": "Shared.pak!Public/Shared/Stats/Generated/Data/Object.txt",
+      "fields": {
+        "Value level": "2",
+        "Weight": "0.01",
+        "Default boosts": "CriticalHit(AttackTarget,Failure,Never);CriticalHit(AttackTarget,Success,Never)",
+        "Root template": "6cbbe9f6-c346-4d6c-b1f1-4cbe6aaf99ef"
+      }
+    },
+    "OBJ_Pearl": {
+      "type": "Object",
+      "source": "Shared.pak!Public/Shared/Stats/Generated/Data/Object.txt",
+      "fields": {
+        "Value level": "3",
+        "Weight": "0.01",
+        "Default boosts": "CriticalHit(AttackTarget,Failure,Never);CriticalHit(AttackTarget,Success,Never)",
+        "Root template": "31d1a9c1-bac0-4738-87ef-23f67b492051"
+      }
+    },
+    "OBJ_Potion_Healing": {
+      "type": "Object",
+      "source": "Shared.pak!Public/Shared/Stats/Generated/Data/Object.txt",
+      "fields": {
+        "Value level": "1",
+        "Weight": "0.1",
+        "Default boosts": "CriticalHit(AttackTarget,Failure,Never);CriticalHit(AttackTarget,Success,Never)",
+        "Root template": "d47006e9-8a51-453d-b200-9e0d42e9bbab"
+      }
+    },
+    "OBJ_Scroll_DetectThoughts": {
+      "type": "Object",
+      "source": "Shared.pak!Public/Shared/Stats/Generated/Data/Object.txt",
+      "fields": {
+        "Value level": "3",
+        "Weight": "0.02",
+        "Default boosts": "CriticalHit(AttackTarget,Failure,Never);CriticalHit(AttackTarget,Success,Never)",
+        "Root template": "126cc673-1151-4113-b1bf-98457233441b",
+        "Rarity": "Uncommon"
+      }
+    },
+    "OBJ_Scroll_Revivify": {
+      "type": "Object",
+      "source": "Shared.pak!Public/Shared/Stats/Generated/Data/Object.txt",
+      "fields": {
+        "Value level": "1",
+        "Weight": "0.02",
+        "Default boosts": "CriticalHit(AttackTarget,Failure,Never);CriticalHit(AttackTarget,Success,Never)",
+        "Root template": "c1c3e4fb-d68c-4e10-afdc-d4550238d50e"
+      }
+    },
+    "PUZ_Key": {
+      "type": "Object",
+      "source": "Shared.pak!Public/Shared/Stats/Generated/Data/Object.txt",
+      "fields": {
+        "Value level": "1",
+        "Weight": "0.01",
+        "Default boosts": "CriticalHit(AttackTarget,Failure,Never);CriticalHit(AttackTarget,Success,Never)"
+      }
+    },
+    "UNI_CONT_DEVIL_PuzzleBox_A": {
+      "type": "Object",
+      "source": "Gustav.pak!Public/Gustav/Stats/Generated/Data/Object.txt",
+      "fields": {
+        "Value level": "1",
+        "Weight": "0.5",
+        "Default boosts": "CriticalHit(AttackTarget,Failure,Never);CriticalHit(AttackTarget,Success,Never)"
+      }
+    },
+    "UNI_ShadowheartCirclet": {
+      "type": "Armor",
+      "source": "Shared.pak!Public/Shared/Stats/Generated/Data/Armor.txt",
+      "fields": {
+        "Slot": "Helmet",
+        "Value level": "1",
+        "Weight": "0.5",
+        "Armour type": "None",
+        "AC ability": "None",
+        "Root template": "437aede9-dea6-46fd-ade2-fc9cfef16c3d"
+      }
+    },
+    "WPN_Handaxe": {
+      "type": "Weapon",
+      "source": "Shared.pak!Public/Shared/Stats/Generated/Data/Weapon.txt",
+      "fields": {
+        "Damage type": "Slashing",
+        "Damage": "1d6",
+        "Value level": "1",
+        "Weight": "0.9",
+        "Slot": "Melee Main Weapon",
+        "Weapon group": "SimpleMeleeWeapon",
+        "Root template": "46b64a36-8446-45bd-98e8-ee81e3136baa",
+        "Boosts (main hand)": "UnlockSpell(Target_Slash_New)",
+        "Properties": "Light;Thrown;Melee;Dippable",
+        "Proficiency": "Handaxes;SimpleWeapons"
+      }
+    },
+    "WPN_LightCrossbow": {
+      "type": "Weapon",
+      "source": "Shared.pak!Public/Shared/Stats/Generated/Data/Weapon.txt",
+      "fields": {
+        "Damage type": "Piercing",
+        "Damage": "1d8",
+        "Value level": "1",
+        "Weight": "2.25",
+        "Slot": "Ranged Main Weapon",
+        "Weapon group": "SimpleRangedWeapon",
+        "Root template": "43b7fbf5-7f6e-4e9e-bce7-c679eea44593",
+        "Boosts (main hand)": "UnlockSpell(Projectile_PiercingShot)",
+        "Properties": "Ammunition;Loading;Twohanded;Dippable",
+        "Proficiency": "LightCrossbows;SimpleWeapons"
+      }
+    },
+    "WPN_Longsword": {
+      "type": "Weapon",
+      "source": "Shared.pak!Public/Shared/Stats/Generated/Data/Weapon.txt",
+      "fields": {
+        "Damage type": "Slashing",
+        "Damage": "1d8",
+        "Value level": "2",
+        "Weight": "1.35",
+        "Slot": "Melee Main Weapon",
+        "Weapon group": "MartialMeleeWeapon",
+        "Root template": "1865323f-b428-4791-a0a9-578841e57463",
+        "Boosts (main hand)": "UnlockSpell(Target_PommelStrike);UnlockSpell(Target_Slash_New);UnlockSpell(Rush_SpringAttack);",
+        "Versatile damage": "1d10",
+        "Properties": "Versatile;Melee;Dippable",
+        "Proficiency": "Longswords;MartialWeapons"
+      }
+    },
+    "WPN_Mace": {
+      "type": "Weapon",
+      "source": "Shared.pak!Public/Shared/Stats/Generated/Data/Weapon.txt",
+      "fields": {
+        "Damage type": "Bludgeoning",
+        "Damage": "1d6",
+        "Value level": "1",
+        "Weight": "1.8",
+        "Slot": "Melee Main Weapon",
+        "Weapon group": "SimpleMeleeWeapon",
+        "Root template": "3186796d-3ab3-4d49-bfc2-cba1aff0cf5a",
+        "Boosts (main hand)": "UnlockSpell(Target_ConcussiveSmash)",
+        "Properties": "Melee;Dippable",
+        "Proficiency": "Maces;SimpleWeapons"
+      }
+    },
+    "WPN_Scimitar": {
+      "type": "Weapon",
+      "source": "Shared.pak!Public/Shared/Stats/Generated/Data/Weapon.txt",
+      "fields": {
+        "Damage type": "Slashing",
+        "Damage": "1d6",
+        "Value level": "1",
+        "Weight": "1.35",
+        "Slot": "Melee Main Weapon",
+        "Weapon group": "MartialMeleeWeapon",
+        "Root template": "868217db-9dcb-414c-bb88-e321ab3e0349",
+        "Boosts (main hand)": "UnlockSpell(Target_OpeningAttack);UnlockSpell(Target_Slash_New)",
+        "Properties": "Finesse;Light;Melee;Dippable",
+        "Proficiency": "Scimitars;MartialWeapons"
+      }
+    },
+    "WPN_Shortbow": {
+      "type": "Weapon",
+      "source": "Shared.pak!Public/Shared/Stats/Generated/Data/Weapon.txt",
+      "fields": {
+        "Damage type": "Piercing",
+        "Damage": "1d6",
+        "Value level": "1",
+        "Weight": "0.9",
+        "Slot": "Ranged Main Weapon",
+        "Weapon group": "SimpleRangedWeapon",
+        "Root template": "c5403c1d-f372-43e1-927a-9189e9e3545d",
+        "Boosts (main hand)": "UnlockSpell(Projectile_HamstringShot)",
+        "Properties": "Ammunition;Twohanded;Dippable",
+        "Proficiency": "Shortbows;SimpleWeapons"
+      }
+    },
+    "WPN_Shortsword": {
+      "type": "Weapon",
+      "source": "Shared.pak!Public/Shared/Stats/Generated/Data/Weapon.txt",
+      "fields": {
+        "Damage type": "Piercing",
+        "Damage": "1d6",
+        "Value level": "1",
+        "Weight": "0.9",
+        "Slot": "Melee Main Weapon",
+        "Weapon group": "MartialMeleeWeapon",
+        "Root template": "467ddb4f-6791-41fa-99f7-ee8620d63bbe",
+        "Boosts (main hand)": "UnlockSpell(Target_OpeningAttack);UnlockSpell(Target_PiercingThrust)",
+        "Properties": "Finesse;Light;Melee;Dippable",
+        "Proficiency": "Shortswords;MartialWeapons"
+      }
+    }
+  },
+  "item_stats_missing": [],
+  "comparison": {
+    "weapons": [
+      {
+        "name": "WPN_LightCrossbow",
+        "pretty": "Light Crossbow",
+        "owners": [
+          "Hoofdpersoon"
+        ],
+        "damage": "1d8",
+        "damage_type": "Piercing",
+        "versatile": null,
+        "range": [
+          1,
+          8,
+          4.5
+        ],
+        "properties": "Ammunition;Loading;Twohanded;Dippable",
+        "proficiency": "LightCrossbows;SimpleWeapons",
+        "weight": "2.25"
+      },
+      {
+        "name": "WPN_Longsword",
+        "pretty": "Longsword",
+        "owners": [
+          "Laezel"
+        ],
+        "damage": "1d8",
+        "damage_type": "Slashing",
+        "versatile": "1d10",
+        "range": [
+          1,
+          8,
+          4.5
+        ],
+        "properties": "Versatile;Melee;Dippable",
+        "proficiency": "Longswords;MartialWeapons",
+        "weight": "1.35"
+      },
+      {
+        "name": "WPN_Handaxe",
+        "pretty": "Handaxe",
+        "owners": [
+          "Hoofdpersoon"
+        ],
+        "damage": "1d6",
+        "damage_type": "Slashing",
+        "versatile": null,
+        "range": [
+          1,
+          6,
+          3.5
+        ],
+        "properties": "Light;Thrown;Melee;Dippable",
+        "proficiency": "Handaxes;SimpleWeapons",
+        "weight": "0.9"
+      },
+      {
+        "name": "WPN_Mace",
+        "pretty": "Mace",
+        "owners": [
+          "Shadowheart"
+        ],
+        "damage": "1d6",
+        "damage_type": "Bludgeoning",
+        "versatile": null,
+        "range": [
+          1,
+          6,
+          3.5
+        ],
+        "properties": "Melee;Dippable",
+        "proficiency": "Maces;SimpleWeapons",
+        "weight": "1.8"
+      },
+      {
+        "name": "WPN_Scimitar",
+        "pretty": "Scimitar",
+        "owners": [
+          "Hoofdpersoon",
+          "Laezel"
+        ],
+        "damage": "1d6",
+        "damage_type": "Slashing",
+        "versatile": null,
+        "range": [
+          1,
+          6,
+          3.5
+        ],
+        "properties": "Finesse;Light;Melee;Dippable",
+        "proficiency": "Scimitars;MartialWeapons",
+        "weight": "1.35"
+      },
+      {
+        "name": "WPN_Shortbow",
+        "pretty": "Shortbow",
+        "owners": [
+          "Hoofdpersoon",
+          "Laezel"
+        ],
+        "damage": "1d6",
+        "damage_type": "Piercing",
+        "versatile": null,
+        "range": [
+          1,
+          6,
+          3.5
+        ],
+        "properties": "Ammunition;Twohanded;Dippable",
+        "proficiency": "Shortbows;SimpleWeapons",
+        "weight": "0.9"
+      },
+      {
+        "name": "WPN_Shortsword",
+        "pretty": "Shortsword",
+        "owners": [
+          "Hoofdpersoon",
+          "Laezel"
+        ],
+        "damage": "1d6",
+        "damage_type": "Piercing",
+        "versatile": null,
+        "range": [
+          1,
+          6,
+          3.5
+        ],
+        "properties": "Finesse;Light;Melee;Dippable",
+        "proficiency": "Shortswords;MartialWeapons",
+        "weight": "0.9"
+      }
+    ],
+    "armour": [
+      {
+        "name": "ARM_HalfPlate_Body_Githyanki",
+        "pretty": "Half Plate Body Githyanki",
+        "owners": [
+          "Laezel"
+        ],
+        "armour_class": "15",
+        "armour_type": "HalfPlate",
+        "ac_ability": "Dexterity",
+        "ac_ability_cap": "2",
+        "slot": "Breast",
+        "weight": "12"
+      },
+      {
+        "name": "ARM_ChainShirt_Body_Shar",
+        "pretty": "Chain Shirt Body Shar",
+        "owners": [
+          "Shadowheart"
+        ],
+        "armour_class": "13",
+        "armour_type": "ChainShirt",
+        "ac_ability": "Dexterity",
+        "ac_ability_cap": "2",
+        "slot": "Breast",
+        "weight": "9"
+      },
+      {
+        "name": "ARM_Leather_Body",
+        "pretty": "Leather Body",
+        "owners": [
+          "Hoofdpersoon"
+        ],
+        "armour_class": "11",
+        "armour_type": "Leather",
+        "ac_ability": "Dexterity",
+        "ac_ability_cap": null,
+        "slot": "Breast",
+        "weight": "4.5"
+      },
+      {
+        "name": "ARM_Camp_Body",
+        "pretty": "Camp Body",
+        "owners": [
+          "Hoofdpersoon"
+        ],
+        "armour_class": "10",
+        "armour_type": "None",
+        "ac_ability": "None",
+        "ac_ability_cap": null,
+        "slot": "VanityBody",
+        "weight": "1"
+      },
+      {
+        "name": "ARM_Camp_Body_Laezel",
+        "pretty": "Camp Body Laezel",
+        "owners": [
+          "Laezel"
+        ],
+        "armour_class": "10",
+        "armour_type": "None",
+        "ac_ability": "None",
+        "ac_ability_cap": null,
+        "slot": "VanityBody",
+        "weight": "1"
+      },
+      {
+        "name": "ARM_Camp_Body_Shadowheart",
+        "pretty": "Camp Body Shadowheart",
+        "owners": [
+          "Shadowheart"
+        ],
+        "armour_class": "10",
+        "armour_type": "None",
+        "ac_ability": "None",
+        "ac_ability_cap": null,
+        "slot": "VanityBody",
+        "weight": "1"
+      },
+      {
+        "name": "ARM_Robe_Body",
+        "pretty": "Robe Body",
+        "owners": [
+          "Hoofdpersoon"
+        ],
+        "armour_class": "10",
+        "armour_type": "None",
+        "ac_ability": "Dexterity",
+        "ac_ability_cap": null,
+        "slot": "Breast",
+        "weight": "1.8"
+      },
+      {
+        "name": "ARM_Shield",
+        "pretty": "Shield",
+        "owners": [
+          "Shadowheart"
+        ],
+        "armour_class": "2",
+        "armour_type": "None",
+        "ac_ability": "None",
+        "ac_ability_cap": null,
+        "slot": "Melee Offhand Weapon",
+        "weight": "2.7"
+      },
+      {
+        "name": "ARM_Amulet_Necklace_B_Bronze_A",
+        "pretty": "Amulet Necklace B Bronze A",
+        "owners": [
+          "Hoofdpersoon"
+        ],
+        "armour_class": null,
+        "armour_type": "None",
+        "ac_ability": "None",
+        "ac_ability_cap": null,
+        "slot": "Amulet",
+        "weight": "0.05"
+      },
+      {
+        "name": "ARM_Amulet_Necklace_C_Bronze_A",
+        "pretty": "Amulet Necklace C Bronze A",
+        "owners": [
+          "Hoofdpersoon"
+        ],
+        "armour_class": null,
+        "armour_type": "None",
+        "ac_ability": "None",
+        "ac_ability_cap": null,
+        "slot": "Amulet",
+        "weight": "0.05"
+      },
+      {
+        "name": "ARM_Boots_Leather",
+        "pretty": "Boots Leather",
+        "owners": [
+          "Hoofdpersoon",
+          "Shadowheart"
+        ],
+        "armour_class": null,
+        "armour_type": "Leather",
+        "ac_ability": "None",
+        "ac_ability_cap": null,
+        "slot": "Boots",
+        "weight": "0.55"
+      },
+      {
+        "name": "ARM_Boots_Metal_Githyanki",
+        "pretty": "Boots Metal Githyanki",
+        "owners": [
+          "Laezel"
+        ],
+        "armour_class": null,
+        "armour_type": "Plate",
+        "ac_ability": "None",
+        "ac_ability_cap": null,
+        "slot": "Boots",
+        "weight": "2"
+      },
+      {
+        "name": "ARM_Camp_Shoes",
+        "pretty": "Camp Shoes",
+        "owners": [
+          "Hoofdpersoon"
+        ],
+        "armour_class": null,
+        "armour_type": "None",
+        "ac_ability": "None",
+        "ac_ability_cap": null,
+        "slot": "VanityBoots",
+        "weight": "0.55"
+      },
+      {
+        "name": "ARM_Camp_Shoes_Shadowheart",
+        "pretty": "Camp Shoes Shadowheart",
+        "owners": [
+          "Shadowheart"
+        ],
+        "armour_class": null,
+        "armour_type": "None",
+        "ac_ability": "None",
+        "ac_ability_cap": null,
+        "slot": "VanityBoots",
+        "weight": "0.55"
+      },
+      {
+        "name": "ARM_Camp_Shoes_Wyll",
+        "pretty": "Camp Shoes Wyll",
+        "owners": [
+          "Laezel"
+        ],
+        "armour_class": null,
+        "armour_type": "None",
+        "ac_ability": "None",
+        "ac_ability_cap": null,
+        "slot": "VanityBoots",
+        "weight": "0.55"
+      },
+      {
+        "name": "UNI_ShadowheartCirclet",
+        "pretty": "Shadowheart Circlet",
+        "owners": [
+          "Shadowheart"
+        ],
+        "armour_class": null,
+        "armour_type": "None",
+        "ac_ability": "None",
+        "ac_ability_cap": null,
+        "slot": "Helmet",
+        "weight": "0.5"
+      },
+      {
+        "name": "ARM_Underwear_Humans",
+        "pretty": "Underwear Humans",
+        "owners": [
+          "Hoofdpersoon"
+        ],
+        "armour_class": null,
+        "armour_type": "None",
+        "ac_ability": "None",
+        "ac_ability_cap": null,
+        "slot": "Underwear",
+        "weight": "0.1"
+      },
+      {
+        "name": "ARM_Underwear_Laezel",
+        "pretty": "Underwear Laezel",
+        "owners": [
+          "Laezel"
+        ],
+        "armour_class": null,
+        "armour_type": "None",
+        "ac_ability": "None",
+        "ac_ability_cap": null,
+        "slot": "Underwear",
+        "weight": "0.1"
+      },
+      {
+        "name": "ARM_Underwear_Shadowheart",
+        "pretty": "Underwear Shadowheart",
+        "owners": [
+          "Shadowheart"
+        ],
+        "armour_class": null,
+        "armour_type": "None",
+        "ac_ability": "None",
+        "ac_ability_cap": null,
+        "slot": "Underwear",
+        "weight": "0.1"
+      }
+    ]
+  },
+  "other_playable_characters": [
+    {
+      "template_id": "0de603c5-42e2-4811-ad9d-52f608deba0e",
+      "level_name": "CTY_Main_A",
+      "position": [
+        -711.31,
+        32.88,
+        873.19
+      ],
+      "item_count": 11
+    },
+    {
+      "template_id": "91b6b200-7d00-4d62-c98d-e8999d331afa",
+      "level_name": "SCL_Main_A",
+      "position": [
+        -28.25,
+        27.26,
+        129.4
+      ],
+      "item_count": 10
+    },
+    {
+      "template_id": "6bff5419-5a9e-4839-d4ac-c4cae4f6d71b",
+      "level_name": "SYS_CC_I",
+      "position": [
+        5.68,
+        0.27,
+        120.77
+      ],
+      "item_count": 0
+    },
+    {
+      "template_id": "81c48711-d7cc-4a3d-499e-5e6615b95cc1",
+      "level_name": "SYS_CC_I",
+      "position": [
+        3.77,
+        0.27,
+        120.75
+      ],
+      "item_count": 0
+    },
+    {
+      "template_id": "aa772968-b5e0-4441-868d-052db406b5aa",
+      "level_name": "SYS_CC_I",
+      "position": [
+        5.64,
+        0.27,
+        122.13
+      ],
+      "item_count": 0
+    },
+    {
+      "template_id": "e2badbf0-159a-4ef5-739e-be7bd1b35a01",
+      "level_name": "SYS_CC_I",
+      "position": [
+        3.78,
+        0.27,
+        121.98
+      ],
+      "item_count": 9
+    },
+    {
+      "template_id": "25721313-0c15-4935-7681-139f85431b45",
+      "level_name": "WLD_Main_A",
+      "position": [
+        336.0,
+        41.35,
+        43.6
+      ],
+      "item_count": 10
+    },
+    {
+      "template_id": "2c76687d-93a2-477b-188b-148a49b54c30",
+      "level_name": "WLD_Main_A",
+      "position": [
+        110.73,
+        21.94,
+        500.21
+      ],
+      "item_count": 13
+    },
+    {
+      "template_id": "7628bc0e-52b8-42a7-6a85-a61341fd2333",
+      "level_name": "WLD_Main_A",
+      "position": [
+        400.38,
+        33.02,
+        -19.8
+      ],
+      "item_count": 11
+    },
+    {
+      "template_id": "ad9af97d-75da-406a-13ae-717063c504f6",
+      "level_name": "WLD_Main_A",
+      "position": [
+        222.08,
+        16.5,
+        324.3
+      ],
+      "item_count": 12
+    },
+    {
+      "template_id": "c774d764-4a17-48dc-70b4-ac32cee97d44",
+      "level_name": "WLD_Main_A",
+      "position": [
+        -303.01,
+        24.1,
+        116.44
+      ],
+      "item_count": 12
+    },
+    {
+      "template_id": "c7c13742-bacd-460a-658f-64f841fe55f2",
+      "level_name": "WLD_Main_A",
+      "position": [
+        168.78,
+        12.0,
+        287.72
+      ],
+      "item_count": 15
+    }
+  ],
+  "quests": {
+    "completed": [
+      "TUT_ShadowheartEscape"
+    ],
+    "in_progress": [
+      "TUT_NautiloidEscape"
+    ],
+    "game_time_seconds": 11824
+  },
+  "not_stored_in_save": [
+    "Ability scores (Strength t/m Charisma)",
+    "Hitpoints, armour class en snelheid",
+    "Vaardigheids- en saving-throw-bonussen",
+    "Bekende spells en spell slots",
+    "Feats, passives en gekozen progressie-opties",
+    "Aantallen per itemstapel, bijvoorbeeld hoeveel goud"
+  ],
+  "provenance": [
+    [
+      "Savenaam, versie, platform, moeilijkheid",
+      "SaveInfo.json"
+    ],
+    [
+      "Klasse, subklasse, race, level, XP, positie",
+      "SaveInfo.json > Active Party"
+    ],
+    [
+      "Speltijd, GameID, mods",
+      "meta.lsf > MetaData"
+    ],
+    [
+      "Personages en hun runtime-toestand",
+      "Globals.lsf > Characters"
+    ],
+    [
+      "Meegedragen items (gekoppeld op positie)",
+      "Globals.lsf > Items"
+    ],
+    [
+      "Actieve statussen",
+      "Globals.lsf > Characters > StatusManager"
+    ],
+    [
+      "Questvoortgang",
+      "Globals.lsf > Journal"
+    ],
+    [
+      "Screenshot",
+      "<savenaam>.WebP"
+    ],
+    [
+      "Damage, armour class, gewicht, rarity",
+      "spelbestanden: Weapon.txt / Armor.txt / Object.txt in de .pak"
+    ]
+  ]
+}

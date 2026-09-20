@@ -1,0 +1,734 @@
+<!doctype html><html lang='nl'><head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width,initial-scale=1'>
+<title>Invulbare character sheets — A Nautiloid in Hell - 1h 34m</title>
+<style>
+:root{
+  --ink:#14101a; --ink-2:#1d1725; --line:#332a40; --field:#251d30;
+  --vellum:#efe7d8; --muted:#9a8fa8; --ember:#c2461f; --brass:#b08d3f;
+  --display:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  --mono:ui-monospace,"SF Mono","Cascadia Code",Consolas,monospace;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ink);color:var(--vellum);
+  font-family:var(--display);font-size:15px;line-height:1.5}
+.wrap{max-width:1040px;margin:0 auto;padding:32px 24px 90px}
+h1{font-size:clamp(26px,4vw,40px);margin:0 0 4px;font-weight:400;
+  letter-spacing:-.01em}
+.deck{color:var(--muted);font-family:var(--mono);font-size:12px;
+  letter-spacing:.06em;text-transform:uppercase;margin:0 0 28px}
+h2{font-size:12.5px;font-family:var(--mono);letter-spacing:.14em;
+  text-transform:uppercase;color:var(--muted);font-weight:400;
+  margin:0 0 16px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+h3{font-size:11px;font-family:var(--mono);letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ember);font-weight:400;margin:0 0 8px}
+
+.bar{position:sticky;top:0;z-index:5;background:rgba(20,16,26,.94);
+  border-bottom:1px solid var(--line);padding:10px 24px;
+  display:flex;flex-wrap:wrap;gap:8px;align-items:center;
+  backdrop-filter:blur(6px)}
+.bar .spacer{flex:1}
+button{font-family:var(--mono);font-size:11px;letter-spacing:.08em;
+  text-transform:uppercase;background:transparent;color:var(--brass);
+  border:1px solid var(--brass);border-radius:2px;padding:6px 12px;
+  cursor:pointer}
+button:hover{background:var(--brass);color:var(--ink)}
+button:focus-visible,input:focus-visible,textarea:focus-visible{
+  outline:2px solid var(--ember);outline-offset:1px}
+
+.sheet{border:1px solid var(--line);background:var(--ink-2);
+  margin-bottom:34px;break-inside:avoid}
+.sheet>header{padding:18px 22px;border-bottom:1px solid var(--line);
+  background:linear-gradient(90deg,rgba(194,70,31,.10),transparent 55%)}
+.ident{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+  gap:12px}
+.body{display:grid;grid-template-columns:200px 1fr;gap:0}
+@media(max-width:820px){.body{grid-template-columns:1fr}}
+.pane{padding:20px 22px}
+.pane+.pane{border-left:1px solid var(--line)}
+@media(max-width:820px){.pane+.pane{border-left:0;border-top:1px solid var(--line)}}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+@media(max-width:680px){.cols{grid-template-columns:1fr}}
+
+label{display:block;font-family:var(--mono);font-size:9.5px;
+  letter-spacing:.09em;text-transform:uppercase;color:var(--muted);
+  margin-bottom:3px}
+input[type=text],input[type=number],textarea,select{
+  width:100%;background:var(--field);color:var(--vellum);
+  border:1px solid var(--line);border-radius:2px;padding:6px 8px;
+  font-family:var(--display);font-size:15px}
+input.prefilled{border-color:#4a3a24}
+textarea{font-size:14px;line-height:1.5;resize:vertical;min-height:90px}
+input[type=checkbox]{accent-color:var(--ember);width:14px;height:14px;
+  margin:0;cursor:pointer}
+
+.ability{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.ability label{margin:0;flex:1}
+.ability input{width:56px;text-align:center;font-size:17px}
+.ability output{width:38px;text-align:center;font-family:var(--mono);
+  font-size:15px;color:var(--brass)}
+
+table{width:100%;border-collapse:collapse}
+td,th{padding:4px 6px;border-bottom:1px solid var(--line);text-align:left;
+  font-size:14px}
+th{font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--muted);font-weight:400}
+td.n{text-align:right;font-family:var(--mono);color:var(--brass);width:44px}
+td.c{width:26px}
+td.ab{font-family:var(--mono);font-size:10px;color:var(--muted);width:34px;
+  text-transform:uppercase}
+
+.derived{display:grid;grid-template-columns:repeat(auto-fit,minmax(88px,1fr));
+  gap:1px;background:var(--line);border:1px solid var(--line);margin-bottom:20px}
+.derived div{background:var(--field);padding:9px 10px;text-align:center}
+.derived span{display:block;font-family:var(--mono);font-size:9px;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.derived output{font-size:20px;font-family:var(--mono);color:var(--vellum)}
+
+.hint{font-family:var(--mono);font-size:10.5px;color:var(--muted);
+  margin:6px 0 0;line-height:1.5}
+ul.gear{list-style:none;margin:0;padding:0;columns:2;column-gap:22px}
+@media(max-width:600px){ul.gear{columns:1}}
+ul.gear li{font-size:13.5px;padding:1px 0;break-inside:avoid}
+ul.gear code{display:block;font-family:var(--mono);font-size:10px;
+  color:var(--muted)}
+ul.gear .stat{display:block;font-size:11.5px;color:var(--brass)}
+.note{border:1px solid var(--ember);border-left-width:3px;
+  background:rgba(194,70,31,.07);padding:14px 18px;margin-bottom:30px;
+  font-size:14px}
+.note code{font-family:var(--mono);font-size:12px}
+
+@media print{
+  body{background:#fff;color:#191423}
+  .bar,.hint{display:none}
+  .sheet,.pane,.derived div,input,textarea,select{background:#fff!important;
+    color:#191423!important;border-color:#c9c1d2!important}
+  .sheet{break-after:page}
+  .derived output,td.n{color:#191423!important}
+}
+</style></head><body>
+<div class='bar'><button id='save'>Bewaar als JSON</button><button id='load'>Laad JSON</button><input type='file' id='file' accept='.json' hidden><span class='spacer'></span><button id='print'>Print of naar PDF</button></div><div class='wrap'>
+<h1>Invulbare character sheets</h1>
+<p class='deck'>A Nautiloid in Hell - 1h 34m · level 1 · TUT_Avernus_C</p>
+<div class='note'>Velden met een <strong>koperkleurige rand</strong> komen uit de savegame. De rest vul je zelf in — de zes ability scores zijn de enige die je echt moet overtypen uit het spel; modifiers, saving throws, vaardigheden, initiative, spell save DC en aanvalsbonussen rekenen zich daarna zelf uit. Hit die en de proficiente saves zijn voorgevuld volgens de standaard 5e-klassenregels en overschrijfbaar. Opslaan gaat via <code>Bewaar als JSON</code>; die kun je later weer inladen.</div>
+<article class='sheet' data-key='char0'><header><div class='ident'>
+<div><label>Naam</label><input type='text' name='char0_name' value=''></div>
+<div><label>Klasse</label><input type='text' name='char0_class' value='Ranger' class='prefilled'></div>
+<div><label>Subklasse</label><input type='text' name='char0_subclass' value=''></div>
+<div><label>Race</label><input type='text' name='char0_race' value='Human' class='prefilled'></div>
+<div><label>Level</label><input type='number' min='1' max='12' class='prefilled' name='char0_level' data-f='level' value='1'></div>
+<div><label>XP</label><input type='number' name='char0_xp' value='78' class='prefilled'></div>
+<div><label>Background</label><input type='text' name='char0_background' value=''></div>
+</div></header><div class='body'>
+<div class='pane'><h3>Ability scores</h3>
+<div class='ability'><label for='char0_str'>Strength</label><input id='char0_str' type='number' min='1' max='30' name='char0_str' data-ability='str' placeholder='—'><output data-omod='str'>—</output></div>
+<div class='ability'><label for='char0_dex'>Dexterity</label><input id='char0_dex' type='number' min='1' max='30' name='char0_dex' data-ability='dex' placeholder='—'><output data-omod='dex'>—</output></div>
+<div class='ability'><label for='char0_con'>Constitution</label><input id='char0_con' type='number' min='1' max='30' name='char0_con' data-ability='con' placeholder='—'><output data-omod='con'>—</output></div>
+<div class='ability'><label for='char0_int'>Intelligence</label><input id='char0_int' type='number' min='1' max='30' name='char0_int' data-ability='int' placeholder='—'><output data-omod='int'>—</output></div>
+<div class='ability'><label for='char0_wis'>Wisdom</label><input id='char0_wis' type='number' min='1' max='30' name='char0_wis' data-ability='wis' placeholder='—'><output data-omod='wis'>—</output></div>
+<div class='ability'><label for='char0_cha'>Charisma</label><input id='char0_cha' type='number' min='1' max='30' name='char0_cha' data-ability='cha' placeholder='—'><output data-omod='cha'>—</output></div>
+<p class='hint'>Deze zes staan in het spel op het characterscherm. De rest volgt hieruit.</p>
+<h3 style='margin-top:22px'>Saving throws</h3><table>
+<tr data-save='str'><td class='c'><input type='checkbox' name='char0_save_str' checked></td><td>Strength</td><td class='n'><output>—</output></td></tr>
+<tr data-save='dex'><td class='c'><input type='checkbox' name='char0_save_dex' checked></td><td>Dexterity</td><td class='n'><output>—</output></td></tr>
+<tr data-save='con'><td class='c'><input type='checkbox' name='char0_save_con'></td><td>Constitution</td><td class='n'><output>—</output></td></tr>
+<tr data-save='int'><td class='c'><input type='checkbox' name='char0_save_int'></td><td>Intelligence</td><td class='n'><output>—</output></td></tr>
+<tr data-save='wis'><td class='c'><input type='checkbox' name='char0_save_wis'></td><td>Wisdom</td><td class='n'><output>—</output></td></tr>
+<tr data-save='cha'><td class='c'><input type='checkbox' name='char0_save_cha'></td><td>Charisma</td><td class='n'><output>—</output></td></tr>
+</table>
+<p class='hint'>Aangevinkt volgens de 5e-regels voor Ranger.</p>
+</div>
+<div class='pane'>
+<div class='derived'><div><span>Proficiency</span><output data-o='prof'>+2</output></div><div><span>Initiative</span><output data-o='init'>—</output></div><div><span>Passive perception</span><output data-o='passive'>—</output></div><div><span>Spell save DC</span><output data-o='dc'>—</output></div><div><span>Spell attack</span><output data-o='spellatk'>—</output></div></div>
+<div class='cols'><div>
+<h3>Vaardigheden</h3><table><tr><th>P</th><th>E</th><th></th><th>Vaardigheid</th><th></th></tr>
+<tr data-skill='Acrobatics' data-ab='dex'><td class='c'><input type='checkbox' name='char0_skill_Acrobatics'></td><td class='c'><input type='checkbox' name='char0_exp_Acrobatics'></td><td class='ab'>dex</td><td>Acrobatics</td><td class='n'><output>—</output></td></tr>
+<tr data-skill='Animal Handling' data-ab='wis'><td class='c'><input type='checkbox' name='char0_skill_AnimalHandling'></td><td class='c'><input type='checkbox' name='char0_exp_AnimalHandling'></td><td class='ab'>wis</td><td>Animal Handling</td><td class='n'><output>—</output></td></tr>
+<tr data-skill='Arcana' data-ab='int'><td class='c'><input type='checkbox' name='char0_skill_Arcana'></td><td class='c'><input type='checkbox' name='char0_exp_Arcana'></td><td class='ab'>int</td><td>Arcana</td><td class='n'><output>—</output></td></tr>
+<tr data-skill='Athletics' data-ab='str'><td class='c'><input type='checkbox' name='char0_skill_Athletics'></td><td class='c'><input type='checkbox' name='char0_exp_Athletics'></td><td class='ab'>str</td><td>Athletics</td><td class='n'><output>—</output></td></tr>
+<tr data-skill='Deception' data-ab='cha'><td class='c'><input type='checkbox' name='char0_skill_Deception'></td><td class='c'><input type='checkbox' name='char0_exp_Deception'></td><td class='ab'>cha</td><td>Deception</td><td class='n'><output>—</output></td></tr>
+<tr data-skill='History' data-ab='int'><td class='c'><input type='checkbox' name='char0_skill_History'></td><td class='c'><input type='checkbox' name='char0_exp_History'></td><td class='ab'>int</td><td>History</td><td class='n'><output>—</output></td></tr>
+<tr data-skill='Insight' data-ab='wis'><td class='c'><input type='checkbox' name='char0_skill_Insight'></td><td class='c'><input type='checkbox' name='char0_exp_Insight'></td><td class='ab'>wis</td><td>Insight</td><td class='n'><output>—</output></td></tr>
+<tr data-skill='Intimidation' data-ab='cha'><td class='c'><input type='checkbox' name='char0_skill_Intimidation'></td><td class='c'><input type='checkbox' name='char0_exp_Intimidation'></td><td class='ab'>cha</td><td>Intimidation</td><td class='n'><output>—</output></td></tr>
+<tr data-skill='Investigation' data-ab='int'><td class='c'><input type='checkbox' name='char0_skill_Investigation'></td><td class='c'><input type='checkbox' name='char0_exp_Investigation'></td><td class='ab'>int</td><td>Investigation</td><td class='n'><output>—</output></td></tr>
+<tr data-skill='Medicine' data-ab='wis'><td class='c'><input type='checkbox' name='char0_skill_Medicine'></td><td class='c'><input type='checkbox' name='char0_exp_Medicine'></td><td class='ab'>wis</td><td>Medicine</td><td class='n'><output>—</output></td></tr>
+<tr data-skill='Nature' data-ab='int'><td class='c'><input type='checkbox' name='char0_skill_Nature'></td><td class='c'><input type='checkbox' name='char0_exp_Nature'></td><td class='ab'>int</td><td>Nature</td><td class='n'><output>—</output></td></tr>
+<tr data-skill='Perception' data-ab='wis'><td class='c'><input type='checkbox' name='char0_skill_Perception'></td><td class='c'><input type='checkbox' name='char0_exp_Perception'></td><td class='ab'>wis</td><td>Perception</td><td class='n'><output>—</output></td></tr>
+<tr data-skill='Performance' data-ab='cha'><td class='c'><input type='checkbox' name='char0_skill_Performance'></td><td class='c'><input type='checkbox' name='char0_exp_Performance'></td><td class='ab'>cha</td><td>Performance</td><td class='n'><output>—</output></td></tr>
+<tr data-skill='Persuasion' data-ab='cha'><td class='c'><input type='checkbox' name='char0_skill_Persuasion'></td><td class='c'><input type='checkbox' name='char0_exp_Persuasion'></td><td class='ab'>cha</td><td>Persuasion</td><td class='n'><output>—</output></td></tr>
+<tr data-skill='Religion' data-ab='int'><td class='c'><input type='checkbox' name='char0_skill_Religion'></td><td class='c'><input type='checkbox' name='char0_exp_Religion'></td><td class='ab'>int</td><td>Religion</td><td class='n'><output>—</output></td></tr>
+<tr data-skill='Sleight of Hand' data-ab='dex'><td class='c'><input type='checkbox' name='char0_skill_SleightofHand'></td><td class='c'><input type='checkbox' name='char0_exp_SleightofHand'></td><td class='ab'>dex</td><td>Sleight of Hand</td><td class='n'><output>—</output></td></tr>
+<tr data-skill='Stealth' data-ab='dex'><td class='c'><input type='checkbox' name='char0_skill_Stealth'></td><td class='c'><input type='checkbox' name='char0_exp_Stealth'></td><td class='ab'>dex</td><td>Stealth</td><td class='n'><output>—</output></td></tr>
+<tr data-skill='Survival' data-ab='wis'><td class='c'><input type='checkbox' name='char0_skill_Survival'></td><td class='c'><input type='checkbox' name='char0_exp_Survival'></td><td class='ab'>wis</td><td>Survival</td><td class='n'><output>—</output></td></tr>
+</table><p class='hint'>P is proficient, E is expertise (dubbele proficiency bonus).</p>
+</div><div>
+<h3>Gevecht</h3><div class='ident'>
+<div><label>Armour class</label><input type='number' name='char0_ac' value=''></div>
+<div><label>HP maximum</label><input type='number' name='char0_hp_max' value=''></div>
+<div><label>HP nu</label><input type='number' name='char0_hp_current' value=''></div>
+<div><label>Snelheid</label><input type='text' name='char0_speed' value='9 m'></div>
+<div><label>Hit die (d…)</label><input type='number' name='char0_hitdie' data-f='hitdie' value='10' class='prefilled'></div>
+<div><label>Spellcasting ability</label><select name='char0_spellability' data-f='spellability'><option value=''>geen</option>
+<option value='str'>Strength</option>
+<option value='dex'>Dexterity</option>
+<option value='con'>Constitution</option>
+<option value='int'>Intelligence</option>
+<option value='wis' selected>Wisdom</option>
+<option value='cha'>Charisma</option>
+</select></div></div>
+<p class='hint'>Suggestie voor HP-maximum: <output data-o='hphint'>—</output>. Armour class hangt af van wat je aan hebt; welke stukken je bij je hebt staat onderaan.</p>
+<h3 style='margin-top:22px'>Aanvallen</h3><table><tr><th>Wapen</th><th>Schade</th><th>Mod</th><th>P</th><th>Bonus</th></tr>
+<tr data-attack='1'><td><input type='text' name='char0_atk_name_0' value='Handaxe' class='prefilled'></td><td><input type='text' name='char0_atk_dmg_0' value='1d6 slashing' class='prefilled'></td><td><select name='char0_atk_ab_0'>
+<option value='str' selected>Str</option>
+<option value='dex'>Dex</option>
+</select></td><td class='c'><input type='checkbox' name='char0_atk_prof_0' checked></td><td class='n'><output>—</output></td></tr>
+<tr data-attack='1'><td><input type='text' name='char0_atk_name_1' value='LightCrossbow' class='prefilled'></td><td><input type='text' name='char0_atk_dmg_1' value='1d8 piercing' class='prefilled'></td><td><select name='char0_atk_ab_1'>
+<option value='str'>Str</option>
+<option value='dex' selected>Dex</option>
+</select></td><td class='c'><input type='checkbox' name='char0_atk_prof_1' checked></td><td class='n'><output>—</output></td></tr>
+<tr data-attack='1'><td><input type='text' name='char0_atk_name_2' value='Scimitar' class='prefilled'></td><td><input type='text' name='char0_atk_dmg_2' value='1d6 slashing' class='prefilled'></td><td><select name='char0_atk_ab_2'>
+<option value='str' selected>Str</option>
+<option value='dex'>Dex</option>
+</select></td><td class='c'><input type='checkbox' name='char0_atk_prof_2' checked></td><td class='n'><output>—</output></td></tr>
+<tr data-attack='1'><td><input type='text' name='char0_atk_name_3' value='Shortbow' class='prefilled'></td><td><input type='text' name='char0_atk_dmg_3' value='1d6 piercing' class='prefilled'></td><td><select name='char0_atk_ab_3'>
+<option value='str' selected>Str</option>
+<option value='dex'>Dex</option>
+</select></td><td class='c'><input type='checkbox' name='char0_atk_prof_3' checked></td><td class='n'><output>—</output></td></tr>
+<tr data-attack='1'><td><input type='text' name='char0_atk_name_4' value='Shortsword' class='prefilled'></td><td><input type='text' name='char0_atk_dmg_4' value='1d6 piercing' class='prefilled'></td><td><select name='char0_atk_ab_4'>
+<option value='str' selected>Str</option>
+<option value='dex'>Dex</option>
+</select></td><td class='c'><input type='checkbox' name='char0_atk_prof_4' checked></td><td class='n'><output>—</output></td></tr>
+<tr data-attack='1'><td><input type='text' name='char0_atk_name_5'></td><td><input type='text' name='char0_atk_dmg_5'></td><td><select name='char0_atk_ab_5'><option value='str'>Str</option><option value='dex'>Dex</option></select></td><td class='c'><input type='checkbox' name='char0_atk_prof_5'></td><td class='n'><output>—</output></td></tr>
+<tr data-attack='1'><td><input type='text' name='char0_atk_name_6'></td><td><input type='text' name='char0_atk_dmg_6'></td><td><select name='char0_atk_ab_6'><option value='str'>Str</option><option value='dex'>Dex</option></select></td><td class='c'><input type='checkbox' name='char0_atk_prof_6'></td><td class='n'><output>—</output></td></tr>
+</table>
+</div></div>
+<div class='cols' style='margin-top:24px'><div><h3>Spells en cantrips</h3><textarea name='char0_spells' rows='7' placeholder='Bijvoorbeeld: Guidance, Sacred Flame, Bless, Command'></textarea></div><div><h3>Features, passives en feats</h3><textarea name='char0_features' rows='7' placeholder='Bijvoorbeeld: Favoured Enemy, Natural Explorer, Darkvision'></textarea></div></div>
+<h3 style='margin-top:24px'>Uit de savegame: 32 items bij zich</h3><ul class='gear'>
+<li>Potion_Healing
+<span class='stat'>0.1 kg</span>
+<code>OBJ_Potion_Healing</code></li>
+<li>Potion_Healing
+<span class='stat'>0.1 kg</span>
+<code>OBJ_Potion_Healing</code></li>
+<li>GoldCoin
+<span class='stat'>0.001 kg</span>
+<code>OBJ_GoldCoin</code></li>
+<li>GoldPile
+<span class='stat'>0.001 kg</span>
+<code>OBJ_GoldPile</code></li>
+<li>Malachite
+<span class='stat'>0.01 kg</span>
+<code>OBJ_Malachite</code></li>
+<li>Onyx
+<span class='stat'>0.01 kg</span>
+<code>OBJ_Onyx</code></li>
+<li>Pearl
+<span class='stat'>0.01 kg</span>
+<code>OBJ_Pearl</code></li>
+<li>BrainJar_Memory
+<span class='stat'>5 kg</span>
+<code>COL_BrainJar_Memory</code></li>
+<li>Scroll_Revivify
+<span class='stat'>0.02 kg</span>
+<code>OBJ_Scroll_Revivify</code></li>
+<li>Backpack_CampSupplies
+<span class='stat'>0.1 kg</span>
+<code>OBJ_Backpack_CampSupplies</code></li>
+<li>Bag_AlchemyPouch
+<span class='stat'>0.1 kg</span>
+<code>OBJ_Bag_AlchemyPouch</code></li>
+<li>Camp_Pack
+<span class='stat'>2 kg</span>
+<code>OBJ_Camp_Pack</code></li>
+<li>Candle
+<span class='stat'>0.05 kg</span>
+<code>OBJ_Candle</code></li>
+<li>Chest_Wood
+<span class='stat'>20 kg</span>
+<code>OBJ_Chest_Wood</code></li>
+<li>GenericLootItem
+<span class='stat'>0.2 kg</span>
+<code>OBJ_GenericLootItem</code></li>
+<li>Keychain
+<span class='stat'>0.1 kg</span>
+<code>OBJ_Keychain</code></li>
+<li>MindflayerBulb_Vacuum
+<span class='stat'>0.3 kg</span>
+<code>OBJ_MindflayerBulb_Vacuum</code></li>
+<li>Amulet_Necklace_B_Bronze_A
+<span class='stat'>0.05 kg</span>
+<code>ARM_Amulet_Necklace_B_Bronze_A</code></li>
+<li>Amulet_Necklace_C_Bronze_A
+<span class='stat'>0.05 kg</span>
+<code>ARM_Amulet_Necklace_C_Bronze_A</code></li>
+<li>Boots_Leather
+<span class='stat'>0.55 kg</span>
+<code>ARM_Boots_Leather</code></li>
+<li>Camp_Body
+<span class='stat'>AC 10 · 1 kg</span>
+<code>ARM_Camp_Body</code></li>
+<li>Camp_Shoes
+<span class='stat'>0.55 kg</span>
+<code>ARM_Camp_Shoes</code></li>
+<li>Leather_Body
+<span class='stat'>AC 11 · 4.5 kg</span>
+<code>ARM_Leather_Body</code></li>
+<li>Robe_Body
+<span class='stat'>AC 10 · 1.8 kg</span>
+<code>ARM_Robe_Body</code></li>
+<li>Underwear_Humans
+<span class='stat'>0.1 kg</span>
+<code>ARM_Underwear_Humans</code></li>
+<li>Handaxe
+<span class='stat'>1d6 · 0.9 kg</span>
+<code>WPN_Handaxe</code></li>
+<li>LightCrossbow
+<span class='stat'>1d8 · 2.25 kg</span>
+<code>WPN_LightCrossbow</code></li>
+<li>LightCrossbow
+<span class='stat'>1d8 · 2.25 kg</span>
+<code>WPN_LightCrossbow</code></li>
+<li>Scimitar
+<span class='stat'>1d6 · 1.35 kg</span>
+<code>WPN_Scimitar</code></li>
+<li>Shortbow
+<span class='stat'>1d6 · 0.9 kg</span>
+<code>WPN_Shortbow</code></li>
+<li>Shortsword
+<span class='stat'>1d6 · 0.9 kg</span>
+<code>WPN_Shortsword</code></li>
+<li>Shortsword
+<span class='stat'>1d6 · 0.9 kg</span>
+<code>WPN_Shortsword</code></li>
+</ul>
+<h3 style='margin-top:24px'>Aantekeningen</h3><textarea name='char0_notes' rows='4'></textarea>
+</div></div></article>
+<article class='sheet' data-key='char1'><header><div class='ident'>
+<div><label>Naam</label><input type='text' name='char1_name' value='Laezel' class='prefilled'></div>
+<div><label>Klasse</label><input type='text' name='char1_class' value='Fighter' class='prefilled'></div>
+<div><label>Subklasse</label><input type='text' name='char1_subclass' value=''></div>
+<div><label>Race</label><input type='text' name='char1_race' value='Githyanki' class='prefilled'></div>
+<div><label>Level</label><input type='number' min='1' max='12' class='prefilled' name='char1_level' data-f='level' value='1'></div>
+<div><label>XP</label><input type='number' name='char1_xp' value='78' class='prefilled'></div>
+<div><label>Background</label><input type='text' name='char1_background' value=''></div>
+</div></header><div class='body'>
+<div class='pane'><h3>Ability scores</h3>
+<div class='ability'><label for='char1_str'>Strength</label><input id='char1_str' type='number' min='1' max='30' name='char1_str' data-ability='str' placeholder='—'><output data-omod='str'>—</output></div>
+<div class='ability'><label for='char1_dex'>Dexterity</label><input id='char1_dex' type='number' min='1' max='30' name='char1_dex' data-ability='dex' placeholder='—'><output data-omod='dex'>—</output></div>
+<div class='ability'><label for='char1_con'>Constitution</label><input id='char1_con' type='number' min='1' max='30' name='char1_con' data-ability='con' placeholder='—'><output data-omod='con'>—</output></div>
+<div class='ability'><label for='char1_int'>Intelligence</label><input id='char1_int' type='number' min='1' max='30' name='char1_int' data-ability='int' placeholder='—'><output data-omod='int'>—</output></div>
+<div class='ability'><label for='char1_wis'>Wisdom</label><input id='char1_wis' type='number' min='1' max='30' name='char1_wis' data-ability='wis' placeholder='—'><output data-omod='wis'>—</output></div>
+<div class='ability'><label for='char1_cha'>Charisma</label><input id='char1_cha' type='number' min='1' max='30' name='char1_cha' data-ability='cha' placeholder='—'><output data-omod='cha'>—</output></div>
+<p class='hint'>Deze zes staan in het spel op het characterscherm. De rest volgt hieruit.</p>
+<h3 style='margin-top:22px'>Saving throws</h3><table>
+<tr data-save='str'><td class='c'><input type='checkbox' name='char1_save_str' checked></td><td>Strength</td><td class='n'><output>—</output></td></tr>
+<tr data-save='dex'><td class='c'><input type='checkbox' name='char1_save_dex'></td><td>Dexterity</td><td class='n'><output>—</output></td></tr>
+<tr data-save='con'><td class='c'><input type='checkbox' name='char1_save_con' checked></td><td>Constitution</td><td class='n'><output>—</output></td></tr>
+<tr data-save='int'><td class='c'><input type='checkbox' name='char1_save_int'></td><td>Intelligence</td><td class='n'><output>—</output></td></tr>
+<tr data-save='wis'><td class='c'><input type='checkbox' name='char1_save_wis'></td><td>Wisdom</td><td class='n'><output>—</output></td></tr>
+<tr data-save='cha'><td class='c'><input type='checkbox' name='char1_save_cha'></td><td>Charisma</td><td class='n'><output>—</output></td></tr>
+</table>
+<p class='hint'>Aangevinkt volgens de 5e-regels voor Fighter.</p>
+</div>
+<div class='pane'>
+<div class='derived'><div><span>Proficiency</span><output data-o='prof'>+2</output></div><div><span>Initiative</span><output data-o='init'>—</output></div><div><span>Passive perception</span><output data-o='passive'>—</output></div><div><span>Spell save DC</span><output data-o='dc'>—</output></div><div><span>Spell attack</span><output data-o='spellatk'>—</output></div></div>
+<div class='cols'><div>
+<h3>Vaardigheden</h3><table><tr><th>P</th><th>E</th><th></th><th>Vaardigheid</th><th></th></tr>
+<tr data-skill='Acrobatics' data-ab='dex'><td class='c'><input type='checkbox' name='char1_skill_Acrobatics'></td><td class='c'><input type='checkbox' name='char1_exp_Acrobatics'></td><td class='ab'>dex</td><td>Acrobatics</td><td class='n'><output>—</output></td></tr>
+<tr data-skill='Animal Handling' data-ab='wis'><td class='c'><input type='checkbox' name='char1_skill_AnimalHandling'></td><td class='c'><input type='checkbox' name='char1_exp_AnimalHandling'></td><td class='ab'>wis</td><td>Animal Handling</td><td class='n'><output>—</output></td></tr>
+<tr data-skill='Arcana' data-ab='int'><td class='c'><input type='checkbox' name='char1_skill_Arcana'></td><td class='c'><input type='checkbox' name='char1_exp_Arcana'></td><td class='ab'>int</td><td>Arcana</td><td class='n'><output>—</output></td></tr>
+<tr data-skill='Athletics' data-ab='str'><td class='c'><input type='checkbox' name='char1_skill_Athletics'></td><td class='c'><input type='checkbox' name='char1_exp_Athletics'></td><td class='ab'>str</td><td>Athletics</td><td class='n'><output>—</output></td></tr>
+<tr data-skill='Deception' data-ab='cha'><td class='c'><input type='checkbox' name='char1_skill_Deception'></td><td class='c'><input type='checkbox' name='char1_exp_Deception'></td><td class='ab'>cha</td><td>Deception</td><td class='n'><output>—</output></td></tr>
+<tr data-skill='History' data-ab='int'><td class='c'><input type='checkbox' name='char1_skill_History'></td><td class='c'><input type='checkbox' name='char1_exp_History'></td><td class='ab'>int</td><td>History</td><td class='n'><output>—</output></td></tr>
+<tr data-skill='Insight' data-ab='wis'><td class='c'><input type='checkbox' name='char1_skill_Insight'></td><td class='c'><input type='checkbox' name='char1_exp_Insight'></td><td class='ab'>wis</td><td>Insight</td><td class='n'><output>—</output></td></tr>
+<tr data-skill='Intimidation' data-ab='cha'><td class='c'><input type='checkbox' name='char1_skill_Intimidation'></td><td class='c'><input type='checkbox' name='char1_exp_Intimidation'></td><td class='ab'>cha</td><td>Intimidation</td><td class='n'><output>—</output></td></tr>
+<tr data-skill='Investigation' data-ab='int'><td class='c'><input type='checkbox' name='char1_skill_Investigation'></td><td class='c'><input type='checkbox' name='char1_exp_Investigation'></td><td class='ab'>int</td><td>Investigation</td><td class='n'><output>—</output></td></tr>
+<tr data-skill='Medicine' data-ab='wis'><td class='c'><input type='checkbox' name='char1_skill_Medicine'></td><td class='c'><input type='checkbox' name='char1_exp_Medicine'></td><td class='ab'>wis</td><td>Medicine</td><td class='n'><output>—</output></td></tr>
+<tr data-skill='Nature' data-ab='int'><td class='c'><input type='checkbox' name='char1_skill_Nature'></td><td class='c'><input type='checkbox' name='char1_exp_Nature'></td><td class='ab'>int</td><td>Nature</td><td class='n'><output>—</output></td></tr>
+<tr data-skill='Perception' data-ab='wis'><td class='c'><input type='checkbox' name='char1_skill_Perception'></td><td class='c'><input type='checkbox' name='char1_exp_Perception'></td><td class='ab'>wis</td><td>Perception</td><td class='n'><output>—</output></td></tr>
+<tr data-skill='Performance' data-ab='cha'><td class='c'><input type='checkbox' name='char1_skill_Performance'></td><td class='c'><input type='checkbox' name='char1_exp_Performance'></td><td class='ab'>cha</td><td>Performance</td><td class='n'><output>—</output></td></tr>
+<tr data-skill='Persuasion' data-ab='cha'><td class='c'><input type='checkbox' name='char1_skill_Persuasion'></td><td class='c'><input type='checkbox' name='char1_exp_Persuasion'></td><td class='ab'>cha</td><td>Persuasion</td><td class='n'><output>—</output></td></tr>
+<tr data-skill='Religion' data-ab='int'><td class='c'><input type='checkbox' name='char1_skill_Religion'></td><td class='c'><input type='checkbox' name='char1_exp_Religion'></td><td class='ab'>int</td><td>Religion</td><td class='n'><output>—</output></td></tr>
+<tr data-skill='Sleight of Hand' data-ab='dex'><td class='c'><input type='checkbox' name='char1_skill_SleightofHand'></td><td class='c'><input type='checkbox' name='char1_exp_SleightofHand'></td><td class='ab'>dex</td><td>Sleight of Hand</td><td class='n'><output>—</output></td></tr>
+<tr data-skill='Stealth' data-ab='dex'><td class='c'><input type='checkbox' name='char1_skill_Stealth'></td><td class='c'><input type='checkbox' name='char1_exp_Stealth'></td><td class='ab'>dex</td><td>Stealth</td><td class='n'><output>—</output></td></tr>
+<tr data-skill='Survival' data-ab='wis'><td class='c'><input type='checkbox' name='char1_skill_Survival'></td><td class='c'><input type='checkbox' name='char1_exp_Survival'></td><td class='ab'>wis</td><td>Survival</td><td class='n'><output>—</output></td></tr>
+</table><p class='hint'>P is proficient, E is expertise (dubbele proficiency bonus).</p>
+</div><div>
+<h3>Gevecht</h3><div class='ident'>
+<div><label>Armour class</label><input type='number' name='char1_ac' value=''></div>
+<div><label>HP maximum</label><input type='number' name='char1_hp_max' value=''></div>
+<div><label>HP nu</label><input type='number' name='char1_hp_current' value=''></div>
+<div><label>Snelheid</label><input type='text' name='char1_speed' value='9 m'></div>
+<div><label>Hit die (d…)</label><input type='number' name='char1_hitdie' data-f='hitdie' value='10' class='prefilled'></div>
+<div><label>Spellcasting ability</label><select name='char1_spellability' data-f='spellability'><option value=''>geen</option>
+<option value='str'>Strength</option>
+<option value='dex'>Dexterity</option>
+<option value='con'>Constitution</option>
+<option value='int'>Intelligence</option>
+<option value='wis'>Wisdom</option>
+<option value='cha'>Charisma</option>
+</select></div></div>
+<p class='hint'>Suggestie voor HP-maximum: <output data-o='hphint'>—</output>. Armour class hangt af van wat je aan hebt; welke stukken je bij je hebt staat onderaan.</p>
+<h3 style='margin-top:22px'>Aanvallen</h3><table><tr><th>Wapen</th><th>Schade</th><th>Mod</th><th>P</th><th>Bonus</th></tr>
+<tr data-attack='1'><td><input type='text' name='char1_atk_name_0' value='Longsword' class='prefilled'></td><td><input type='text' name='char1_atk_dmg_0' value='1d8 slashing' class='prefilled'></td><td><select name='char1_atk_ab_0'>
+<option value='str' selected>Str</option>
+<option value='dex'>Dex</option>
+</select></td><td class='c'><input type='checkbox' name='char1_atk_prof_0' checked></td><td class='n'><output>—</output></td></tr>
+<tr data-attack='1'><td><input type='text' name='char1_atk_name_1' value='Scimitar' class='prefilled'></td><td><input type='text' name='char1_atk_dmg_1' value='1d6 slashing' class='prefilled'></td><td><select name='char1_atk_ab_1'>
+<option value='str' selected>Str</option>
+<option value='dex'>Dex</option>
+</select></td><td class='c'><input type='checkbox' name='char1_atk_prof_1' checked></td><td class='n'><output>—</output></td></tr>
+<tr data-attack='1'><td><input type='text' name='char1_atk_name_2' value='Shortbow' class='prefilled'></td><td><input type='text' name='char1_atk_dmg_2' value='1d6 piercing' class='prefilled'></td><td><select name='char1_atk_ab_2'>
+<option value='str' selected>Str</option>
+<option value='dex'>Dex</option>
+</select></td><td class='c'><input type='checkbox' name='char1_atk_prof_2' checked></td><td class='n'><output>—</output></td></tr>
+<tr data-attack='1'><td><input type='text' name='char1_atk_name_3' value='Shortsword' class='prefilled'></td><td><input type='text' name='char1_atk_dmg_3' value='1d6 piercing' class='prefilled'></td><td><select name='char1_atk_ab_3'>
+<option value='str' selected>Str</option>
+<option value='dex'>Dex</option>
+</select></td><td class='c'><input type='checkbox' name='char1_atk_prof_3' checked></td><td class='n'><output>—</output></td></tr>
+<tr data-attack='1'><td><input type='text' name='char1_atk_name_4'></td><td><input type='text' name='char1_atk_dmg_4'></td><td><select name='char1_atk_ab_4'><option value='str'>Str</option><option value='dex'>Dex</option></select></td><td class='c'><input type='checkbox' name='char1_atk_prof_4'></td><td class='n'><output>—</output></td></tr>
+<tr data-attack='1'><td><input type='text' name='char1_atk_name_5'></td><td><input type='text' name='char1_atk_dmg_5'></td><td><select name='char1_atk_ab_5'><option value='str'>Str</option><option value='dex'>Dex</option></select></td><td class='c'><input type='checkbox' name='char1_atk_prof_5'></td><td class='n'><output>—</output></td></tr>
+</table>
+</div></div>
+<div class='cols' style='margin-top:24px'><div><h3>Spells en cantrips</h3><textarea name='char1_spells' rows='7' placeholder='Bijvoorbeeld: Guidance, Sacred Flame, Bless, Command'></textarea></div><div><h3>Features, passives en feats</h3><textarea name='char1_features' rows='7' placeholder='Bijvoorbeeld: Favoured Enemy, Natural Explorer, Darkvision'></textarea></div></div>
+<h3 style='margin-top:24px'>Uit de savegame: 19 items bij zich</h3><ul class='gear'>
+<li>Potion_Healing
+<span class='stat'>0.1 kg</span>
+<code>OBJ_Potion_Healing</code></li>
+<li>GoldCoin
+<span class='stat'>0.001 kg</span>
+<code>OBJ_GoldCoin</code></li>
+<li>BrainJar_Memory
+<span class='stat'>5 kg</span>
+<code>COL_BrainJar_Memory</code></li>
+<li>Metal
+<span class='stat'>0.05 kg</span>
+<code>Cup_Metal</code></li>
+<li>Key
+<span class='stat'>0.01 kg</span>
+<code>PUZ_Key</code></li>
+<li>Scroll_Revivify
+<span class='stat'>0.02 kg</span>
+<code>OBJ_Scroll_Revivify</code></li>
+<li>Backpack_CampSupplies
+<span class='stat'>0.1 kg</span>
+<code>OBJ_Backpack_CampSupplies</code></li>
+<li>Bag_AlchemyPouch
+<span class='stat'>0.1 kg</span>
+<code>OBJ_Bag_AlchemyPouch</code></li>
+<li>Camp_Pack
+<span class='stat'>2 kg</span>
+<code>OBJ_Camp_Pack</code></li>
+<li>Keychain
+<span class='stat'>0.1 kg</span>
+<code>OBJ_Keychain</code></li>
+<li>Boots_Metal_Githyanki
+<span class='stat'>2 kg</span>
+<code>ARM_Boots_Metal_Githyanki</code></li>
+<li>Camp_Body_Laezel
+<span class='stat'>AC 10 · 1 kg</span>
+<code>ARM_Camp_Body_Laezel</code></li>
+<li>Camp_Shoes_Wyll
+<span class='stat'>0.55 kg</span>
+<code>ARM_Camp_Shoes_Wyll</code></li>
+<li>HalfPlate_Body_Githyanki
+<span class='stat'>AC 15 · 12 kg</span>
+<code>ARM_HalfPlate_Body_Githyanki</code></li>
+<li>Underwear_Laezel
+<span class='stat'>0.1 kg</span>
+<code>ARM_Underwear_Laezel</code></li>
+<li>Longsword
+<span class='stat'>1d8 · 1.35 kg</span>
+<code>WPN_Longsword</code></li>
+<li>Scimitar
+<span class='stat'>1d6 · 1.35 kg</span>
+<code>WPN_Scimitar</code></li>
+<li>Shortbow
+<span class='stat'>1d6 · 0.9 kg</span>
+<code>WPN_Shortbow</code></li>
+<li>Shortsword
+<span class='stat'>1d6 · 0.9 kg</span>
+<code>WPN_Shortsword</code></li>
+</ul>
+<h3 style='margin-top:24px'>Aantekeningen</h3><textarea name='char1_notes' rows='4'></textarea>
+</div></div></article>
+<article class='sheet' data-key='char2'><header><div class='ident'>
+<div><label>Naam</label><input type='text' name='char2_name' value='Shadowheart' class='prefilled'></div>
+<div><label>Klasse</label><input type='text' name='char2_class' value='Cleric' class='prefilled'></div>
+<div><label>Subklasse</label><input type='text' name='char2_subclass' value='TrickeryDomain' class='prefilled'></div>
+<div><label>Race</label><input type='text' name='char2_race' value='HalfElf High' class='prefilled'></div>
+<div><label>Level</label><input type='number' min='1' max='12' class='prefilled' name='char2_level' data-f='level' value='1'></div>
+<div><label>XP</label><input type='number' name='char2_xp' value='78' class='prefilled'></div>
+<div><label>Background</label><input type='text' name='char2_background' value=''></div>
+</div></header><div class='body'>
+<div class='pane'><h3>Ability scores</h3>
+<div class='ability'><label for='char2_str'>Strength</label><input id='char2_str' type='number' min='1' max='30' name='char2_str' data-ability='str' placeholder='—'><output data-omod='str'>—</output></div>
+<div class='ability'><label for='char2_dex'>Dexterity</label><input id='char2_dex' type='number' min='1' max='30' name='char2_dex' data-ability='dex' placeholder='—'><output data-omod='dex'>—</output></div>
+<div class='ability'><label for='char2_con'>Constitution</label><input id='char2_con' type='number' min='1' max='30' name='char2_con' data-ability='con' placeholder='—'><output data-omod='con'>—</output></div>
+<div class='ability'><label for='char2_int'>Intelligence</label><input id='char2_int' type='number' min='1' max='30' name='char2_int' data-ability='int' placeholder='—'><output data-omod='int'>—</output></div>
+<div class='ability'><label for='char2_wis'>Wisdom</label><input id='char2_wis' type='number' min='1' max='30' name='char2_wis' data-ability='wis' placeholder='—'><output data-omod='wis'>—</output></div>
+<div class='ability'><label for='char2_cha'>Charisma</label><input id='char2_cha' type='number' min='1' max='30' name='char2_cha' data-ability='cha' placeholder='—'><output data-omod='cha'>—</output></div>
+<p class='hint'>Deze zes staan in het spel op het characterscherm. De rest volgt hieruit.</p>
+<h3 style='margin-top:22px'>Saving throws</h3><table>
+<tr data-save='str'><td class='c'><input type='checkbox' name='char2_save_str'></td><td>Strength</td><td class='n'><output>—</output></td></tr>
+<tr data-save='dex'><td class='c'><input type='checkbox' name='char2_save_dex'></td><td>Dexterity</td><td class='n'><output>—</output></td></tr>
+<tr data-save='con'><td class='c'><input type='checkbox' name='char2_save_con'></td><td>Constitution</td><td class='n'><output>—</output></td></tr>
+<tr data-save='int'><td class='c'><input type='checkbox' name='char2_save_int'></td><td>Intelligence</td><td class='n'><output>—</output></td></tr>
+<tr data-save='wis'><td class='c'><input type='checkbox' name='char2_save_wis' checked></td><td>Wisdom</td><td class='n'><output>—</output></td></tr>
+<tr data-save='cha'><td class='c'><input type='checkbox' name='char2_save_cha' checked></td><td>Charisma</td><td class='n'><output>—</output></td></tr>
+</table>
+<p class='hint'>Aangevinkt volgens de 5e-regels voor Cleric.</p>
+</div>
+<div class='pane'>
+<div class='derived'><div><span>Proficiency</span><output data-o='prof'>+2</output></div><div><span>Initiative</span><output data-o='init'>—</output></div><div><span>Passive perception</span><output data-o='passive'>—</output></div><div><span>Spell save DC</span><output data-o='dc'>—</output></div><div><span>Spell attack</span><output data-o='spellatk'>—</output></div></div>
+<div class='cols'><div>
+<h3>Vaardigheden</h3><table><tr><th>P</th><th>E</th><th></th><th>Vaardigheid</th><th></th></tr>
+<tr data-skill='Acrobatics' data-ab='dex'><td class='c'><input type='checkbox' name='char2_skill_Acrobatics'></td><td class='c'><input type='checkbox' name='char2_exp_Acrobatics'></td><td class='ab'>dex</td><td>Acrobatics</td><td class='n'><output>—</output></td></tr>
+<tr data-skill='Animal Handling' data-ab='wis'><td class='c'><input type='checkbox' name='char2_skill_AnimalHandling'></td><td class='c'><input type='checkbox' name='char2_exp_AnimalHandling'></td><td class='ab'>wis</td><td>Animal Handling</td><td class='n'><output>—</output></td></tr>
+<tr data-skill='Arcana' data-ab='int'><td class='c'><input type='checkbox' name='char2_skill_Arcana'></td><td class='c'><input type='checkbox' name='char2_exp_Arcana'></td><td class='ab'>int</td><td>Arcana</td><td class='n'><output>—</output></td></tr>
+<tr data-skill='Athletics' data-ab='str'><td class='c'><input type='checkbox' name='char2_skill_Athletics'></td><td class='c'><input type='checkbox' name='char2_exp_Athletics'></td><td class='ab'>str</td><td>Athletics</td><td class='n'><output>—</output></td></tr>
+<tr data-skill='Deception' data-ab='cha'><td class='c'><input type='checkbox' name='char2_skill_Deception'></td><td class='c'><input type='checkbox' name='char2_exp_Deception'></td><td class='ab'>cha</td><td>Deception</td><td class='n'><output>—</output></td></tr>
+<tr data-skill='History' data-ab='int'><td class='c'><input type='checkbox' name='char2_skill_History'></td><td class='c'><input type='checkbox' name='char2_exp_History'></td><td class='ab'>int</td><td>History</td><td class='n'><output>—</output></td></tr>
+<tr data-skill='Insight' data-ab='wis'><td class='c'><input type='checkbox' name='char2_skill_Insight'></td><td class='c'><input type='checkbox' name='char2_exp_Insight'></td><td class='ab'>wis</td><td>Insight</td><td class='n'><output>—</output></td></tr>
+<tr data-skill='Intimidation' data-ab='cha'><td class='c'><input type='checkbox' name='char2_skill_Intimidation'></td><td class='c'><input type='checkbox' name='char2_exp_Intimidation'></td><td class='ab'>cha</td><td>Intimidation</td><td class='n'><output>—</output></td></tr>
+<tr data-skill='Investigation' data-ab='int'><td class='c'><input type='checkbox' name='char2_skill_Investigation'></td><td class='c'><input type='checkbox' name='char2_exp_Investigation'></td><td class='ab'>int</td><td>Investigation</td><td class='n'><output>—</output></td></tr>
+<tr data-skill='Medicine' data-ab='wis'><td class='c'><input type='checkbox' name='char2_skill_Medicine'></td><td class='c'><input type='checkbox' name='char2_exp_Medicine'></td><td class='ab'>wis</td><td>Medicine</td><td class='n'><output>—</output></td></tr>
+<tr data-skill='Nature' data-ab='int'><td class='c'><input type='checkbox' name='char2_skill_Nature'></td><td class='c'><input type='checkbox' name='char2_exp_Nature'></td><td class='ab'>int</td><td>Nature</td><td class='n'><output>—</output></td></tr>
+<tr data-skill='Perception' data-ab='wis'><td class='c'><input type='checkbox' name='char2_skill_Perception'></td><td class='c'><input type='checkbox' name='char2_exp_Perception'></td><td class='ab'>wis</td><td>Perception</td><td class='n'><output>—</output></td></tr>
+<tr data-skill='Performance' data-ab='cha'><td class='c'><input type='checkbox' name='char2_skill_Performance'></td><td class='c'><input type='checkbox' name='char2_exp_Performance'></td><td class='ab'>cha</td><td>Performance</td><td class='n'><output>—</output></td></tr>
+<tr data-skill='Persuasion' data-ab='cha'><td class='c'><input type='checkbox' name='char2_skill_Persuasion'></td><td class='c'><input type='checkbox' name='char2_exp_Persuasion'></td><td class='ab'>cha</td><td>Persuasion</td><td class='n'><output>—</output></td></tr>
+<tr data-skill='Religion' data-ab='int'><td class='c'><input type='checkbox' name='char2_skill_Religion'></td><td class='c'><input type='checkbox' name='char2_exp_Religion'></td><td class='ab'>int</td><td>Religion</td><td class='n'><output>—</output></td></tr>
+<tr data-skill='Sleight of Hand' data-ab='dex'><td class='c'><input type='checkbox' name='char2_skill_SleightofHand'></td><td class='c'><input type='checkbox' name='char2_exp_SleightofHand'></td><td class='ab'>dex</td><td>Sleight of Hand</td><td class='n'><output>—</output></td></tr>
+<tr data-skill='Stealth' data-ab='dex'><td class='c'><input type='checkbox' name='char2_skill_Stealth'></td><td class='c'><input type='checkbox' name='char2_exp_Stealth'></td><td class='ab'>dex</td><td>Stealth</td><td class='n'><output>—</output></td></tr>
+<tr data-skill='Survival' data-ab='wis'><td class='c'><input type='checkbox' name='char2_skill_Survival'></td><td class='c'><input type='checkbox' name='char2_exp_Survival'></td><td class='ab'>wis</td><td>Survival</td><td class='n'><output>—</output></td></tr>
+</table><p class='hint'>P is proficient, E is expertise (dubbele proficiency bonus).</p>
+</div><div>
+<h3>Gevecht</h3><div class='ident'>
+<div><label>Armour class</label><input type='number' name='char2_ac' value=''></div>
+<div><label>HP maximum</label><input type='number' name='char2_hp_max' value=''></div>
+<div><label>HP nu</label><input type='number' name='char2_hp_current' value=''></div>
+<div><label>Snelheid</label><input type='text' name='char2_speed' value='9 m'></div>
+<div><label>Hit die (d…)</label><input type='number' name='char2_hitdie' data-f='hitdie' value='8' class='prefilled'></div>
+<div><label>Spellcasting ability</label><select name='char2_spellability' data-f='spellability'><option value=''>geen</option>
+<option value='str'>Strength</option>
+<option value='dex'>Dexterity</option>
+<option value='con'>Constitution</option>
+<option value='int'>Intelligence</option>
+<option value='wis' selected>Wisdom</option>
+<option value='cha'>Charisma</option>
+</select></div></div>
+<p class='hint'>Suggestie voor HP-maximum: <output data-o='hphint'>—</output>. Armour class hangt af van wat je aan hebt; welke stukken je bij je hebt staat onderaan.</p>
+<h3 style='margin-top:22px'>Aanvallen</h3><table><tr><th>Wapen</th><th>Schade</th><th>Mod</th><th>P</th><th>Bonus</th></tr>
+<tr data-attack='1'><td><input type='text' name='char2_atk_name_0' value='Mace' class='prefilled'></td><td><input type='text' name='char2_atk_dmg_0' value='1d6 bludgeoning' class='prefilled'></td><td><select name='char2_atk_ab_0'>
+<option value='str' selected>Str</option>
+<option value='dex'>Dex</option>
+</select></td><td class='c'><input type='checkbox' name='char2_atk_prof_0' checked></td><td class='n'><output>—</output></td></tr>
+<tr data-attack='1'><td><input type='text' name='char2_atk_name_1'></td><td><input type='text' name='char2_atk_dmg_1'></td><td><select name='char2_atk_ab_1'><option value='str'>Str</option><option value='dex'>Dex</option></select></td><td class='c'><input type='checkbox' name='char2_atk_prof_1'></td><td class='n'><output>—</output></td></tr>
+<tr data-attack='1'><td><input type='text' name='char2_atk_name_2'></td><td><input type='text' name='char2_atk_dmg_2'></td><td><select name='char2_atk_ab_2'><option value='str'>Str</option><option value='dex'>Dex</option></select></td><td class='c'><input type='checkbox' name='char2_atk_prof_2'></td><td class='n'><output>—</output></td></tr>
+</table>
+</div></div>
+<div class='cols' style='margin-top:24px'><div><h3>Spells en cantrips</h3><textarea name='char2_spells' rows='7' placeholder='Bijvoorbeeld: Guidance, Sacred Flame, Bless, Command'></textarea></div><div><h3>Features, passives en feats</h3><textarea name='char2_features' rows='7' placeholder='Bijvoorbeeld: Favoured Enemy, Natural Explorer, Darkvision'></textarea></div></div>
+<h3 style='margin-top:24px'>Uit de savegame: 16 items bij zich</h3><ul class='gear'>
+<li>Potion_Healing
+<span class='stat'>0.1 kg</span>
+<code>OBJ_Potion_Healing</code></li>
+<li>Scroll_DetectThoughts
+<span class='stat'>0.02 kg</span>
+<code>OBJ_Scroll_DetectThoughts</code></li>
+<li>Scroll_Revivify
+<span class='stat'>0.02 kg</span>
+<code>OBJ_Scroll_Revivify</code></li>
+<li>CONT_DEVIL_PuzzleBox_A
+<span class='stat'>0.5 kg</span>
+<code>UNI_CONT_DEVIL_PuzzleBox_A</code></li>
+<li>ShadowheartCirclet
+<span class='stat'>0.5 kg</span>
+<code>UNI_ShadowheartCirclet</code></li>
+<li>Backpack_CampSupplies
+<span class='stat'>0.1 kg</span>
+<code>OBJ_Backpack_CampSupplies</code></li>
+<li>Bag_AlchemyPouch
+<span class='stat'>0.1 kg</span>
+<code>OBJ_Bag_AlchemyPouch</code></li>
+<li>Camp_Pack
+<span class='stat'>2 kg</span>
+<code>OBJ_Camp_Pack</code></li>
+<li>Keychain
+<span class='stat'>0.1 kg</span>
+<code>OBJ_Keychain</code></li>
+<li>Boots_Leather
+<span class='stat'>0.55 kg</span>
+<code>ARM_Boots_Leather</code></li>
+<li>Camp_Body_Shadowheart
+<span class='stat'>AC 10 · 1 kg</span>
+<code>ARM_Camp_Body_Shadowheart</code></li>
+<li>Camp_Shoes_Shadowheart
+<span class='stat'>0.55 kg</span>
+<code>ARM_Camp_Shoes_Shadowheart</code></li>
+<li>ChainShirt_Body_Shar
+<span class='stat'>AC 13 · 9 kg</span>
+<code>ARM_ChainShirt_Body_Shar</code></li>
+<li>Shield
+<span class='stat'>AC 2 · 2.7 kg</span>
+<code>ARM_Shield</code></li>
+<li>Underwear_Shadowheart
+<span class='stat'>0.1 kg</span>
+<code>ARM_Underwear_Shadowheart</code></li>
+<li>Mace
+<span class='stat'>1d6 · 1.8 kg</span>
+<code>WPN_Mace</code></li>
+</ul>
+<h3 style='margin-top:24px'>Aantekeningen</h3><textarea name='char2_notes' rows='4'></textarea>
+</div></div></article>
+</div><script>
+function mod(score){
+  var v = parseInt(score, 10);
+  if (isNaN(v)) return null;
+  return Math.floor((v - 10) / 2);
+}
+function sign(n){ return n === null ? '—' : (n >= 0 ? '+' + n : '' + n); }
+function profBonus(level){
+  var l = parseInt(level, 10);
+  if (isNaN(l) || l < 1) return 2;
+  return 2 + Math.floor((Math.min(l, 20) - 1) / 4);
+}
+
+function recalc(sheet){
+  var level = sheet.querySelector('[data-f=level]').value;
+  var pb = profBonus(level);
+  sheet.querySelector('[data-o=prof]').textContent = sign(pb);
+
+  var mods = {};
+  sheet.querySelectorAll('[data-ability]').forEach(function(input){
+    var key = input.dataset.ability;
+    var m = mod(input.value);
+    mods[key] = m;
+    sheet.querySelector('[data-omod=' + key + ']').textContent = sign(m);
+  });
+
+  // saving throws
+  sheet.querySelectorAll('[data-save]').forEach(function(row){
+    var key = row.dataset.save;
+    var prof = row.querySelector('input[type=checkbox]').checked;
+    var m = mods[key];
+    row.querySelector('output').textContent =
+      m === null ? '—' : sign(m + (prof ? pb : 0));
+  });
+
+  // skills
+  sheet.querySelectorAll('[data-skill]').forEach(function(row){
+    var key = row.dataset.ab;
+    var boxes = row.querySelectorAll('input[type=checkbox]');
+    var prof = boxes[0].checked, expertise = boxes[1].checked;
+    var m = mods[key];
+    var bonus = prof ? pb : 0;
+    if (expertise) bonus = pb * 2;
+    row.querySelector('output').textContent =
+      m === null ? '—' : sign(m + bonus);
+    if (key === 'wis' && row.dataset.skill === 'Perception'){
+      var pp = sheet.querySelector('[data-o=passive]');
+      if (pp) pp.textContent = m === null ? '—' : (10 + m + bonus);
+    }
+  });
+
+  // initiative volgt dex
+  sheet.querySelector('[data-o=init]').textContent = sign(mods.dex);
+
+  // suggestie voor maximale HP op level 1
+  var die = parseInt(sheet.querySelector('[data-f=hitdie]').value, 10);
+  var hpHint = sheet.querySelector('[data-o=hphint]');
+  if (hpHint){
+    hpHint.textContent = (isNaN(die) || mods.con === null) ? '—'
+      : (die + mods.con) + ' op level 1';
+  }
+
+  // spell save DC en spell attack
+  var sel = sheet.querySelector('[data-f=spellability]');
+  var key = sel ? sel.value : '';
+  var dc = sheet.querySelector('[data-o=dc]');
+  var atk = sheet.querySelector('[data-o=spellatk]');
+  if (dc && atk){
+    if (!key || mods[key] === null){
+      dc.textContent = '—'; atk.textContent = '—';
+    } else {
+      dc.textContent = 8 + pb + mods[key];
+      atk.textContent = sign(pb + mods[key]);
+    }
+  }
+
+  // aanvalsbonussen per wapen
+  sheet.querySelectorAll('[data-attack]').forEach(function(row){
+    var abil = row.querySelector('select').value;
+    var prof = row.querySelector('input[type=checkbox]').checked;
+    var m = mods[abil];
+    row.querySelector('output').textContent =
+      m === null ? '—' : sign(m + (prof ? pb : 0));
+  });
+}
+
+function recalcAll(){
+  document.querySelectorAll('.sheet').forEach(recalc);
+}
+
+function collect(){
+  var out = {};
+  document.querySelectorAll('.sheet').forEach(function(sheet){
+    var data = {};
+    sheet.querySelectorAll('input, textarea, select').forEach(function(el){
+      if (!el.name) return;
+      data[el.name] = (el.type === 'checkbox') ? el.checked : el.value;
+    });
+    out[sheet.dataset.key] = data;
+  });
+  return out;
+}
+
+function saveJson(){
+  var blob = new Blob([JSON.stringify(collect(), null, 2)],
+                      {type: 'application/json'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'character_sheets.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+function loadJson(file){
+  var reader = new FileReader();
+  reader.onload = function(){
+    var data;
+    try { data = JSON.parse(reader.result); }
+    catch (err) {
+      alert('Dit bestand is geen geldige JSON.');
+      return;
+    }
+    document.querySelectorAll('.sheet').forEach(function(sheet){
+      var values = data[sheet.dataset.key];
+      if (!values) return;
+      sheet.querySelectorAll('input, textarea, select').forEach(function(el){
+        if (!el.name || !(el.name in values)) return;
+        if (el.type === 'checkbox') el.checked = !!values[el.name];
+        else el.value = values[el.name];
+      });
+    });
+    recalcAll();
+  };
+  reader.readAsText(file);
+}
+
+document.addEventListener('input', recalcAll);
+document.addEventListener('change', recalcAll);
+document.addEventListener('DOMContentLoaded', function(){
+  document.getElementById('save').addEventListener('click', saveJson);
+  document.getElementById('print').addEventListener('click', function(){
+    window.print();
+  });
+  var picker = document.getElementById('file');
+  document.getElementById('load').addEventListener('click', function(){
+    picker.click();
+  });
+  picker.addEventListener('change', function(){
+    if (picker.files[0]) loadJson(picker.files[0]);
+  });
+  recalcAll();
+});
+</script></body></html>

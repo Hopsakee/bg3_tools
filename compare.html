@@ -1,0 +1,356 @@
+<!doctype html><html lang='nl'><head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width,initial-scale=1'>
+<title>Spullen vergelijken — A Nautiloid in Hell - 1h 34m</title>
+<style>
+:root{
+  --ink:#14101a; --ink-2:#1d1725; --line:#332a40; --field:#251d30;
+  --vellum:#efe7d8; --muted:#9a8fa8; --ember:#c2461f; --brass:#b08d3f;
+  --good:#5f9e6e;
+  --display:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  --mono:ui-monospace,"SF Mono","Cascadia Code",Consolas,monospace;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ink);color:var(--vellum);
+  font-family:var(--display);font-size:15px;line-height:1.5}
+.wrap{max-width:1240px;margin:0 auto;padding:30px 22px 80px}
+h1{font-size:clamp(25px,4vw,38px);margin:0 0 4px;font-weight:400}
+.deck{color:var(--muted);font-family:var(--mono);font-size:11.5px;
+  letter-spacing:.06em;text-transform:uppercase;margin:0 0 24px}
+h2{font-size:12px;font-family:var(--mono);letter-spacing:.14em;
+  text-transform:uppercase;color:var(--muted);font-weight:400;
+  margin:34px 0 14px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+
+.controls{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;
+  background:var(--ink-2);border:1px solid var(--line);padding:14px 16px;
+  margin-bottom:18px}
+.control{display:flex;flex-direction:column;gap:4px}
+.control label{font-family:var(--mono);font-size:9.5px;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--muted)}
+input[type=search],select{background:var(--field);color:var(--vellum);
+  border:1px solid var(--line);border-radius:2px;padding:6px 8px;
+  font-family:var(--display);font-size:14px;min-width:150px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;
+  border:1px solid var(--line);background:var(--field);color:var(--muted);
+  padding:4px 9px;border-radius:2px;cursor:pointer;user-select:none}
+.chip[aria-pressed=true]{border-color:var(--brass);color:var(--brass)}
+.grow{flex:1}
+button{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;
+  text-transform:uppercase;background:transparent;color:var(--brass);
+  border:1px solid var(--brass);border-radius:2px;padding:6px 11px;
+  cursor:pointer}
+button:hover{background:var(--brass);color:var(--ink)}
+button:disabled{opacity:.4;cursor:default}
+button:disabled:hover{background:transparent;color:var(--brass)}
+
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{padding:7px 9px;border-bottom:1px solid var(--line);text-align:left;
+  vertical-align:top}
+th{font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--muted);font-weight:400;
+  cursor:pointer;white-space:nowrap;position:sticky;top:0;
+  background:var(--ink);z-index:2}
+th[aria-sort=ascending]::after{content:" ▲";color:var(--brass)}
+th[aria-sort=descending]::after{content:" ▼";color:var(--brass)}
+tbody tr:hover{background:var(--ink-2)}
+td.n{text-align:right;font-family:var(--mono);color:var(--brass);
+  white-space:nowrap}
+td.c{width:28px;text-align:center}
+input[type=checkbox]{accent-color:var(--ember);width:14px;height:14px;
+  cursor:pointer}
+code{font-family:var(--mono);font-size:10px;color:var(--muted);display:block}
+.small{font-size:12px;color:var(--muted)}
+.badge{font-family:var(--mono);font-size:8.5px;letter-spacing:.07em;
+  text-transform:uppercase;border:1px solid var(--line);color:var(--muted);
+  padding:1px 5px;border-radius:2px;margin-left:5px;white-space:nowrap}
+.badge.approx{border-color:var(--ember);color:var(--ember)}
+.rarity-uncommon{color:#4fa3c7}.rarity-rare{color:#4f7fd1}
+.rarity-veryrare{color:#a86fd6}.rarity-legendary{color:#d69a3a}
+
+.panel{border:1px solid var(--brass);background:var(--ink-2);padding:0;
+  margin-bottom:22px;overflow-x:auto}
+.panel header{display:flex;align-items:center;gap:12px;padding:12px 16px;
+  border-bottom:1px solid var(--line)}
+.panel h3{margin:0;font-family:var(--mono);font-size:11px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--brass);font-weight:400}
+.panel table{font-size:13.5px}
+.panel th{position:static;background:var(--ink-2)}
+.panel td.best{color:var(--good)}
+.panel td.best::after{content:" ★";font-size:10px}
+.empty{padding:26px 16px;color:var(--muted);font-family:var(--mono);
+  font-size:12px}
+.note{border:1px solid var(--line);border-left:3px solid var(--ember);
+  background:rgba(194,70,31,.06);padding:13px 16px;margin-bottom:20px;
+  font-size:14px}
+.note code{display:inline;font-size:12px}
+details{border:1px solid var(--line);background:var(--ink-2);padding:12px 16px;
+  margin-top:16px}
+summary{cursor:pointer;font-family:var(--mono);font-size:11px;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+footer{margin-top:40px;color:var(--muted);font-family:var(--mono);
+  font-size:11px;line-height:1.7}
+
+@media print{
+  body{background:#fff;color:#191423}
+  .controls,button,td.c,th.c{display:none}
+  table,.panel,.note,details{background:#fff;border-color:#c9c1d2}
+  th{background:#fff;color:#191423}
+  td.n,.panel td.best{color:#191423}
+}
+</style></head><body><div class='wrap'>
+<h1>Spullen vergelijken</h1>
+<p class='deck'>A Nautiloid in Hell - 1h 34m · TUT_Avernus_C · 46 items</p>
+<div class='note'>4 met stats uit de spelbestanden; 6 gekoppeld aan bg3.wiki; 40 zonder enige statdefinitie.
+ Wiki-koppeling: 1 op uid, 2 op exacte naam, 3 op deelnaam. Die laatste groep is een gok op basis van naamovereenkomst en staat in de tabel gemarkeerd met <code>wiki ≈</code> — controleer die voordat je erop vertrouwt.
+</div>
+<div class='controls'>
+<div class='control'><label for='q'>Zoeken</label><input type='search' id='q' placeholder='naam of interne id'></div>
+<div class='control'><label for='only'>Alleen tonen</label><select id='only'><option value='all'>alles</option><option value='weapons'>items met schade</option><option value='armour'>items met armour class</option><option value='stats'>items met statgegevens</option></select></div>
+<div class='control'><label>Van wie</label><div class='chips'>
+<span class='chip' role='button' tabindex='0' aria-pressed='false' data-owner data-value='Hoofdpersoon'>Hoofdpersoon</span>
+<span class='chip' role='button' tabindex='0' aria-pressed='false' data-owner data-value='Laezel'>Laezel</span>
+<span class='chip' role='button' tabindex='0' aria-pressed='false' data-owner data-value='Shadowheart'>Shadowheart</span>
+</div></div>
+<div class='control'><label>Categorie</label><div class='chips'>
+<span class='chip' role='button' tabindex='0' aria-pressed='false' data-group data-value='Wapens'>Wapens</span>
+<span class='chip' role='button' tabindex='0' aria-pressed='false' data-group data-value='Wapenrusting'>Wapenrusting</span>
+<span class='chip' role='button' tabindex='0' aria-pressed='false' data-group data-value='Unieke voorwerpen'>Unieke voorwerpen</span>
+<span class='chip' role='button' tabindex='0' aria-pressed='false' data-group data-value='Drankjes'>Drankjes</span>
+<span class='chip' role='button' tabindex='0' aria-pressed='false' data-group data-value='Perkamentrollen'>Perkamentrollen</span>
+<span class='chip' role='button' tabindex='0' aria-pressed='false' data-group data-value='Munten en edelstenen'>Munten en edelstenen</span>
+<span class='chip' role='button' tabindex='0' aria-pressed='false' data-group data-value='Verbruik en gereedschap'>Verbruik en gereedschap</span>
+<span class='chip' role='button' tabindex='0' aria-pressed='false' data-group data-value='Overig'>Overig</span>
+</div></div>
+<div class='grow'></div>
+<button id='clear' disabled>Selectie wissen</button>
+<button id='print'>Print</button>
+</div>
+<div class='panel' id='compare'></div>
+<h2>Alle items <span id='count' class='small'></span></h2>
+<table><thead><tr id='head'></tr></thead><tbody id='body'></tbody></table>
+<details><summary>40 items niet op de wiki gevonden</summary><p class='small' style='margin:10px 0 0;word-break:break-word'>ARM_Amulet_Necklace_B_Bronze_A, ARM_Amulet_Necklace_C_Bronze_A, ARM_Camp_Body, ARM_Camp_Body_Laezel, ARM_Camp_Body_Shadowheart, ARM_Camp_Shoes, ARM_Camp_Shoes_Shadowheart, ARM_Camp_Shoes_Wyll, ARM_HalfPlate_Body_Githyanki, ARM_Leather_Body, ARM_Robe_Body, ARM_Shield, ARM_Underwear_Humans, ARM_Underwear_Laezel, ARM_Underwear_Shadowheart, COL_BrainJar_Memory, Cup_Metal, OBJ_Backpack_CampSupplies, OBJ_Bag_AlchemyPouch, OBJ_Camp_Pack, OBJ_Candle, OBJ_Chest_Wood, OBJ_GenericLootItem, OBJ_GoldCoin, OBJ_GoldPile, OBJ_Keychain, OBJ_Malachite, OBJ_MindflayerBulb_Vacuum, OBJ_Onyx, OBJ_Pearl, OBJ_Potion_Healing, OBJ_Scroll_DetectThoughts, OBJ_Scroll_Revivify, PUZ_Key, UNI_CONT_DEVIL_PuzzleBox_A, UNI_ShadowheartCirclet, WPN_LightCrossbow, WPN_Mace, WPN_Scimitar, WPN_Shortsword</p></details>
+<footer>Gemiddelde schade is de basiswaarde van het wapen zelf, zonder ability-modifier, proficiency of enchantment.<br>Wiki-gegevens komen van bg3.wiki, onder CC BY-NC-SA 4.0 of CC BY-SA 4.0.</footer>
+<script>window.__ITEMS__ = [{"id": "ARM_Amulet_Necklace_B_Bronze_A", "name": "Amulet Necklace B Bronze A", "group": "Wapenrusting", "owners": ["Hoofdpersoon"], "damage": null, "damage_type": null, "versatile": null, "avg": null, "min": null, "max": null, "ac": null, "armour_type": null, "slot": null, "weight": null, "price": null, "rarity": null, "category": null, "handedness": null, "properties": null, "special": null, "where": null, "proficiency": null, "sources": [], "match": null}, {"id": "ARM_Amulet_Necklace_C_Bronze_A", "name": "Amulet Necklace C Bronze A", "group": "Wapenrusting", "owners": ["Hoofdpersoon"], "damage": null, "damage_type": null, "versatile": null, "avg": null, "min": null, "max": null, "ac": null, "armour_type": null, "slot": null, "weight": null, "price": null, "rarity": null, "category": null, "handedness": null, "properties": null, "special": null, "where": null, "proficiency": null, "sources": [], "match": null}, {"id": "ARM_Boots_Leather", "name": "Boots", "group": "Wapenrusting", "owners": ["Hoofdpersoon", "Shadowheart"], "damage": null, "damage_type": null, "versatile": null, "avg": null, "min": null, "max": null, "ac": null, "armour_type": null, "slot": null, "weight": 0.5, "price": 2.0, "rarity": "Common", "category": null, "handedness": null, "properties": null, "special": null, "where": null, "proficiency": null, "sources": ["bg3.wiki"], "match": "deelnaam"}, {"id": "ARM_Boots_Metal_Githyanki", "name": "Boots", "group": "Wapenrusting", "owners": ["Laezel"], "damage": null, "damage_type": null, "versatile": null, "avg": null, "min": null, "max": null, "ac": null, "armour_type": null, "slot": null, "weight": 0.5, "price": 2.0, "rarity": "Common", "category": null, "handedness": null, "properties": null, "special": null, "where": null, "proficiency": null, "sources": ["bg3.wiki"], "match": "deelnaam"}, {"id": "ARM_Camp_Body", "name": "Camp Body", "group": "Wapenrusting", "owners": ["Hoofdpersoon"], "damage": null, "damage_type": null, "versatile": null, "avg": null, "min": null, "max": null, "ac": null, "armour_type": null, "slot": null, "weight": null, "price": null, "rarity": null, "category": null, "handedness": null, "properties": null, "special": null, "where": null, "proficiency": null, "sources": [], "match": null}, {"id": "ARM_Camp_Body_Laezel", "name": "Camp Body Laezel", "group": "Wapenrusting", "owners": ["Laezel"], "damage": null, "damage_type": null, "versatile": null, "avg": null, "min": null, "max": null, "ac": null, "armour_type": null, "slot": null, "weight": null, "price": null, "rarity": null, "category": null, "handedness": null, "properties": null, "special": null, "where": null, "proficiency": null, "sources": [], "match": null}, {"id": "ARM_Camp_Body_Shadowheart", "name": "Camp Body Shadowheart", "group": "Wapenrusting", "owners": ["Shadowheart"], "damage": null, "damage_type": null, "versatile": null, "avg": null, "min": null, "max": null, "ac": null, "armour_type": null, "slot": null, "weight": null, "price": null, "rarity": null, "category": null, "handedness": null, "properties": null, "special": null, "where": null, "proficiency": null, "sources": [], "match": null}, {"id": "ARM_Camp_Shoes", "name": "Camp Shoes", "group": "Wapenrusting", "owners": ["Hoofdpersoon"], "damage": null, "damage_type": null, "versatile": null, "avg": null, "min": null, "max": null, "ac": null, "armour_type": null, "slot": null, "weight": null, "price": null, "rarity": null, "category": null, "handedness": null, "properties": null, "special": null, "where": null, "proficiency": null, "sources": [], "match": null}, {"id": "ARM_Camp_Shoes_Shadowheart", "name": "Camp Shoes Shadowheart", "group": "Wapenrusting", "owners": ["Shadowheart"], "damage": null, "damage_type": null, "versatile": null, "avg": null, "min": null, "max": null, "ac": null, "armour_type": null, "slot": null, "weight": null, "price": null, "rarity": null, "category": null, "handedness": null, "properties": null, "special": null, "where": null, "proficiency": null, "sources": [], "match": null}, {"id": "ARM_Camp_Shoes_Wyll", "name": "Camp Shoes Wyll", "group": "Wapenrusting", "owners": ["Laezel"], "damage": null, "damage_type": null, "versatile": null, "avg": null, "min": null, "max": null, "ac": null, "armour_type": null, "slot": null, "weight": null, "price": null, "rarity": null, "category": null, "handedness": null, "properties": null, "special": null, "where": null, "proficiency": null, "sources": [], "match": null}, {"id": "ARM_ChainShirt_Body_Shar", "name": "Chain Shirt", "group": "Wapenrusting", "owners": ["Shadowheart"], "damage": null, "damage_type": null, "versatile": null, "avg": null, "min": null, "max": null, "ac": 13.0, "armour_type": "ChainShirt", "slot": "Breast", "weight": 9.0, "price": 50.0, "rarity": "Common", "category": null, "handedness": null, "properties": null, "special": null, "where": null, "proficiency": null, "sources": ["spelbestanden", "bg3.wiki"], "match": "deelnaam"}, {"id": "ARM_HalfPlate_Body_Githyanki", "name": "Half Plate Body Githyanki", "group": "Wapenrusting", "owners": ["Laezel"], "damage": null, "damage_type": null, "versatile": null, "avg": null, "min": null, "max": null, "ac": null, "armour_type": null, "slot": null, "weight": null, "price": null, "rarity": null, "category": null, "handedness": null, "properties": null, "special": null, "where": null, "proficiency": null, "sources": [], "match": null}, {"id": "ARM_Leather_Body", "name": "Leather Body", "group": "Wapenrusting", "owners": ["Hoofdpersoon"], "damage": null, "damage_type": null, "versatile": null, "avg": null, "min": null, "max": null, "ac": null, "armour_type": null, "slot": null, "weight": null, "price": null, "rarity": null, "category": null, "handedness": null, "properties": null, "special": null, "where": null, "proficiency": null, "sources": [], "match": null}, {"id": "ARM_Robe_Body", "name": "Robe Body", "group": "Wapenrusting", "owners": ["Hoofdpersoon"], "damage": null, "damage_type": null, "versatile": null, "avg": null, "min": null, "max": null, "ac": null, "armour_type": null, "slot": null, "weight": null, "price": null, "rarity": null, "category": null, "handedness": null, "properties": null, "special": null, "where": null, "proficiency": null, "sources": [], "match": null}, {"id": "ARM_Shield", "name": "Shield", "group": "Wapenrusting", "owners": ["Shadowheart"], "damage": null, "damage_type": null, "versatile": null, "avg": null, "min": null, "max": null, "ac": null, "armour_type": null, "slot": null, "weight": null, "price": null, "rarity": null, "category": null, "handedness": null, "properties": null, "special": null, "where": null, "proficiency": null, "sources": [], "match": null}, {"id": "ARM_Underwear_Humans", "name": "Underwear Humans", "group": "Wapenrusting", "owners": ["Hoofdpersoon"], "damage": null, "damage_type": null, "versatile": null, "avg": null, "min": null, "max": null, "ac": null, "armour_type": null, "slot": null, "weight": null, "price": null, "rarity": null, "category": null, "handedness": null, "properties": null, "special": null, "where": null, "proficiency": null, "sources": [], "match": null}, {"id": "ARM_Underwear_Laezel", "name": "Underwear Laezel", "group": "Wapenrusting", "owners": ["Laezel"], "damage": null, "damage_type": null, "versatile": null, "avg": null, "min": null, "max": null, "ac": null, "armour_type": null, "slot": null, "weight": null, "price": null, "rarity": null, "category": null, "handedness": null, "properties": null, "special": null, "where": null, "proficiency": null, "sources": [], "match": null}, {"id": "ARM_Underwear_Shadowheart", "name": "Underwear Shadowheart", "group": "Wapenrusting", "owners": ["Shadowheart"], "damage": null, "damage_type": null, "versatile": null, "avg": null, "min": null, "max": null, "ac": null, "armour_type": null, "slot": null, "weight": null, "price": null, "rarity": null, "category": null, "handedness": null, "properties": null, "special": null, "where": null, "proficiency": null, "sources": [], "match": null}, {"id": "COL_BrainJar_Memory", "name": "Brain Jar Memory", "group": "Overig", "owners": ["Hoofdpersoon", "Laezel"], "damage": null, "damage_type": null, "versatile": null, "avg": null, "min": null, "max": null, "ac": null, "armour_type": null, "slot": null, "weight": null, "price": null, "rarity": null, "category": null, "handedness": null, "properties": null, "special": null, "where": null, "proficiency": null, "sources": [], "match": null}, {"id": "Cup_Metal", "name": "Cup Metal", "group": "Overig", "owners": ["Laezel"], "damage": null, "damage_type": null, "versatile": null, "avg": null, "min": null, "max": null, "ac": null, "armour_type": null, "slot": null, "weight": null, "price": null, "rarity": null, "category": null, "handedness": null, "properties": null, "special": null, "where": null, "proficiency": null, "sources": [], "match": null}, {"id": "OBJ_Backpack_CampSupplies", "name": "Backpack Camp Supplies", "group": "Verbruik en gereedschap", "owners": ["Hoofdpersoon", "Laezel", "Shadowheart"], "damage": null, "damage_type": null, "versatile": null, "avg": null, "min": null, "max": null, "ac": null, "armour_type": null, "slot": null, "weight": null, "price": null, "rarity": null, "category": null, "handedness": null, "properties": null, "special": null, "where": null, "proficiency": null, "sources": [], "match": null}, {"id": "OBJ_Bag_AlchemyPouch", "name": "Bag Alchemy Pouch", "group": "Verbruik en gereedschap", "owners": ["Hoofdpersoon", "Laezel", "Shadowheart"], "damage": null, "damage_type": null, "versatile": null, "avg": null, "min": null, "max": null, "ac": null, "armour_type": null, "slot": null, "weight": null, "price": null, "rarity": null, "category": null, "handedness": null, "properties": null, "special": null, "where": null, "proficiency": null, "sources": [], "match": null}, {"id": "OBJ_Camp_Pack", "name": "Camp Pack", "group": "Verbruik en gereedschap", "owners": ["Hoofdpersoon", "Laezel", "Shadowheart"], "damage": null, "damage_type": null, "versatile": null, "avg": null, "min": null, "max": null, "ac": null, "armour_type": null, "slot": null, "weight": null, "price": null, "rarity": null, "category": null, "handedness": null, "properties": null, "special": null, "where": null, "proficiency": null, "sources": [], "match": null}, {"id": "OBJ_Candle", "name": "Candle", "group": "Verbruik en gereedschap", "owners": ["Hoofdpersoon"], "damage": null, "damage_type": null, "versatile": null, "avg": null, "min": null, "max": null, "ac": null, "armour_type": null, "slot": null, "weight": null, "price": null, "rarity": null, "category": null, "handedness": null, "properties": null, "special": null, "where": null, "proficiency": null, "sources": [], "match": null}, {"id": "OBJ_Chest_Wood", "name": "Chest Wood", "group": "Verbruik en gereedschap", "owners": ["Hoofdpersoon"], "damage": null, "damage_type": null, "versatile": null, "avg": null, "min": null, "max": null, "ac": null, "armour_type": null, "slot": null, "weight": null, "price": null, "rarity": null, "category": null, "handedness": null, "properties": null, "special": null, "where": null, "proficiency": null, "sources": [], "match": null}, {"id": "OBJ_GenericLootItem", "name": "Generic Loot Item", "group": "Verbruik en gereedschap", "owners": ["Hoofdpersoon"], "damage": null, "damage_type": null, "versatile": null, "avg": null, "min": null, "max": null, "ac": null, "armour_type": null, "slot": null, "weight": null, "price": null, "rarity": null, "category": null, "handedness": null, "properties": null, "special": null, "where": null, "proficiency": null, "sources": [], "match": null}, {"id": "OBJ_GoldCoin", "name": "Gold Coin", "group": "Munten en edelstenen", "owners": ["Hoofdpersoon", "Laezel"], "damage": null, "damage_type": null, "versatile": null, "avg": null, "min": null, "max": null, "ac": null, "armour_type": null, "slot": null, "weight": null, "price": null, "rarity": null, "category": null, "handedness": null, "properties": null, "special": null, "where": null, "proficiency": null, "sources": [], "match": null}, {"id": "OBJ_GoldPile", "name": "Gold Pile", "group": "Munten en edelstenen", "owners": ["Hoofdpersoon"], "damage": null, "damage_type": null, "versatile": null, "avg": null, "min": null, "max": null, "ac": null, "armour_type": null, "slot": null, "weight": null, "price": null, "rarity": null, "category": null, "handedness": null, "properties": null, "special": null, "where": null, "proficiency": null, "sources": [], "match": null}, {"id": "OBJ_Keychain", "name": "Keychain", "group": "Verbruik en gereedschap", "owners": ["Hoofdpersoon", "Laezel", "Shadowheart"], "damage": null, "damage_type": null, "versatile": null, "avg": null, "min": null, "max": null, "ac": null, "armour_type": null, "slot": null, "weight": null, "price": null, "rarity": null, "category": null, "handedness": null, "properties": null, "special": null, "where": null, "proficiency": null, "sources": [], "match": null}, {"id": "OBJ_Malachite", "name": "Malachite", "group": "Munten en edelstenen", "owners": ["Hoofdpersoon"], "damage": null, "damage_type": null, "versatile": null, "avg": null, "min": null, "max": null, "ac": null, "armour_type": null, "slot": null, "weight": null, "price": null, "rarity": null, "category": null, "handedness": null, "properties": null, "special": null, "where": null, "proficiency": null, "sources": [], "match": null}, {"id": "OBJ_MindflayerBulb_Vacuum", "name": "Mindflayer Bulb Vacuum", "group": "Verbruik en gereedschap", "owners": ["Hoofdpersoon"], "damage": null, "damage_type": null, "versatile": null, "avg": null, "min": null, "max": null, "ac": null, "armour_type": null, "slot": null, "weight": null, "price": null, "rarity": null, "category": null, "handedness": null, "properties": null, "special": null, "where": null, "proficiency": null, "sources": [], "match": null}, {"id": "OBJ_Onyx", "name": "Onyx", "group": "Munten en edelstenen", "owners": ["Hoofdpersoon"], "damage": null, "damage_type": null, "versatile": null, "avg": null, "min": null, "max": null, "ac": null, "armour_type": null, "slot": null, "weight": null, "price": null, "rarity": null, "category": null, "handedness": null, "properties": null, "special": null, "where": null, "proficiency": null, "sources": [], "match": null}, {"id": "OBJ_Pearl", "name": "Pearl", "group": "Munten en edelstenen", "owners": ["Hoofdpersoon"], "damage": null, "damage_type": null, "versatile": null, "avg": null, "min": null, "max": null, "ac": null, "armour_type": null, "slot": null, "weight": null, "price": null, "rarity": null, "category": null, "handedness": null, "properties": null, "special": null, "where": null, "proficiency": null, "sources": [], "match": null}, {"id": "OBJ_Potion_Healing", "name": "Potion Healing", "group": "Drankjes", "owners": ["Hoofdpersoon", "Laezel", "Shadowheart"], "damage": null, "damage_type": null, "versatile": null, "avg": null, "min": null, "max": null, "ac": null, "armour_type": null, "slot": null, "weight": null, "price": null, "rarity": null, "category": null, "handedness": null, "properties": null, "special": null, "where": null, "proficiency": null, "sources": [], "match": null}, {"id": "OBJ_Scroll_DetectThoughts", "name": "Scroll Detect Thoughts", "group": "Perkamentrollen", "owners": ["Shadowheart"], "damage": null, "damage_type": null, "versatile": null, "avg": null, "min": null, "max": null, "ac": null, "armour_type": null, "slot": null, "weight": null, "price": null, "rarity": null, "category": null, "handedness": null, "properties": null, "special": null, "where": null, "proficiency": null, "sources": [], "match": null}, {"id": "OBJ_Scroll_Revivify", "name": "Scroll Revivify", "group": "Perkamentrollen", "owners": ["Hoofdpersoon", "Laezel", "Shadowheart"], "damage": null, "damage_type": null, "versatile": null, "avg": null, "min": null, "max": null, "ac": null, "armour_type": null, "slot": null, "weight": null, "price": null, "rarity": null, "category": null, "handedness": null, "properties": null, "special": null, "where": null, "proficiency": null, "sources": [], "match": null}, {"id": "PUZ_Key", "name": "Key", "group": "Overig", "owners": ["Laezel"], "damage": null, "damage_type": null, "versatile": null, "avg": null, "min": null, "max": null, "ac": null, "armour_type": null, "slot": null, "weight": null, "price": null, "rarity": null, "category": null, "handedness": null, "properties": null, "special": null, "where": null, "proficiency": null, "sources": [], "match": null}, {"id": "UNI_CONT_DEVIL_PuzzleBox_A", "name": "CONT DEVIL Puzzle Box A", "group": "Unieke voorwerpen", "owners": ["Shadowheart"], "damage": null, "damage_type": null, "versatile": null, "avg": null, "min": null, "max": null, "ac": null, "armour_type": null, "slot": null, "weight": null, "price": null, "rarity": null, "category": null, "handedness": null, "properties": null, "special": null, "where": null, "proficiency": null, "sources": [], "match": null}, {"id": "UNI_ShadowheartCirclet", "name": "Shadowheart Circlet", "group": "Unieke voorwerpen", "owners": ["Shadowheart"], "damage": null, "damage_type": null, "versatile": null, "avg": null, "min": null, "max": null, "ac": null, "armour_type": null, "slot": null, "weight": null, "price": null, "rarity": null, "category": null, "handedness": null, "properties": null, "special": null, "where": null, "proficiency": null, "sources": [], "match": null}, {"id": "WPN_Handaxe", "name": "Handaxe", "group": "Wapens", "owners": ["Hoofdpersoon"], "damage": "1d6", "damage_type": "Slashing", "versatile": null, "avg": 3.5, "min": 1, "max": 6, "ac": null, "armour_type": null, "slot": null, "weight": 0.9, "price": 5.0, "rarity": "Common", "category": "handaxe", "handedness": "one-handed", "properties": "Melee;Dippable", "special": null, "where": "Overal te koop", "proficiency": "SimpleWeapons", "sources": ["spelbestanden", "bg3.wiki"], "match": "uid"}, {"id": "WPN_LightCrossbow", "name": "Light Crossbow", "group": "Wapens", "owners": ["Hoofdpersoon"], "damage": null, "damage_type": null, "versatile": null, "avg": null, "min": null, "max": null, "ac": null, "armour_type": null, "slot": null, "weight": null, "price": null, "rarity": null, "category": null, "handedness": null, "properties": null, "special": null, "where": null, "proficiency": null, "sources": [], "match": null}, {"id": "WPN_Longsword", "name": "Longsword", "group": "Wapens", "owners": ["Laezel"], "damage": "1d8", "damage_type": "Slashing", "versatile": "1d10", "avg": 4.5, "min": 1, "max": 8, "ac": null, "armour_type": null, "slot": null, "weight": 1.35, "price": 10.0, "rarity": "Common", "category": "longsword", "handedness": "versatile", "properties": "Versatile;Melee;Dippable", "special": null, "where": null, "proficiency": "Longswords;MartialWeapons", "sources": ["spelbestanden", "bg3.wiki"], "match": "naam"}, {"id": "WPN_Mace", "name": "Mace", "group": "Wapens", "owners": ["Shadowheart"], "damage": null, "damage_type": null, "versatile": null, "avg": null, "min": null, "max": null, "ac": null, "armour_type": null, "slot": null, "weight": null, "price": null, "rarity": null, "category": null, "handedness": null, "properties": null, "special": null, "where": null, "proficiency": null, "sources": [], "match": null}, {"id": "WPN_Scimitar", "name": "Scimitar", "group": "Wapens", "owners": ["Hoofdpersoon", "Laezel"], "damage": null, "damage_type": null, "versatile": null, "avg": null, "min": null, "max": null, "ac": null, "armour_type": null, "slot": null, "weight": null, "price": null, "rarity": null, "category": null, "handedness": null, "properties": null, "special": null, "where": null, "proficiency": null, "sources": [], "match": null}, {"id": "WPN_Shortbow", "name": "Shortbow", "group": "Wapens", "owners": ["Hoofdpersoon", "Laezel"], "damage": "1d6+1", "damage_type": "Piercing", "versatile": null, "avg": 4.5, "min": 2, "max": 7, "ac": null, "armour_type": null, "slot": null, "weight": 1.0, "price": 12.0, "rarity": "Common", "category": "shortbow", "handedness": "two-handed", "properties": "Ranged;TwoHanded", "special": null, "where": null, "proficiency": null, "sources": ["spelbestanden", "bg3.wiki"], "match": "naam"}, {"id": "WPN_Shortsword", "name": "Shortsword", "group": "Wapens", "owners": ["Hoofdpersoon", "Laezel"], "damage": null, "damage_type": null, "versatile": null, "avg": null, "min": null, "max": null, "ac": null, "armour_type": null, "slot": null, "weight": null, "price": null, "rarity": null, "category": null, "handedness": null, "properties": null, "special": null, "where": null, "proficiency": null, "sources": [], "match": null}];</script>
+<script>
+var ITEMS = window.__ITEMS__;
+var state = { q:'', owners:new Set(), groups:new Set(), only:'all',
+              sort:'avg', dir:-1, selected:new Set() };
+
+var COLUMNS = [
+  {key:'name',   label:'Item',        type:'text'},
+  {key:'group',  label:'Categorie',   type:'text'},
+  {key:'damage', label:'Schade',      type:'text'},
+  {key:'avg',    label:'Gem.',        type:'num'},
+  {key:'ac',     label:'AC',          type:'num'},
+  {key:'weight', label:'Gewicht',     type:'num'},
+  {key:'price',  label:'Prijs',       type:'num'},
+  {key:'rarity', label:'Rarity',      type:'text'},
+  {key:'owners', label:'Bij',         type:'text'}
+];
+
+function rarityClass(r){
+  if (!r) return '';
+  return 'rarity-' + r.toLowerCase().replace(/[^a-z]/g,'');
+}
+
+function visible(){
+  var q = state.q.trim().toLowerCase();
+  return ITEMS.filter(function(it){
+    if (q && (it.name + ' ' + it.id).toLowerCase().indexOf(q) === -1) return false;
+    if (state.owners.size && !it.owners.some(function(o){ return state.owners.has(o); }))
+      return false;
+    if (state.groups.size && !state.groups.has(it.group)) return false;
+    if (state.only === 'weapons' && it.avg === null) return false;
+    if (state.only === 'armour' && it.ac === null) return false;
+    if (state.only === 'stats' && !it.sources.length) return false;
+    return true;
+  });
+}
+
+function compare(a, b){
+  var col = COLUMNS.filter(function(c){ return c.key === state.sort; })[0];
+  var x = a[state.sort], y = b[state.sort];
+  if (col && col.type === 'num'){
+    // items zonder waarde horen onderaan, ongeacht de richting
+    if (x === null && y === null) return a.name.localeCompare(b.name);
+    if (x === null) return 1;
+    if (y === null) return -1;
+    return (x - y) * state.dir;
+  }
+  x = Array.isArray(x) ? x.join(', ') : (x || '');
+  y = Array.isArray(y) ? y.join(', ') : (y || '');
+  return String(x).localeCompare(String(y)) * state.dir;
+}
+
+function fmt(value, digits){
+  if (value === null || value === undefined) return '—';
+  return digits ? value.toFixed(digits) : value;
+}
+
+function renderTable(){
+  var rows = visible().slice().sort(compare);
+  var head = document.getElementById('head');
+  head.innerHTML = '<th class="c"></th>' + COLUMNS.map(function(c){
+    var sorted = state.sort === c.key
+      ? (state.dir === 1 ? 'ascending' : 'descending') : 'none';
+    return '<th data-key="' + c.key + '" aria-sort="' + sorted + '">'
+      + c.label + '</th>';
+  }).join('');
+
+  var body = document.getElementById('body');
+  if (!rows.length){
+    body.innerHTML = '<tr><td colspan="10" class="empty">'
+      + 'Geen items die aan deze filters voldoen.</td></tr>';
+  } else {
+    body.innerHTML = rows.map(function(it){
+      var damage = it.damage || '';
+      if (it.versatile) damage += ' / ' + it.versatile;
+      if (it.damage_type) damage += ' ' + it.damage_type.toLowerCase();
+      var badge = '';
+      if (it.match === 'deelnaam')
+        badge = '<span class="badge approx" title="Op deelnaam gekoppeld aan de'
+          + ' wiki; controleer of dit hetzelfde item is">wiki ≈</span>';
+      else if (it.match)
+        badge = '<span class="badge" title="Exacte koppeling met de wiki">wiki</span>';
+      else if (!it.sources.length)
+        badge = '<span class="badge" title="Geen statdefinitie gevonden">geen data</span>';
+      return '<tr data-id="' + it.id + '">'
+        + '<td class="c"><input type="checkbox" aria-label="Vergelijk '
+        + it.name + '"' + (state.selected.has(it.id) ? ' checked' : '') + '></td>'
+        + '<td><span class="' + rarityClass(it.rarity) + '">' + it.name
+        + '</span>' + badge + '<code>' + it.id + '</code></td>'
+        + '<td class="small">' + it.group + '</td>'
+        + '<td>' + (damage.trim() || '—') + '</td>'
+        + '<td class="n">' + fmt(it.avg, 1) + '</td>'
+        + '<td class="n">' + fmt(it.ac) + '</td>'
+        + '<td class="n">' + fmt(it.weight) + '</td>'
+        + '<td class="n">' + fmt(it.price) + '</td>'
+        + '<td class="small">' + (it.rarity || '—') + '</td>'
+        + '<td class="small">' + it.owners.join(', ') + '</td>'
+        + '</tr>';
+    }).join('');
+  }
+  document.getElementById('count').textContent =
+    rows.length + ' van ' + ITEMS.length + ' items';
+}
+
+var COMPARE_ROWS = [
+  {label:'Categorie',    key:'group',       type:'text'},
+  {label:'Schade',       key:'damage',      type:'text'},
+  {label:'Schadetype',   key:'damage_type', type:'text'},
+  {label:'Tweehandig',   key:'versatile',   type:'text'},
+  {label:'Bereik',       key:'_range',      type:'text'},
+  {label:'Gemiddeld',    key:'avg',         type:'num', better:'high'},
+  {label:'Armour class', key:'ac',          type:'num', better:'high'},
+  {label:'Gewicht',      key:'weight',      type:'num', better:'low'},
+  {label:'Prijs',        key:'price',       type:'num', better:'low'},
+  {label:'Rarity',       key:'rarity',      type:'text'},
+  {label:'Eigenschappen',key:'properties',  type:'text'},
+  {label:'Proficiency',  key:'proficiency', type:'text'},
+  {label:'Speciaal',     key:'special',     type:'text'},
+  {label:'Te vinden',    key:'where',       type:'text'},
+  {label:'Bij',          key:'owners',      type:'text'},
+  {label:'Bron',         key:'sources',     type:'text'}
+];
+
+function renderCompare(){
+  var chosen = ITEMS.filter(function(it){ return state.selected.has(it.id); });
+  var panel = document.getElementById('compare');
+  document.getElementById('clear').disabled = !chosen.length;
+  if (chosen.length < 2){
+    panel.innerHTML = '<header><h3>Vergelijken</h3></header><p class="empty">'
+      + 'Vink minstens twee items aan om ze naast elkaar te zetten. '
+      + 'De beste waarde per rij krijgt een sterretje.</p>';
+    return;
+  }
+  var html = '<header><h3>Vergelijken — ' + chosen.length
+    + ' items</h3></header><table><tr><th></th>'
+    + chosen.map(function(it){
+        return '<th><span class="' + rarityClass(it.rarity) + '">'
+          + it.name + '</span></th>';
+      }).join('') + '</tr>';
+
+  COMPARE_ROWS.forEach(function(row){
+    var values = chosen.map(function(it){
+      if (row.key === '_range')
+        return (it.min === null) ? null : it.min + '–' + it.max;
+      var v = it[row.key];
+      return Array.isArray(v) ? (v.length ? v.join(', ') : null) : v;
+    });
+    if (values.every(function(v){ return v === null || v === undefined || v === ''; }))
+      return;                                   // rij helemaal leeg: overslaan
+    var best = null;
+    if (row.type === 'num' && row.better){
+      var numbers = values.filter(function(v){ return typeof v === 'number'; });
+      if (numbers.length > 1)
+        best = row.better === 'high' ? Math.max.apply(null, numbers)
+                                     : Math.min.apply(null, numbers);
+    }
+    html += '<tr><th>' + row.label + '</th>' + values.map(function(v){
+      var isBest = (best !== null && v === best);
+      var cls = (row.type === 'num' ? 'n' : 'small') + (isBest ? ' best' : '');
+      var text = (v === null || v === undefined || v === '') ? '—' : v;
+      return '<td class="' + cls + '">' + text + '</td>';
+    }).join('') + '</tr>';
+  });
+  panel.innerHTML = html + '</table>';
+}
+
+function render(){ renderTable(); renderCompare(); }
+
+function toggleChip(chip, set){
+  var value = chip.dataset.value;
+  if (set.has(value)) set.delete(value); else set.add(value);
+  chip.setAttribute('aria-pressed', set.has(value) ? 'true' : 'false');
+  render();
+}
+
+function bindChip(chip, set){
+  function activate(){ toggleChip(chip, set); }
+  chip.addEventListener('click', activate);
+  chip.addEventListener('keydown', function(e){
+    if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar'){
+      e.preventDefault();
+      activate();
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+  document.getElementById('q').addEventListener('input', function(e){
+    state.q = e.target.value; render();
+  });
+  document.getElementById('only').addEventListener('change', function(e){
+    state.only = e.target.value; render();
+  });
+  document.querySelectorAll('[data-owner]').forEach(function(chip){
+    bindChip(chip, state.owners);
+  });
+  document.querySelectorAll('[data-group]').forEach(function(chip){
+    bindChip(chip, state.groups);
+  });
+  document.getElementById('head').addEventListener('click', function(e){
+    var th = e.target.closest('th[data-key]');
+    if (!th) return;
+    var key = th.dataset.key;
+    if (state.sort === key) state.dir = -state.dir;
+    else { state.sort = key;
+           state.dir = (key === 'name' || key === 'group') ? 1 : -1; }
+    render();
+  });
+  document.getElementById('body').addEventListener('change', function(e){
+    var row = e.target.closest('tr[data-id]');
+    if (!row) return;
+    if (e.target.checked) state.selected.add(row.dataset.id);
+    else state.selected.delete(row.dataset.id);
+    renderCompare();
+  });
+  document.getElementById('clear').addEventListener('click', function(){
+    state.selected.clear(); render();
+  });
+  document.getElementById('print').addEventListener('click', function(){
+    window.print();
+  });
+  render();
+});
+</script></div></body></html>

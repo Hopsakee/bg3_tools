@@ -3,6 +3,22 @@
 Leest een Baldur's Gate 3 savegame (`.lsv`) buiten het spel en maakt er een
 leesbaar partyoverzicht van.
 
+## Twee manieren om dit te gebruiken
+
+De losse scripts hieronder draaien op je eigen PC en maken HTML-bestanden.
+Daarnaast staat er in [`webapp/`](webapp/README.md) een webversie van dezelfde
+uitlezing, bedoeld voor `https://bg3.hopsakee.top`: daar upload je een `.lsv`
+vanuit de browser, bewaart hij elke upload als momentopname, en kun je er je
+eigen notities bij zetten — wie waar goed in is, welk voorwerp je bewaart voor
+later. Die notities horen bij het personage of het voorwerp en niet bij een
+save, dus ze blijven staan als je de volgende keer een nieuwere savegame
+uploadt.
+
+```bash
+uv sync
+SESSION_SECRET=$(openssl rand -hex 32) uv run python -m webapp.main
+```
+
 ## Draaien
 
 Geen installatie, geen virtualenv om te beheren en niets in je globale Python.
@@ -64,6 +80,13 @@ Los te gebruiken op een bestaande `party.json`:
 ```bash
 uv run bg3_compare.py uitvoer/party.json -o compare.html \
   --wiki-cache bg3wiki_cache.json
+```
+
+Met `--slim` is de statsexport klein genoeg om naar de webapp te uploaden; daar
+staat het spel immers niet:
+
+```bash
+uv run bg3_stats.py "<pad>/Data" -o stats.json --slim
 ```
 
 ### Over de wiki-koppeling

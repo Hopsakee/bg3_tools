@@ -82,7 +82,15 @@ def character_name_from_path(lsv_path):
 
 # --------------------------------------------------------------- extractie
 
-def extract(lsv_path, stats_sources=None):
+def extract(lsv_path, stats_sources=None, stats_table=None):
+    """
+    Lees een savegame uit.
+
+    `stats_sources` wijst naar de spelbestanden en wordt dan ter plekke
+    ingelezen. `stats_table` is dezelfde tabel, maar al ingelezen -- dat is wat
+    de webapp gebruikt, want op de server staat het spel niet geinstalleerd en
+    komt die tabel uit een eerder geexporteerd JSON-bestand.
+    """
     files = read_package(lsv_path)
 
     if "SaveInfo.json" not in files or "Globals.lsf" not in files:
@@ -216,8 +224,8 @@ def extract(lsv_path, stats_sources=None):
 
     # -- itemstats uit de spelbestanden, als die zijn meegegeven
     item_stats, comparison, missing = {}, {}, []
-    if stats_sources:
-        all_stats = load_stats(stats_sources)
+    if stats_sources or stats_table:
+        all_stats = stats_table if stats_table else load_stats(stats_sources)
         wanted = {name for c in party for names in c["items_by_group"].values()
                   for name in names}
         for name in sorted(wanted):

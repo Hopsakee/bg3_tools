@@ -15,3 +15,9 @@ wheels/
 
 # Virtual environments
 .venv
+
+# Webapp
+*.db
+*.db-wal
+*.db-shm
+.pytest_cache/

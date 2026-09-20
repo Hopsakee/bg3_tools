@@ -1,0 +1,23 @@
+# Zonder dit kopieert `COPY . .` de op de host gebouwde virtualenv naar precies
+# de plek waar de image de zijne bouwt -- 200 MB aan verkeerd platform. Dat is
+# op deze server al eens gebeurd (netflix-movies, zie DEPLOYING.md).
+.venv/
+__pycache__/
+*.py[oc]
+*.egg-info/
+build/
+dist/
+wheels/
+
+.git/
+.gitignore
+.env
+*.lsv
+input/
+uitvoer/
+tests/
+.pytest_cache/
+
+# Documentatie hoeft niet mee de image in; README.md wel, want pyproject
+# verwijst ernaar.
+DEPLOY.md

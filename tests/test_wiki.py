@@ -1,141 +1,126 @@
 """
-De knop "Nu ophalen" bij bg3.wiki.
+Wikigegevens: alleen wat jij aanlevert.
 
-Geschreven na 2026-09-22, toen die knop niets deed. `bg3_wiki` is een
-CLI-module en stopt bij een onbereikbare wiki met `SystemExit`; dat erft van
-BaseException, dus het `except Exception` in de route ving het niet en de fout
-schoot dwars door de request heen. Geen melding, geen pagina, niets.
+De app haalt met opzet niets op bij bg3.wiki. Die wiki heeft de Cargo-API
+gesloten voor bezoekers zonder account ("You don't have permission to run
+arbitrary Cargo queries"), en robots.txt sluit zowel /w/api.php als de
+Special:-pagina's uit. Er is een tweede ingang die technisch nog werkt, maar
+daarlangs gaan zou om allebei die borden heen lopen.
 
-De wiki zelf wordt hier niet benaderd -- `_request` is vervangen door een stub
-die teruggeeft wat de Cargo-API teruggeeft. Wat hier getest wordt is dus onze
-kant: vertalen, opslaan, en netjes melden wat er misging.
+Wat blijft: heb jij een cache -- van de beheerders, of zelf gemaakt met
+toestemming -- dan kun je die uploaden, en gebruikt de spullenlijst hem.
 """
 
-import urllib.error
+import json
 
 import pytest
 
 
-def cargo_stub(rows_per_table, fail=()):
+CACHE = {
+    "fetched": "2026-09-22T05:00:00Z",
+    "source": "https://bg3.wiki/w/api.php",
+    "licence": "CC BY-NC-SA 4.0 of CC BY-SA 4.0",
+    "tables": {
+        "weapons": [
+            {"uid": "WPN_Handaxe", "name": "Handaxe", "rarity": "common",
+             "price": "15", "damage": "1d6", "damage_type": "Slashing",
+             "weight": "0.9", "where_to_find": "Overal in act 1"},
+        ],
+        "equipment": [
+            {"uid": "ARM_ChainShirt_Body_Shar", "name": "Chain Shirt",
+             "rarity": "common", "price": "70", "armour_class": "13"},
+        ],
+    },
+}
+
+
+def upload(client, payload, name="wiki.json"):
+    body = payload if isinstance(payload, bytes) else \
+        json.dumps(payload).encode("utf-8")
+    return client.post("/instellingen/wiki",
+                       files={"wiki": (name, body, "application/json")})
+
+
+# ------------------------------------------------------ de app haalt niets op
+
+def test_de_app_haalt_zelf_niets_op(app_modules):
     """
-    Bootst de Cargo-API na.
+    Geen enkele functie in de app mag bg3.wiki benaderen. Deze test is de
+    grens: hij valt om zodra iemand het ophalen terugzet.
 
-    probe() vraagt eerst één rij op om te zien welke velden bestaan; daarna
-    paginaert fetch_table() met limit=500. De stub geeft de gevraagde velden
-    terug en stopt zodra de tabel op is.
+    Via de AST en niet via de tekst van het bestand, anders slaat hij aan op
+    de uitleg erboven waarin api.php gewoon genoemd wordt.
     """
-    def _request(params, timeout=30):
-        table = params["tables"]
-        if table in fail:
-            raise urllib.error.URLError("Connection refused")
-        fields = params["fields"].split(",")
-        limit = int(params["limit"])
-        offset = int(params.get("offset", 0))
-        total = rows_per_table.get(table, 0)
-        rows = []
-        for i in range(offset, min(offset + limit, total)):
-            rows.append({"title": {f: "%s-%s-%d" % (table, f, i) for f in fields}})
-        return {"cargoquery": rows}
-    return _request
+    import ast
 
-
-@pytest.fixture
-def wiki(app_modules, monkeypatch):
     _, _, ingest = app_modules
+    assert not hasattr(ingest, "refresh_wiki")
+    assert not hasattr(ingest, "diagnose_wiki")
 
-    def install(rows_per_table, fail=()):
-        monkeypatch.setattr(ingest.bg3_wiki, "_request",
-                            cargo_stub(rows_per_table, fail))
-        monkeypatch.setattr(ingest.bg3_wiki.time, "sleep", lambda *_: None)
-    return install
+    boom = ast.parse(ingest.Path(ingest.__file__).read_text(encoding="utf-8"))
+    geimporteerd, aangeroepen = set(), set()
+    for node in ast.walk(boom):
+        if isinstance(node, ast.Import):
+            geimporteerd.update(a.name.split(".")[0] for a in node.names)
+        elif isinstance(node, ast.ImportFrom) and node.module:
+            geimporteerd.add(node.module.split(".")[0])
+        elif isinstance(node, ast.Attribute):
+            aangeroepen.add(node.attr)
 
-
-# ------------------------------------------------------------- het gelukt-pad
-
-def test_ophalen_bewaart_de_tabellen(app_modules, wiki):
-    _, db, ingest = app_modules
-    wiki({"weapons": 3, "equipment": 2})
-    total, failed = ingest.refresh_wiki()
-    assert total == 5 and failed == []
-    cache = db.get_blob(ingest.WIKI_KEY)
-    assert sorted(cache["tables"]) == ["equipment", "weapons"]
-    assert len(cache["tables"]["weapons"]) == 3
-    assert cache["source"] == ingest.bg3_wiki.API
+    assert "urllib" not in geimporteerd, "de app hoort geen netwerkcode te hebben"
+    assert "bg3_wiki" not in geimporteerd
+    assert "urlopen" not in aangeroepen
 
 
-def test_paginering_haalt_alles_op(app_modules, wiki):
-    """Meer dan één pagina van 500; anders mis je stilzwijgend de rest."""
-    _, db, ingest = app_modules
-    wiki({"weapons": 1200, "equipment": 0})
-    total, failed = ingest.refresh_wiki()
-    assert total == 1200 and failed == []
-
-
-def test_knop_meldt_succes(client, wiki, app_modules):
-    wiki({"weapons": 3, "equipment": 2})
-    assert client.post("/instellingen/wiki").status_code == 303
+def test_instellingen_legt_uit_waarom(client):
     text = client.get("/instellingen").text
-    assert "Opgehaald" in text and "5" in text
+    assert "robots.txt" in text
+    assert "permissiondenied" in text
 
 
-# --------------------------------------------------------------- het faal-pad
+# ---------------------------------------------------------------- uploaden
 
-def test_onbereikbare_wiki_geeft_een_melding_geen_crash(client, wiki):
-    """
-    De storing zelf: probe() gooit SystemExit, die door `except Exception`
-    heen glipt. De route hoort een nette melding te geven.
-    """
-    wiki({"weapons": 3, "equipment": 2}, fail=("weapons", "equipment"))
-    response = client.post("/instellingen/wiki")
-    assert response.status_code == 303
-    assert "mislukt" in client.get("/instellingen").text.lower()
-
-
-def test_systemexit_wordt_een_gewone_fout(app_modules, wiki):
-    _, _, ingest = app_modules
-    wiki({}, fail=("weapons", "equipment"))
-    with pytest.raises(ingest.WikiFailed) as caught:
-        ingest.refresh_wiki()
-    assert "weapons" in str(caught.value)
-
-
-def test_een_kapotte_tabel_verpest_de_andere_niet(app_modules, wiki):
-    """Verandert het schema van één tabel, dan houd je de rest."""
+def test_cache_uploaden_en_terugzien(client, app_modules):
     _, db, ingest = app_modules
-    wiki({"weapons": 4, "equipment": 0}, fail=("equipment",))
-    total, failed = ingest.refresh_wiki()
-    assert total == 4
-    assert len(failed) == 1 and "equipment" in failed[0]
-    assert list(db.get_blob(ingest.WIKI_KEY)["tables"]) == ["weapons"]
-    assert "mislukt" in db.blob_info(ingest.WIKI_KEY)["note"]
+    assert upload(client, CACHE).status_code == 303
+    stored = db.get_blob(ingest.WIKI_KEY)
+    assert sorted(stored["tables"]) == ["equipment", "weapons"]
+    info = db.blob_info(ingest.WIKI_KEY)
+    assert "2 rijen" in info["note"]
+    assert "Wiki-cache opgeslagen" in client.get("/instellingen").text
 
 
-def test_deels_gelukt_wordt_ook_als_deels_gemeld(client, wiki):
-    wiki({"weapons": 4, "equipment": 0}, fail=("equipment",))
-    client.post("/instellingen/wiki")
-    assert "Deels gelukt" in client.get("/instellingen").text
-
-
-def test_niet_json_of_ander_ongeluk_blijft_binnen_de_route(app_modules, monkeypatch):
-    _, _, ingest = app_modules
-
-    def boom(*a, **k):
-        raise ValueError("geen JSON")
-
-    monkeypatch.setattr(ingest.bg3_wiki, "_request", boom)
-    with pytest.raises(ingest.WikiFailed) as caught:
-        ingest.refresh_wiki()
-    assert "ValueError" in str(caught.value)
-
-
-# ------------------------------------------------- en wordt het ook gebruikt
-
-def test_opgehaalde_wiki_verrijkt_de_spullenlijst(client, app_modules, seeded):
-    """Zonder dit is het ophalen een knop die alleen een database vult."""
-    _, db, ingest = app_modules
-    db.put_blob(ingest.WIKI_KEY, {"tables": {"weapons": [
-        {"uid": "WPN_Handaxe", "name": "Handaxe", "rarity": "common",
-         "price": "15", "damage": "1d6"}]}})
+def test_geuploade_cache_verrijkt_de_spullenlijst(client, app_modules, seeded):
+    """Zonder dit is uploaden een knop die alleen een database vult."""
+    _, _, _ = app_modules
+    upload(client, CACHE)
     text = client.get("/spul/WPN_Handaxe").text
     assert "Handaxe" in text
-    assert "bg3.wiki" in text
+    assert "bg3.wiki" in text          # bron wordt vermeld
+    assert "Overal in act 1" in text   # vindplaats komt mee
+
+
+def test_cache_verwijderen(client, app_modules):
+    _, db, ingest = app_modules
+    upload(client, CACHE)
+    assert client.post("/instellingen/wiki/wissen").status_code == 303
+    assert db.get_blob(ingest.WIKI_KEY) is None
+
+
+@pytest.mark.parametrize("payload,waarom", [
+    (b"geen json", "onleesbaar"),
+    (b"[]", "een lijst in plaats van een object"),
+    ({"iets": "anders"}, "geen tables-sleutel"),
+    ({"tables": {}}, "lege tables"),
+    ({"tables": {"weapons": "geen lijst"}}, "tabel is geen lijst"),
+])
+def test_onbruikbaar_bestand_wordt_geweigerd(app_modules, payload, waarom):
+    _, _, ingest = app_modules
+    raw = payload if isinstance(payload, bytes) else json.dumps(payload).encode()
+    with pytest.raises(ingest.BadSave):
+        ingest.store_wiki_cache(raw, "wiki.json")
+
+
+def test_geweigerd_bestand_geeft_een_nette_melding(client):
+    assert upload(client, b"geen json").status_code == 303
+    assert "niet lezen" in client.get("/instellingen").text

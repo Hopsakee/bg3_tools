@@ -55,10 +55,16 @@ Tests: `uv run pytest`.
 Twee bronnen verrijken de spullenlijst, allebei optioneel, allebei in te
 stellen onder **Instellingen**:
 
-* **bg3.wiki** — de server haalt de tabellen zelf op en bewaart ze. Levert
-  leesbare namen, zeldzaamheid, prijzen en vindplaatsen. Een koppeling die
-  alleen op een deel van de naam lukte, wordt in de lijst gemarkeerd met
-  `wiki ≈`; die is een gok.
+* **bg3.wiki** — de app haalt hier **niets** op, met opzet. De wiki heeft de
+  Cargo-API gesloten voor bezoekers zonder account (`permissiondenied`), en
+  robots.txt sluit zowel `/w/api.php` als de `Special:`-pagina's uit. Er is een
+  tweede ingang die technisch nog werkt; daarlangs gaan zou om allebei die
+  borden heen lopen.
+
+  Heb je toestemming van de beheerders of een datadump, dan upload je die
+  onder Instellingen en gebruikt de spullenlijst hem meteen: leesbare namen,
+  zeldzaamheid, prijzen en vindplaatsen. Een koppeling die alleen op een deel
+  van de naam lukte, wordt gemarkeerd met `wiki ≈`; die is een gok.
 * **De spelbestanden** — daar staan damage, armour class en gewicht in, maar
   het spel staat niet op de server. Exporteer ze één keer op je PC en upload
   het bestand:

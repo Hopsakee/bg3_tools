@@ -139,3 +139,63 @@ def test_opgehaalde_wiki_verrijkt_de_spullenlijst(client, app_modules, seeded):
     text = client.get("/spul/WPN_Handaxe").text
     assert "Handaxe" in text
     assert "bg3.wiki" in text
+
+
+# --------------------------------------------------------------- diagnose
+
+def test_diagnose_wijst_de_kapotte_laag_aan(app_modules, monkeypatch, client):
+    """
+    Het echte geval van 2026-09-22: de wiki antwoordt, maar Cargo zegt dat de
+    tabel niet bestaat. Diagnose hoort dat letterlijk te laten zien.
+    """
+    _, _, ingest = app_modules
+
+    def antwoord(params, timeout=30):
+        if params.get("action") == "query":
+            return {"query": {"general": {"sitename": "bg3.wiki"}}}
+        if params.get("action") == "cargotables":
+            return {"error": {"code": "unknown_action", "info": "Onbekende actie"}}
+        return {"error": {"code": "invalidtable",
+                          "info": "Error: no such table: %s" % params["tables"]}}
+
+    monkeypatch.setattr(ingest.bg3_wiki, "_request", antwoord)
+    rows = ingest.diagnose_wiki()
+    labels = {label: (good, text) for label, good, text in rows}
+
+    api = [v for k, v in labels.items() if "API bereikbaar" in k][0]
+    assert api[0] is True, "de API zelf werkt en moet als ok gelden"
+    tabel = [v for k, v in labels.items() if "tabel weapons" in k][0]
+    assert tabel[0] is False and "no such table" in tabel[1]
+
+    body = client.post("/instellingen/wiki/diagnose").text
+    assert "no such table" in body
+    assert "MISLUKT" in body and "ok" in body
+
+
+def test_diagnose_overleeft_een_onbereikbare_wiki(app_modules, monkeypatch, client):
+    _, _, ingest = app_modules
+
+    def dood(*a, **k):
+        raise urllib.error.URLError("Connection refused")
+
+    monkeypatch.setattr(ingest.bg3_wiki, "_request", dood)
+    rows = ingest.diagnose_wiki()
+    assert rows and all(good is False for _, good, _ in rows)
+    assert client.post("/instellingen/wiki/diagnose").status_code == 200
+
+
+def test_foutmelding_van_de_wiki_komt_in_de_melding_terecht(app_modules, monkeypatch):
+    """
+    probe() gooide de tekst van de wiki weg; die stond alleen in de
+    verbose-uitvoer. Juist daar staat of de tabel of het veld het probleem is.
+    """
+    _, _, ingest = app_modules
+
+    def afgewezen(params, timeout=30):
+        return {"error": {"code": "invalidtable",
+                          "info": "Error: no such table: weapons"}}
+
+    monkeypatch.setattr(ingest.bg3_wiki, "_request", afgewezen)
+    with pytest.raises(ingest.WikiFailed) as caught:
+        ingest.refresh_wiki(tables=("weapons",))
+    assert "no such table" in str(caught.value)

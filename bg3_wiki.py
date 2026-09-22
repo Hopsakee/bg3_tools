@@ -71,6 +71,7 @@ def _request(params, timeout=30):
 
 def probe(table, verbose=True):
     """Vraag één rij op en geef terug welke velden de wiki teruggeeft."""
+    rejected = []
     for fields in FIELD_SETS.get(table, []):
         params = {"action": "cargoquery", "tables": table,
                   "fields": ",".join(fields), "limit": 1, "format": "json"}
@@ -79,9 +80,11 @@ def probe(table, verbose=True):
         except urllib.error.URLError as exc:
             raise SystemExit("Kan bg3.wiki niet bereiken: %s" % exc)
         if "error" in payload:
+            info = (payload["error"].get("info") or "").strip()
+            rejected.append("%d velden -> %s" % (len(fields), info[:200]))
             if verbose:
                 print("  veldenset van %d afgewezen: %s"
-                      % (len(fields), payload["error"].get("info", "")[:120]))
+                      % (len(fields), info[:120]))
             continue
         rows = payload.get("cargoquery", [])
         got = sorted(rows[0]["title"].keys()) if rows else []
@@ -89,8 +92,14 @@ def probe(table, verbose=True):
             print("  tabel %-10s werkt met %d velden; teruggekregen: %s"
                   % (table, len(fields), ", ".join(got) or "(geen rijen)"))
         return fields, got
-    raise SystemExit("Geen enkele veldenset werkt voor tabel %r. "
-                     "Het schema is vermoedelijk gewijzigd." % table)
+    # De melding van de wiki zelf is het enige wat hier verder helpt: hij zegt
+    # of de tabel niet bestaat of welk veld onbekend is. Die stond alleen in de
+    # verbose-uitvoer en ging dus verloren zodra dit vanuit iets anders dan de
+    # opdrachtregel draaide -- precies het geval waarin je hem nodig hebt.
+    raise SystemExit(
+        "Geen enkele veldenset werkt voor tabel %r. Het schema is "
+        "vermoedelijk gewijzigd. De wiki antwoordde: %s"
+        % (table, " | ".join(rejected) or "(geen foutmelding meegegeven)"))
 
 
 def fetch_table(table, fields=None, page_size=500, pause=0.4, verbose=True):

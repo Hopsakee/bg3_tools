@@ -840,9 +840,19 @@ def settings(sess, req):
           cls="small muted"),
         kv(("Opgehaald", ui.stamp(wiki["fetched_at"]) if wiki else None),
            ("Inhoud", wiki["note"] if wiki else "nog niets opgehaald")),
-        Form(Button("Nu ophalen" if not wiki else "Opnieuw ophalen",
-                    type="submit", cls="primary"),
-             method="post", action="/instellingen/wiki"),
+        Div(
+            Form(Button("Nu ophalen" if not wiki else "Opnieuw ophalen",
+                        type="submit", cls="primary"),
+                 method="post", action="/instellingen/wiki",
+                 style="display:inline"),
+            " ",
+            Form(Button("Diagnose", type="submit"),
+                 method="post", action="/instellingen/wiki/diagnose",
+                 style="display:inline"),
+            cls="inline"),
+        P("Lukt ophalen niet, dan laat Diagnose zien wat bg3.wiki zélf "
+          "antwoordt -- bestaat de tabel nog, bestaan de velden nog.",
+          cls="small muted"),
         P("Wiki-inhoud staat onder CC BY-NC-SA 4.0 of CC BY-SA 4.0.",
           cls="small muted"),
         cls="card",
@@ -904,6 +914,36 @@ def fetch_wiki(sess):
                        % (num(total), "; ".join(failed)), False)
     return back_to("/instellingen", sess,
                    "Opgehaald: %s rijen van bg3.wiki." % num(total))
+
+
+@app.post("/instellingen/wiki/diagnose")
+def diagnose_wiki(sess, req):
+    """
+    Laat zien wat bg3.wiki letterlijk terugstuurt.
+
+    Geen redirect met een flashmelding: de uitkomst is een paar regels die je
+    wilt kunnen lezen, kopiëren en doorsturen, niet iets dat verdwijnt bij de
+    volgende klik.
+    """
+    rows = ingest.diagnose_wiki()
+    table = Table(
+        Thead(Tr(Th("Vraag"), Th("Uitkomst"))),
+        Tbody(*[Tr(cell(label, "Vraag"),
+                   cell(Span(("ok — " if good else "MISLUKT — ") + text,
+                             cls="mono"), "Uitkomst"))
+                for label, good, text in rows]),
+        cls="stackable",
+    )
+    hint = P(
+        "De eerste regel die mislukt wijst de laag aan. Faalt de bovenste, "
+        "dan komt de server niet bij bg3.wiki. Werkt die wel maar faalt "
+        "\"bestaat de tabel\", dan is de tabel hernoemd of weg. Werkt die "
+        "ook en faalt alleen de veldenset, dan zijn de kolommen veranderd.",
+        cls="small muted")
+
+    return page("Diagnose bg3.wiki", Div(table, cls="scroll card"), hint,
+                P(A("← terug naar instellingen", href="/instellingen")),
+                current="/instellingen", user=who(req))
 
 
 @app.post("/instellingen/stats")

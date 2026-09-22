@@ -205,6 +205,77 @@ def wiki_cache():
     return db.get_blob(WIKI_KEY)
 
 
+# Vragen die samen laten zien waar het misgaat. Van "doet de API het
+# überhaupt" naar "bestaat deze tabel" naar "bestaan deze velden". De eerste
+# die faalt vertelt je welke laag stuk is.
+DIAGNOSE = [
+    ("Is de MediaWiki-API bereikbaar",
+     {"action": "query", "meta": "siteinfo", "format": "json"}),
+    ("Welke Cargo-tabellen zijn er",
+     {"action": "cargotables", "format": "json"}),
+    ("Bestaat de tabel weapons",
+     {"action": "cargoquery", "tables": "weapons", "fields": "_pageName",
+      "limit": 1, "format": "json"}),
+    ("Bestaat de tabel equipment",
+     {"action": "cargoquery", "tables": "equipment", "fields": "_pageName",
+      "limit": 1, "format": "json"}),
+    ("weapons met de smalste veldenset (name, rarity)",
+     {"action": "cargoquery", "tables": "weapons", "fields": "name,rarity",
+      "limit": 1, "format": "json"}),
+    ("equipment met de smalste veldenset (name, rarity)",
+     {"action": "cargoquery", "tables": "equipment", "fields": "name,rarity",
+      "limit": 1, "format": "json"}),
+]
+
+
+def diagnose_wiki():
+    """
+    Vraag bg3.wiki een paar dingen en geef letterlijk terug wat hij zegt.
+
+    `probe()` probeert veldensets van breed naar smal en geeft op als geen
+    enkele werkt. Dan weet je dát het schema niet klopt, maar niet wát eraan
+    mankeert: een hernoemde tabel en een verdwenen veld zien er hetzelfde uit.
+    Dit loopt de lagen los langs, zodat de eerste regel die faalt de laag
+    aanwijst. Niets wordt opgeslagen; dit is puur om naar te kijken.
+    """
+    results = []
+    for label, params in DIAGNOSE:
+        try:
+            payload = bg3_wiki._request(params, timeout=15)
+        except urllib.error.HTTPError as exc:
+            results.append((label, False, "HTTP %s (%s)" % (exc.code, exc.reason)))
+            continue
+        except urllib.error.URLError as exc:
+            results.append((label, False, "niet bereikbaar: %s" % exc.reason))
+            continue
+        except Exception as exc:
+            results.append((label, False, "%s: %s" % (type(exc).__name__, exc)))
+            continue
+
+        if "error" in payload:
+            err = payload["error"]
+            results.append((label, False, "%s: %s"
+                            % (err.get("code", "fout"),
+                               (err.get("info") or "")[:300])))
+            continue
+
+        rows = payload.get("cargoquery")
+        if rows is not None:
+            keys = sorted(rows[0]["title"].keys()) if rows else []
+            results.append((label, True, "ok, %d rij(en)%s"
+                            % (len(rows),
+                               "; velden: " + ", ".join(keys) if keys else "")))
+        else:
+            results.append((label, True, _short(payload)))
+    return results
+
+
+def _short(payload, limit=400):
+    """Een antwoord zonder cargoquery, ingekort tot iets leesbaars."""
+    text = json.dumps(payload, ensure_ascii=False)
+    return text if len(text) <= limit else text[:limit] + " ..."
+
+
 # ------------------------------------------------------------- afgeleiden
 
 def item_rows(payload):

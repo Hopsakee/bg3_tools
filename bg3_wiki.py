@@ -6,6 +6,24 @@
 """
 bg3_wiki.py -- haalt itemgegevens van bg3.wiki via de Cargo-API.
 
+LET OP, stand van zaken op 2026-09-22: dit werkt niet meer, en dat is geen
+storing. bg3.wiki heeft de Cargo-API gesloten voor bezoekers zonder account.
+Elke bevraging, ook de smalste, komt terug met:
+
+    "code": "permissiondenied",
+    "info": "You don't have permission to run arbitrary Cargo queries."
+
+Er is een tweede ingang, `Special:CargoExport`, die dezelfde gegevens zonder
+account teruggeeft. Die wordt hier bewust NIET gebruikt: robots.txt van
+bg3.wiki sluit zowel /w/api.php als /wiki/Special: en ?title=Special: uit.
+Twee borden die dezelfde kant op wijzen; eromheen lopen omdat de deur toevallig
+niet op slot zit, is niet aan ons.
+
+Wil je deze gegevens wél, vraag het dan aan de beheerders: een account met het
+recht om Cargo-queries te draaien, of een datadump. Heb je dat, dan werkt dit
+bestand weer zoals hieronder beschreven, en kun je het resultaat in de webapp
+uploaden onder Instellingen. De webapp haalt zelf niets op.
+
 bg3.wiki draait op MediaWiki met de Cargo-extensie. Die heeft een
 query-endpoint:
 
@@ -71,6 +89,7 @@ def _request(params, timeout=30):
 
 def probe(table, verbose=True):
     """Vraag één rij op en geef terug welke velden de wiki teruggeeft."""
+    rejected = []
     for fields in FIELD_SETS.get(table, []):
         params = {"action": "cargoquery", "tables": table,
                   "fields": ",".join(fields), "limit": 1, "format": "json"}
@@ -79,9 +98,11 @@ def probe(table, verbose=True):
         except urllib.error.URLError as exc:
             raise SystemExit("Kan bg3.wiki niet bereiken: %s" % exc)
         if "error" in payload:
+            info = (payload["error"].get("info") or "").strip()
+            rejected.append("%d velden -> %s" % (len(fields), info[:200]))
             if verbose:
                 print("  veldenset van %d afgewezen: %s"
-                      % (len(fields), payload["error"].get("info", "")[:120]))
+                      % (len(fields), info[:120]))
             continue
         rows = payload.get("cargoquery", [])
         got = sorted(rows[0]["title"].keys()) if rows else []
@@ -89,8 +110,12 @@ def probe(table, verbose=True):
             print("  tabel %-10s werkt met %d velden; teruggekregen: %s"
                   % (table, len(fields), ", ".join(got) or "(geen rijen)"))
         return fields, got
-    raise SystemExit("Geen enkele veldenset werkt voor tabel %r. "
-                     "Het schema is vermoedelijk gewijzigd." % table)
+    # Niet zomaar "het schema is gewijzigd" beweren: dat was in september 2026
+    # aantoonbaar de verkeerde conclusie -- het was een rechtenkwestie, en die
+    # stond letterlijk in het antwoord dat hier werd weggegooid.
+    raise SystemExit(
+        "Geen enkele veldenset werkt voor tabel %r. De wiki antwoordde: %s"
+        % (table, " | ".join(rejected) or "(geen foutmelding meegegeven)"))
 
 
 def fetch_table(table, fields=None, page_size=500, pause=0.4, verbose=True):

@@ -71,9 +71,20 @@ Hoe rijker de statbron, hoe nuttiger de pagina. Twee bronnen, los of samen:
 uv run bg3_sheet.py save.lsv -o uitvoer/ --stats ".../Baldurs Gate 3/Data"
 
 # 2. van bg3.wiki: leesbare namen, rarity, prijzen, vindplaatsen
+#    WERKT NIET MEER ZONDER TOESTEMMING -- zie de waarschuwing hieronder
 uv run bg3_wiki.py -c bg3wiki_cache.json
 uv run bg3_sheet.py save.lsv -o uitvoer/ --wiki-cache bg3wiki_cache.json
 ```
+
+> **bg3.wiki is dicht voor geautomatiseerde bevraging.** Sinds september 2026
+> antwoordt de Cargo-API met `permissiondenied`: "You don't have permission to
+> run arbitrary Cargo queries." Er is een tweede ingang die dezelfde gegevens
+> zonder account teruggeeft, maar robots.txt sluit zowel `/w/api.php` als de
+> `Special:`-pagina's uit, dus die gebruiken we niet. Wil je deze gegevens
+> toch, vraag de beheerders om een account met dat recht of om een datadump.
+>
+> Bron 1 hierboven heeft dit niet nodig en is voor schade, AC en gewicht
+> sowieso gezaghebbender: dat is wat het spel zelf gebruikt.
 
 Los te gebruiken op een bestaande `party.json`:
 

@@ -7,6 +7,21 @@ from fasthtml.common import (
 
 from . import db
 
+# Een mannetje van streepjes, met een d20 in de hand. Inline en niet als
+# bestand, want het is dertig tekens en het hoort bij de rand van de pagina.
+# stroke-linecap rond, want xkcd-lijnen zijn met een stift getrokken.
+STICK = NotStr(
+    '<svg class="stick" width="26" height="34" viewBox="0 0 26 34" '
+    'aria-hidden="true" fill="none" stroke="#000" stroke-width="1.8" '
+    'stroke-linecap="round" stroke-linejoin="round">'
+    '<circle cx="11" cy="6" r="5"/>'
+    '<path d="M11 11v11"/>'
+    '<path d="M11 14l-6 5M11 14l7 3"/>'
+    '<path d="M11 22l-5 10M11 22l5 10"/>'
+    '<path d="M18 17l3-2 3 2-1 3.5h-4z"/>'   # d20 in de opgestoken hand
+    '</svg>'
+)
+
 NAV = [
     ("/", "Overzicht"),
     ("/party", "Party"),
@@ -22,7 +37,7 @@ def page(title, *content, current="/", user=None, flash=None, subtitle=None):
     """De hele pagina. Eén plek voor de rand, zodat elke route kort blijft."""
     head = Header(
         Div(
-            Div(B("BG3"), Span("partyboek", cls="muted"),
+            Div(STICK, B("BG3"), Span("partyboek", cls="muted"),
                 Span(user or "", cls="who"), cls="brand"),
             Nav(*[A(label, href=href,
                     **({"aria-current": "page"} if href == current else {}))

@@ -55,10 +55,16 @@ Tests: `uv run pytest`.
 Twee bronnen verrijken de spullenlijst, allebei optioneel, allebei in te
 stellen onder **Instellingen**:
 
-* **bg3.wiki** — de server haalt de tabellen zelf op en bewaart ze. Levert
-  leesbare namen, zeldzaamheid, prijzen en vindplaatsen. Een koppeling die
-  alleen op een deel van de naam lukte, wordt in de lijst gemarkeerd met
-  `wiki ≈`; die is een gok.
+* **bg3.wiki** — de app haalt hier **niets** op, met opzet. De wiki heeft de
+  Cargo-API gesloten voor bezoekers zonder account (`permissiondenied`), en
+  robots.txt sluit zowel `/w/api.php` als de `Special:`-pagina's uit. Er is een
+  tweede ingang die technisch nog werkt; daarlangs gaan zou om allebei die
+  borden heen lopen.
+
+  Heb je toestemming van de beheerders of een datadump, dan upload je die
+  onder Instellingen en gebruikt de spullenlijst hem meteen: leesbare namen,
+  zeldzaamheid, prijzen en vindplaatsen. Een koppeling die alleen op een deel
+  van de naam lukte, wordt gemarkeerd met `wiki ≈`; die is een gok.
 * **De spelbestanden** — daar staan damage, armour class en gewicht in, maar
   het spel staat niet op de server. Exporteer ze één keer op je PC en upload
   het bestand:
@@ -73,11 +79,25 @@ stellen onder **Instellingen**:
 
 ## Vorm
 
-Zwart op wit, harde randen, geen animaties, en filteren en sorteren gebeuren op
-de server. Dat is geen soberheid om de soberheid: het primaire scherm is een
-Boox e-reader. Daar kost elke pixelverandering een verversing, bestaat hover
-niet, en is lichtgrijs onbruikbaar. Eén ding werkt met JavaScript — de service
-worker die het offline lezen regelt — en elke pagina doet het ook zonder.
+XKCD-stijl: handschrift, scheve kaders, zwart op wit. De scheve randen komen
+uit één CSS-truc — `border-radius` met acht verschillende waarden, zodat elke
+hoek een andere kant op trekt — en niet uit plaatjes, want die zouden op e-ink
+alleen maar smurrie geven.
+
+Het lettertype is [xkcd Script](https://github.com/ipython/xkcd-font) van
+Randall Munroe, onder CC BY-NC 3.0: vrij voor persoonlijk, niet-commercieel
+gebruik zoals dit, mits vermeld. Het staat in `static/` naast zijn licentie, en
+wordt vanaf de eigen server geserveerd — de CSP laat `font-src 'self'` toe en
+verder niets.
+
+Wat daaronder hetzelfde bleef, en waarom: zwart op wit, geen animaties, geen
+hover-afhankelijke informatie, en filteren en sorteren op de server. Het
+primaire scherm is een Boox e-reader. Daar kost elke pixelverandering een
+verversing, bestaat hover niet, en is lichtgrijs onbruikbaar. Handschrift leest
+daar wel iets lastiger dan een schreefloze, dus de basisgrootte is opgeschroefd
+en de lijnen zijn dikker dan je normaal zou nemen; op Boox-formaat en op een
+telefoon nagekeken. Eén ding werkt met JavaScript — de service worker die het
+offline lezen regelt — en elke pagina doet het ook zonder.
 
 ## Hoe het op de server komt
 

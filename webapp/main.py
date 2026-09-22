@@ -834,17 +834,28 @@ def settings(sess, req):
 
     wiki_card = Div(
         H3("bg3.wiki"),
-        P("Leesbare namen, zeldzaamheid, prijzen en vindplaatsen. De server "
-          "haalt de tabellen weapons en equipment op en bewaart ze; dat duurt "
-          "een halve minuut en gebeurt alleen als je erom vraagt.",
-          cls="small muted"),
-        kv(("Opgehaald", ui.stamp(wiki["fetched_at"]) if wiki else None),
-           ("Inhoud", wiki["note"] if wiki else "nog niets opgehaald")),
-        Form(Button("Nu ophalen" if not wiki else "Opnieuw ophalen",
-                    type="submit", cls="primary"),
-             method="post", action="/instellingen/wiki"),
-        P("Wiki-inhoud staat onder CC BY-NC-SA 4.0 of CC BY-SA 4.0.",
-          cls="small muted"),
+        P("Deze app haalt niets op bij bg3.wiki, met opzet. De wiki heeft de "
+          "Cargo-API gesloten voor bezoekers zonder account "
+          "(\u201cpermissiondenied\u201d), en robots.txt sluit zowel "
+          "/w/api.php als de Special:-pagina's uit. Er is een tweede ingang "
+          "die technisch nog wél werkt; die gebruiken zou om die twee borden "
+          "heen lopen, dus dat doen we niet.", cls="small muted"),
+        P("Krijg je toestemming van de beheerders, of een datadump, dan kun "
+          "je het resultaat hier uploaden en gebruikt de spullenlijst het "
+          "meteen.", cls="small muted"),
+        kv(("Geüpload", ui.stamp(wiki["fetched_at"]) if wiki else None),
+           ("Inhoud", wiki["note"] if wiki else "niets geüpload")),
+        Form(Div(Div(Input(name="wiki", type="file", accept=".json",
+                           required=True), cls="field grow"),
+                 Div(Button("Uploaden", type="submit"), cls="field"),
+                 cls="inline"),
+             method="post", action="/instellingen/wiki",
+             enctype="multipart/form-data"),
+        Form(Button("Verwijderen", type="submit", cls="small danger"),
+             method="post", action="/instellingen/wiki/wissen",
+             style="margin-top:8px") if wiki else None,
+        P("Wiki-inhoud staat onder CC BY-NC-SA 4.0 of CC BY-SA 4.0 — vermeld "
+          "de bron als je het verspreidt.", cls="small muted"),
         cls="card",
     )
 
@@ -877,13 +888,18 @@ def settings(sess, req):
     about = Div(
         H3("Over deze app"),
         P("Dezelfde parsers als de CLI in deze repo: bg3_lsv, bg3_sheet, "
-          "bg3_stats, bg3_compare en bg3_wiki. Wat de CLI kan, kan deze "
-          "pagina ook; wat de save niet bevat, blijft leeg."),
+          "bg3_stats en bg3_compare. Wat de save niet bevat, blijft leeg; "
+          "deze app verzint niets en haalt niets op bij derden."),
         Ul(Li(A("De complete uitlezing als party.json", href="/party.json")),
            Li("Je savebestanden worden niet bewaard — alleen de uitgelezen "
               "inhoud en de screenshot uit de save."),
            Li("Notities horen bij een personage, voorwerp of quest, niet bij "
-              "een save, en blijven dus staan.")),
+              "een save, en blijven dus staan."),
+           Li("Het handschrift is ", A("xkcd Script",
+              href="https://github.com/ipython/xkcd-font"),
+              " van Randall Munroe, onder ",
+              A("CC BY-NC 3.0", href="/static/xkcd-script-LICENSE.txt"),
+              " — vrij voor persoonlijk, niet-commercieel gebruik zoals dit.")),
         cls="card",
     )
 
@@ -892,18 +908,29 @@ def settings(sess, req):
 
 
 @app.post("/instellingen/wiki")
-def fetch_wiki(sess):
+async def upload_wiki(sess, wiki: UploadFile):
+    """
+    Neem een wiki-cache aan die jij hebt gekregen of gemaakt.
+
+    De server haalt zelf niets op -- zie de uitleg op de instellingenpagina.
+    Dit is de enige weg naar wikigegevens, en hij loopt via jou.
+    """
+    raw = await wiki.read()
+    if len(raw) > MAX_STATS_BYTES:
+        return back_to("/instellingen", sess, "Bestand is te groot.", False)
     try:
-        total, failed = ingest.refresh_wiki()
-    except ingest.WikiFailed as exc:
-        return back_to("/instellingen", sess,
-                       "Ophalen bij bg3.wiki mislukt — %s" % exc, False)
-    if failed:
-        return back_to("/instellingen", sess,
-                       "Deels gelukt: %s rijen opgehaald. Niet gelukt: %s"
-                       % (num(total), "; ".join(failed)), False)
+        total = ingest.store_wiki_cache(raw, wiki.filename or "wiki.json")
+    except ingest.BadSave as exc:
+        return back_to("/instellingen", sess, "Kon dit niet lezen — %s" % exc,
+                       False)
     return back_to("/instellingen", sess,
-                   "Opgehaald: %s rijen van bg3.wiki." % num(total))
+                   "Wiki-cache opgeslagen: %s rijen." % num(total))
+
+
+@app.post("/instellingen/wiki/wissen")
+def drop_wiki(sess):
+    db.drop_blob(ingest.WIKI_KEY)
+    return back_to("/instellingen", sess, "Wiki-cache verwijderd.")
 
 
 @app.post("/instellingen/stats")

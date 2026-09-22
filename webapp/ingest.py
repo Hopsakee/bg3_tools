@@ -12,6 +12,8 @@ import json
 import re
 import sys
 import tempfile
+import time
+import urllib.error
 from pathlib import Path
 
 from .config import REPO_DIR
@@ -34,6 +36,10 @@ _CAMEL = re.compile(r"(?<=[a-z0-9])(?=[A-Z])")
 
 class BadSave(Exception):
     """Het geuploade bestand is geen leesbare BG3-save."""
+
+
+class WikiFailed(Exception):
+    """bg3.wiki gaf geen bruikbaar antwoord."""
 
 
 # ----------------------------------------------------------- savegames
@@ -137,19 +143,62 @@ def store_stats_export(raw, filename):
 
 # ------------------------------------------------------------------ wiki
 
-def refresh_wiki():
+def _fetch_table(table):
+    """
+    Eén Cargo-tabel ophalen, met de uitgangen van een CLI vertaald naar een
+    gewone fout.
+
+    `bg3_wiki` is geschreven om vanaf de opdrachtregel te draaien en stopt bij
+    een onbereikbare wiki of een gewijzigd schema met `SystemExit`. Dat erft
+    van BaseException, niet van Exception, dus een `except Exception` eromheen
+    vangt het NIET: de fout schiet dwars door de route heen en de knop lijkt
+    stuk zonder dat er iets op het scherm komt. Precies dat gebeurde op
+    2026-09-22. Hier wordt het een WikiFailed met de reden erin.
+    """
+    try:
+        return bg3_wiki.fetch_table(table, verbose=False)
+    except SystemExit as exc:
+        raise WikiFailed(str(exc) or "onbekende fout") from exc
+    except urllib.error.HTTPError as exc:
+        raise WikiFailed("HTTP %s van bg3.wiki (%s)" % (exc.code, exc.reason)) from exc
+    except urllib.error.URLError as exc:
+        raise WikiFailed("bg3.wiki niet bereikbaar: %s" % exc.reason) from exc
+    except Exception as exc:
+        raise WikiFailed("%s: %s" % (type(exc).__name__, exc)) from exc
+
+
+def refresh_wiki(tables=("weapons", "equipment")):
     """
     Haal de tabellen `weapons` en `equipment` van bg3.wiki en bewaar ze.
 
     Dit duurt tientallen seconden -- een paar duizend rijen in pagina's van
     500 -- en gebeurt daarom alleen als jij erom vraagt, nooit bij het starten.
+
+    Per tabel, niet in één keer via `bg3_wiki.build_cache`: verandert het
+    schema van één tabel, dan houd je de andere en zie je precies welke het
+    niet deed. Geeft (aantal rijen, lijst mislukte tabellen) terug en gooit
+    alleen als er niets binnenkwam.
     """
-    with tempfile.TemporaryDirectory() as tmp:
-        path = Path(tmp) / "bg3wiki_cache.json"
-        cache = bg3_wiki.build_cache(str(path), verbose=False)
-    total = sum(len(rows) for rows in cache.get("tables", {}).values())
-    db.put_blob(WIKI_KEY, cache, note="%d rijen" % total)
-    return total
+    fetched, failed = {}, []
+    for table in tables:
+        try:
+            fetched[table] = _fetch_table(table)
+        except WikiFailed as exc:
+            failed.append("%s: %s" % (table, exc))
+
+    if not fetched:
+        raise WikiFailed("; ".join(failed) or "geen enkele tabel opgehaald")
+
+    cache = {"fetched": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+             "source": bg3_wiki.API,
+             "licence": "CC BY-NC-SA 4.0 of CC BY-SA 4.0",
+             "tables": fetched}
+    total = sum(len(rows) for rows in fetched.values())
+    note = "%d rijen (%s)" % (total, ", ".join(sorted(fetched)))
+    if failed:
+        note += " -- mislukt: " + "; ".join(failed)
+    db.put_blob(WIKI_KEY, cache, note=note)
+    return total, failed
 
 
 def wiki_cache():

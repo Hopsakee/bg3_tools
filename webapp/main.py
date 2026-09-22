@@ -894,12 +894,16 @@ def settings(sess, req):
 @app.post("/instellingen/wiki")
 def fetch_wiki(sess):
     try:
-        total = ingest.refresh_wiki()
-    except Exception as exc:
+        total, failed = ingest.refresh_wiki()
+    except ingest.WikiFailed as exc:
         return back_to("/instellingen", sess,
-                       "Ophalen mislukt — %s: %s" % (type(exc).__name__, exc),
-                       False)
-    return back_to("/instellingen", sess, "Opgehaald: %d rijen van bg3.wiki." % total)
+                       "Ophalen bij bg3.wiki mislukt — %s" % exc, False)
+    if failed:
+        return back_to("/instellingen", sess,
+                       "Deels gelukt: %s rijen opgehaald. Niet gelukt: %s"
+                       % (num(total), "; ".join(failed)), False)
+    return back_to("/instellingen", sess,
+                   "Opgehaald: %s rijen van bg3.wiki." % num(total))
 
 
 @app.post("/instellingen/stats")

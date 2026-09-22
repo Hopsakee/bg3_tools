@@ -894,7 +894,12 @@ def settings(sess, req):
            Li("Je savebestanden worden niet bewaard — alleen de uitgelezen "
               "inhoud en de screenshot uit de save."),
            Li("Notities horen bij een personage, voorwerp of quest, niet bij "
-              "een save, en blijven dus staan.")),
+              "een save, en blijven dus staan."),
+           Li("Het handschrift is ", A("xkcd Script",
+              href="https://github.com/ipython/xkcd-font"),
+              " van Randall Munroe, onder ",
+              A("CC BY-NC 3.0", href="/static/xkcd-script-LICENSE.txt"),
+              " — vrij voor persoonlijk, niet-commercieel gebruik zoals dit.")),
         cls="card",
     )
 

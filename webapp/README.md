@@ -79,11 +79,25 @@ stellen onder **Instellingen**:
 
 ## Vorm
 
-Zwart op wit, harde randen, geen animaties, en filteren en sorteren gebeuren op
-de server. Dat is geen soberheid om de soberheid: het primaire scherm is een
-Boox e-reader. Daar kost elke pixelverandering een verversing, bestaat hover
-niet, en is lichtgrijs onbruikbaar. Eén ding werkt met JavaScript — de service
-worker die het offline lezen regelt — en elke pagina doet het ook zonder.
+XKCD-stijl: handschrift, scheve kaders, zwart op wit. De scheve randen komen
+uit één CSS-truc — `border-radius` met acht verschillende waarden, zodat elke
+hoek een andere kant op trekt — en niet uit plaatjes, want die zouden op e-ink
+alleen maar smurrie geven.
+
+Het lettertype is [xkcd Script](https://github.com/ipython/xkcd-font) van
+Randall Munroe, onder CC BY-NC 3.0: vrij voor persoonlijk, niet-commercieel
+gebruik zoals dit, mits vermeld. Het staat in `static/` naast zijn licentie, en
+wordt vanaf de eigen server geserveerd — de CSP laat `font-src 'self'` toe en
+verder niets.
+
+Wat daaronder hetzelfde bleef, en waarom: zwart op wit, geen animaties, geen
+hover-afhankelijke informatie, en filteren en sorteren op de server. Het
+primaire scherm is een Boox e-reader. Daar kost elke pixelverandering een
+verversing, bestaat hover niet, en is lichtgrijs onbruikbaar. Handschrift leest
+daar wel iets lastiger dan een schreefloze, dus de basisgrootte is opgeschroefd
+en de lijnen zijn dikker dan je normaal zou nemen; op Boox-formaat en op een
+telefoon nagekeken. Eén ding werkt met JavaScript — de service worker die het
+offline lezen regelt — en elke pagina doet het ook zonder.
 
 ## Hoe het op de server komt
 

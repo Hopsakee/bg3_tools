@@ -130,7 +130,20 @@ em { color: var(--text); }
 .progress-bar { height: 6px; background: var(--surface-2); border-radius: 99px; overflow: hidden; }
 .progress-fill { height: 100%; width: 0; background: var(--accent); border-radius: inherit; transition: width .35s ease; }
 
-.toc { list-style: none; margin: 0; padding: 0; }
+.toc ol { list-style: none; margin: 0 0 6px; padding: 0; }
+.toc details.toc-part { border: 0; background: none; margin: 0 0 4px; border-radius: 0; }
+.toc details.toc-part > * { margin-left: 0; margin-right: 0; }
+.toc details.toc-part > :last-child { margin-bottom: 6px; }
+.toc summary {
+  display: flex; align-items: baseline; gap: 8px;
+  padding: 10px 28px 4px 10px;
+  font: 700 .72rem var(--font); letter-spacing: .09em; text-transform: uppercase; color: var(--muted);
+}
+.toc summary::after { right: 12px; width: 6px; height: 6px; margin-top: -1px; }
+.toc details[open] > summary::after { margin-top: 1px; }
+.toc summary:hover { color: var(--text); }
+.part-count { margin-left: auto; font: 600 .72rem var(--mono); letter-spacing: 0; text-transform: none; }
+.part-count.is-complete { color: var(--ok); }
 .toc a {
   position: relative;
   display: flex; align-items: center; gap: 10px;
@@ -346,6 +359,33 @@ table.compact tbody td { color: var(--text); font-weight: 600; }
 .sw-cloud { background: #6d6878; }
 table.surfaces td:first-child { white-space: nowrap; color: var(--text); font-weight: 600; }
 
+/* small grids: backgrounds, feats, damage */
+.bg-grid, .feat-grid, .dmg-grid { display: grid; gap: 8px; margin: 14px 0; }
+.bg-grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
+.feat-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+.dmg-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+.bg-grid > div, .feat-grid > div, .dmg-grid > div {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 10px 14px; display: flex; flex-direction: column; gap: 2px;
+}
+.bg-grid span, .feat-grid span, .dmg-grid span { font-size: .88rem; color: var(--text-2); }
+table.stack td:first-child { color: var(--text); font-weight: 600; }
+.course-map li { margin: 4px 0; }
+kbd {
+  font: 600 .8em var(--mono); padding: 1px 6px; border-radius: 4px;
+  border: 1px solid var(--border); border-bottom-width: 2px; background: var(--surface-2); color: var(--text);
+}
+.r { font-weight: 700; white-space: nowrap; }
+.r-common { color: var(--text); }
+.r-uncommon { color: #4fb86a; }
+.r-rare { color: #4a9be0; }
+.r-vrare { color: #b27be8; }
+.r-legend { color: #e0a53a; }
+:root[data-theme="light"] .r-uncommon { color: #237a3c; }
+:root[data-theme="light"] .r-rare { color: #1f64a8; }
+:root[data-theme="light"] .r-vrare { color: #7a3fb8; }
+:root[data-theme="light"] .r-legend { color: #9a6a12; }
+
 /* classes */
 .class-card { display: flex; flex-direction: column; gap: 8px; }
 .class-card header { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
@@ -355,6 +395,7 @@ table.surfaces td:first-child { white-space: nowrap; color: var(--text); font-we
   color: var(--accent); background: var(--accent-soft);
   padding: 3px 7px; border-radius: 4px;
 }
+.class-card .subs { display: inline-block; margin-top: 4px; color: var(--text-2); }
 .class-card footer { margin-top: auto; font-size: .8rem; color: var(--muted); padding-top: 6px; border-top: 1px solid var(--border); }
 .class-card[hidden] { display: none; }
 
@@ -405,13 +446,13 @@ table.surfaces td:first-child { white-space: nowrap; color: var(--text); font-we
 }
 
 @media (max-width: 560px) {
-  table.surfaces thead { display: none; }
-  table.surfaces, table.surfaces tbody, table.surfaces tr, table.surfaces td { display: block; }
-  table.surfaces tr { padding: 10px 12px; border-bottom: 1px solid var(--border); }
-  table.surfaces tr:last-child { border-bottom: 0; }
-  table.surfaces td { padding: 2px 0; border: 0; }
-  table.surfaces td:first-child { padding-bottom: 4px; }
-  table.surfaces td + td::before {
+  :is(table.surfaces, table.stack) thead { display: none; }
+  :is(table.surfaces, table.stack), :is(table.surfaces, table.stack) :is(tbody, tr, td) { display: block; }
+  :is(table.surfaces, table.stack) tr { padding: 10px 12px; border-bottom: 1px solid var(--border); }
+  :is(table.surfaces, table.stack) tr:last-child { border-bottom: 0; }
+  :is(table.surfaces, table.stack) td { padding: 2px 0; border: 0; }
+  :is(table.surfaces, table.stack) td:first-child { padding-bottom: 4px; }
+  :is(table.surfaces, table.stack) td + td::before {
     content: attr(data-label) ": "; font-weight: 600; color: var(--text);
   }
 }

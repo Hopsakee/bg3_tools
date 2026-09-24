@@ -12,7 +12,7 @@ import urllib.parse
 
 from fasthtml.common import (
     A, B, Button, Details, Div, Form, H2, H3, Img, Input, Label, Li, NotStr,
-    Option, P, Select, Span, Summary, Table, Tbody, Td, Th, Thead,
+    Option, P, Select, Span, Summary, Table, Tbody, Td, Textarea, Th, Thead,
     Tr, Ul, fast_app,
 )
 from starlette.datastructures import UploadFile
@@ -22,11 +22,15 @@ from starlette.responses import (
 from starlette.staticfiles import StaticFiles
 
 from . import db, ingest, ui
+from . import party as party_model
 from .config import (
     APP_PORT, MAX_SAVE_BYTES, MAX_STATS_BYTES, STATIC_DIR, USER_HEADER,
     session_secret,
 )
 from .ui import bar, empty, kv, note_form, note_readout, num, page, tag
+
+import bg3_rules  # noqa: E402  (pad gezet door ingest)
+from bg3_rules import signed  # noqa: E402
 
 app, rt = fast_app(
     pico=False,
@@ -267,34 +271,152 @@ def screenshot(save_id: int):
 
 @app.get("/party")
 def party(sess, req):
+    """
+    De party naast elkaar, zoals het karakterscherm in het spel, maar dan
+    iedereen tegelijk. Kolommen zijn personages, rijen zijn wat je wilt
+    vergelijken; een ster staat bij de beste in die rij.
+
+    Drie bronnen, en dat is zichtbaar gemaakt: ras, klasse en level komen uit
+    de save; bekwaamheden, saving throws en kenmerken uit de spelregels; ability
+    scores en vaardigheden vul je zelf in, want die staan niet leesbaar in de
+    save. Wat van jouw invoer afhangt, blijft leeg tot je het invult.
+    """
     save_id, payload, missing = need_save(sess, req, "Party", "/party")
     if missing:
         return missing
     meta = db.save_meta(save_id)
-    hero = meta["hero_name"] or ""
-    members = payload.get("party", [])
+    team = party_model.members(payload)
     notes = db.notes_for("character")
+    n = len(team)
 
-    rows = [
-        ("Ras", lambda c: c.get("race")),
-        ("Klasse", lambda c: c.get("class")),
-        ("Subklasse", lambda c: c.get("subclass")),
-        ("Level", lambda c: c.get("level")),
-        ("XP totaal", lambda c: num(c.get("xp_total"))),
-        ("Spullen", lambda c: c.get("item_count")),
-        ("Statussen", lambda c: len(c.get("statuses") or [])),
-        ("Sterk in", lambda c: _note_field(notes, c, "strong")),
-        ("Zwak in", lambda c: _note_field(notes, c, "weak")),
-        ("Rol", lambda c: _note_field(notes, c, "label")),
-    ]
-    table = Table(
-        Thead(Tr(Th("Kenmerk"),
-                 *[Th(A(ingest.character_label(c, hero),
-                        href="/personage/%s" % quote(ingest.character_key(c))))
-                   for c in members])),
-        Tbody(*[Tr(Th(label), *[Td(fn(c) or "—") for c in members])
-                for label, fn in rows]),
-    )
+    def section(title, hint=None):
+        return Tr(Th(title, Span(" — " + hint, cls="small muted") if hint else None,
+                     colspan=str(n + 1), cls="section"))
+
+    def row(label, values, show=lambda v: v, higher=True, sub=None):
+        star = party_model.best(values, higher=higher)
+        cells = []
+        for v in values:
+            text = show(v)
+            cells.append(Td(text if text not in (None, "") else "—",
+                            " ★" if star is not None and v == star else None,
+                            cls="num"))
+        return Tr(Th(label, Div(sub, cls="small muted") if sub else None),
+                  *cells)
+
+    def check(label, flags, sub=None):
+        return Tr(Th(label, Div(sub, cls="small muted") if sub else None),
+                  *[Td("✓" if f else "—", cls="num") for f in flags])
+
+    head = Tr(Th(""), *[Th(A(m["label"], href="/personage/%s" % quote(m["key"])))
+                        for m in team])
+
+    body = [section("Wie", "uit de save")]
+    body.append(Tr(Th("Ras"), *[Td(ingest.prettify(m["char"].get("race")) or "—")
+                                for m in team]))
+    body.append(Tr(Th("Klasse"), *[Td(" / ".join(
+        ingest.prettify(c.get("class")) + (" (%s)" % ingest.prettify(c["subclass"])
+                                           if c.get("subclass") else "")
+        for c in m["classes"]) or "—") for m in team]))
+    body.append(row("Level", [m["char"].get("level") for m in team]))
+    body.append(row("Proficiency-bonus", [m["sheet"]["prof"] for m in team],
+                    show=signed))
+
+    body.append(section("Vermogens", "zelf ingevuld"))
+    for key, name in bg3_rules.ABILITIES:
+        scores = [m["sheet"]["scores"].get(key) for m in team]
+        mods = [m["sheet"]["mods"].get(key) for m in team]
+        star = party_model.best(scores)
+        body.append(Tr(
+            Th(bg3_rules.ABILITY_NL[key], Div(name, cls="small muted")),
+            *[Td("%s (%s)" % (sc, signed(md)) if sc is not None else "—",
+                 " ★" if star is not None and sc == star else None, cls="num")
+              for sc, md in zip(scores, mods)]))
+    body.append(Tr(Th("Sterkste trek"), *[
+        Td(B(bg3_rules.ABILITY_NL[m["sheet"]["strongest"]])
+           if m["sheet"]["strongest"] else
+           A("invullen →", href="/personage/%s#blad" % quote(m["key"])))
+        for m in team]))
+
+    body.append(section("Saving throws", "● = bekwaam volgens klasse"))
+    for key, _ in bg3_rules.ABILITIES:
+        vals = [m["sheet"]["saves"][key]["bonus"] for m in team]
+        star = party_model.best(vals)
+        body.append(Tr(Th(bg3_rules.ABILITY_NL[key]), *[
+            Td(signed(v) if v is not None else "—",
+               " ●" if m["sheet"]["saves"][key]["proficient"] else None,
+               " ★" if star is not None and v == star else None, cls="num")
+            for m, v in zip(team, vals)]))
+
+    body.append(section("Vaardigheden",
+                        "● bekwaam, ●● expertise, ★ de beste van de party"))
+    for skill, key in bg3_rules.SKILLS:
+        vals = [m["sheet"]["skills"][skill]["bonus"] for m in team]
+        star = party_model.best(vals)
+        body.append(Tr(Th(skill, Div(bg3_rules.ABILITY_NL[key], cls="small muted")), *[
+            Td(signed(v) if v is not None else "—",
+               (" ●●" if m["sheet"]["skills"][skill]["expertise"] else
+                " ●" if m["sheet"]["skills"][skill]["proficient"] else None),
+               " ★" if star is not None and v == star else None, cls="num")
+            for m, v in zip(team, vals)]))
+
+    body.append(section("Kerngetallen"))
+    body.append(row("Hit die", [m["sheet"]["hit_die"] for m in team],
+                    show=lambda v: "d%s" % v if v else None))
+    body.append(row("Initiatief", [m["sheet"]["initiative"] for m in team],
+                    show=signed))
+    body.append(row("Passieve waarneming",
+                    [m["sheet"]["passive_perception"] for m in team]))
+    body.append(Tr(Th("Spreukvermogen"), *[
+        Td(bg3_rules.ABILITY_NL.get(m["sheet"]["spell_ability"]) or "—")
+        for m in team]))
+    body.append(row("Spell save DC", [m["sheet"]["spell_dc"] for m in team]))
+    body.append(row("Spell attack", [m["sheet"]["spell_attack"] for m in team],
+                    show=signed))
+
+    body.append(section("Wapenrusting", "uit de regels van klasse, ras en subklasse"))
+    for prof in bg3_rules.ARMOUR:
+        body.append(check(bg3_rules.ARMOUR_NL[prof],
+                          [prof in m["sheet"]["proficiencies"] for m in team]))
+
+    body.append(section("Wapens"))
+    body.append(check("Simple weapons",
+                      ["SimpleWeapons" in m["sheet"]["proficiencies"] for m in team]))
+    body.append(check("Martial weapons",
+                      ["MartialWeapons" in m["sheet"]["proficiencies"] for m in team]))
+    body.append(Tr(Th("Daarnaast", Div("specifiek, buiten die groepen",
+                                        cls="small muted")), *[
+        Td(", ".join(ingest.prettify(w) for w in
+                     bg3_rules.extra_weapons(m["sheet"]["proficiencies"])) or "—",
+           cls="small")
+        for m in team]))
+
+    body.append(section("Kenmerken", "de belangrijkste per klasse, tot dit level"))
+    body.append(Tr(Th(""), *[
+        Td(Ul(*[Li(name, Span(" (%d)" % lvl, cls="muted"))
+                for lvl, name in m["sheet"]["features"]], cls="features")
+           if m["sheet"]["features"] else "—", cls="small")
+        for m in team]))
+
+    body.append(section("Jouw notities"))
+    for label, field in (("Rol", "label"), ("Sterk in", "strong"),
+                         ("Zwak in", "weak")):
+        body.append(Tr(Th(label), *[
+            Td(((notes.get(m["key"]) or {}) and notes[m["key"]][field]) or "—")
+            for m in team]))
+
+    table = Table(Thead(head), Tbody(*body), cls="compare")
+
+    missing_scores = [m for m in team if not m["has_scores"]]
+    nudge = Div(
+        P(B("Nog in te vullen: "), *_join_links(
+            [(m["label"], "/personage/%s#blad" % quote(m["key"]))
+             for m in missing_scores])),
+        P("Ability scores en vaardigheden staan niet leesbaar in een savegame. "
+          "Typ ze één keer over uit het spel — daarna rekent alles hier "
+          "zichzelf uit, en het blijft staan als je een nieuwere save "
+          "uploadt.", cls="small muted"),
+        cls="flash") if missing_scores else None
 
     others = payload.get("other_playable_characters") or []
     kamp = Details(
@@ -310,18 +432,34 @@ def party(sess, req):
         cls="card",
     )
 
-    caveat = Div(
-        H3("Wat hier niet staat, en waarom"),
-        Ul(*[Li(x) for x in payload.get("not_stored_in_save", [])]),
-        P("Die waarden zitten in een deel van de save dat publiek nog niet "
-          "ontcijferd is. Ze worden hier dus niet geraden. Wat je er zelf van "
-          "weet kun je per personage opschrijven.", cls="small muted"),
-        cls="card noprint",
-    )
-
-    return page("Party", Div(table, cls="scroll card"), kamp, caveat,
+    return page("Party", nudge, Div(table, cls="scroll card"), kamp,
+                _sources_note(),
                 current="/party", user=who(req), flash=take_flash(sess),
                 subtitle=save_banner(meta))
+
+
+def _join_links(pairs):
+    out = []
+    for i, (label, href) in enumerate(pairs):
+        if i:
+            out.append(", ")
+        out.append(A(label, href=href))
+    return out
+
+
+def _sources_note():
+    return Div(
+        H3("Waar dit vandaan komt"),
+        Ul(Li(B("Uit de save: "), "ras, klasse, subklasse en level."),
+           Li(B("Uit de spelregels: "), "bekwaamheden, saving throws, hit die, "
+              "spreukvermogen en kenmerken. Die volgen uit klasse, ras en "
+              "subklasse, niet uit keuzes. Rassen en subklassen zijn met "
+              "redelijke zekerheid overgenomen; wijkt iets af van wat je in "
+              "het spel ziet, vul het dan per personage aan."),
+           Li(B("Van jou: "), "ability scores, vaardigheden, expertise, en "
+              "bekwaamheden uit feats of voorwerpen. Die staan in het deel "
+              "van de save dat nog niet ontcijferd is.")),
+        cls="card noprint")
 
 
 def _quest_note(note):
@@ -390,8 +528,13 @@ def character(sess, req, key: str):
         cls="grid",
     )
 
+    member = next((m for m in party_model.members(payload) if m["key"] == key),
+                  None)
+
     return page(
         name, facts,
+        _sheet_summary(member) if member else None,
+        _sheet_form(key, member) if member else None,
         note_form("character", key, db.get_note("character", key),
                   back="/personage/%s" % quote(key), with_strengths=True,
                   title="Wat jij over %s weet" % name),
@@ -400,6 +543,139 @@ def character(sess, req, key: str):
         else P("Niets gevonden bij dit personage.", cls="muted"),
         current="/party", user=who(req), flash=take_flash(sess),
         subtitle=save_banner(meta))
+
+
+def _sheet_summary(member):
+    """Waar dit personage bekwaam in is, en waarom -- met de bron erbij."""
+    profs = member["sheet"]["proficiencies"]
+    source_nl = {"klasse": "klasse", "subklasse": "subklasse", "ras": "ras",
+                 "multiclass": "latere klasse", "zelf": "door jou"}
+    groups = {}
+    for name, src in sorted(profs.items()):
+        groups.setdefault(src, []).append(
+            bg3_rules.ARMOUR_NL.get(name) or ingest.prettify(name))
+    return Div(
+        H3("Bekwaam in"),
+        kv(*[(source_nl.get(src, src), ", ".join(names))
+             for src, names in groups.items()]),
+        P("Klasse, ras en subklasse komen uit de spelregels. Klopt iets niet "
+          "met wat je in het spel ziet, vul het hieronder aan.",
+          cls="small muted"),
+        cls="card")
+
+
+def _sheet_form(key, member):
+    """
+    Wat alleen jij weet: ability scores, vaardigheden, extra bekwaamheden.
+
+    Een gewoon POST-formulier, net als de notities: op e-ink is een volledige
+    verversing eerlijker dan een halve die je niet ziet gebeuren.
+    """
+    entered = member["entered"]
+    scores = entered.get("scores") or {}
+    skills, expert = set(entered.get("skills") or []), set(entered.get("expertise") or [])
+    extra = set(entered.get("extra") or [])
+    groups = ["SimpleWeapons", "MartialWeapons"] + bg3_rules.ARMOUR
+    specific = sorted(e for e in extra if e not in groups)
+
+    score_fields = [Div(
+        Label(bg3_rules.ABILITY_NL[k], Span(" " + name, cls="muted"),
+              **{"for": "s_" + k}),
+        Input(id="s_" + k, name="s_" + k, type="number", min="1", max="30",
+              value=str(scores[k]) if scores.get(k) is not None else "",
+              inputmode="numeric"),
+        cls="field") for k, name in bg3_rules.ABILITIES]
+
+    def skill_select(skill):
+        current = "exp" if skill in expert else "prof" if skill in skills else ""
+        return Select(*[Option(label, value=val, selected=(val == current))
+                        for val, label in (("", "—"), ("prof", "bekwaam"),
+                                           ("exp", "expertise"))],
+                      name="k_" + skill, id="k_" + skill)
+
+    skill_rows = Div(*[
+        Div(Label(skill, Span(" " + bg3_rules.ABILITY_NL[ab], cls="small muted"),
+                  **{"for": "k_" + skill}),
+            skill_select(skill), cls="field")
+        for skill, ab in bg3_rules.SKILLS], cls="grid skillgrid")
+
+    extra_boxes = Div(*[
+        Label(Input(type="checkbox", name="x_" + g, value="1",
+                    checked=(g in extra)),
+              " ", bg3_rules.ARMOUR_NL.get(g) or ingest.prettify(g),
+              cls="check")
+        for g in groups], cls="checks")
+
+    return Form(
+        H3("Wat jij invult", id="blad"),
+        P("Overtypen uit het karakterscherm in het spel. Alles wat hier "
+          "afhangt — modifiers, saves, vaardigheden, spell DC — rekent zich "
+          "daarna zelf uit, en blijft staan als je een nieuwere save uploadt.",
+          cls="small muted"),
+        H3("Ability scores"),
+        Div(*score_fields, cls="grid scores"),
+        H3("Vaardigheden"),
+        skill_rows,
+        H3("Extra bekwaamheden"),
+        P("Bovenop wat klasse, ras en subklasse al geven — uit een feat, een "
+          "voorwerp of een multiclass die de save niet toont.",
+          cls="small muted"),
+        extra_boxes,
+        Div(Label("Specifieke wapens", **{"for": "x_specifiek"}),
+            Input(id="x_specifiek", name="x_specifiek", type="text",
+                  value=", ".join(specific),
+                  placeholder="bijv. Longswords, HandCrossbows"),
+            P("De spelnamen, met komma's ertussen: Longswords, Rapiers, "
+              "HandCrossbows, Greatswords …", cls="small muted"),
+            cls="field"),
+        Div(Label("Feats", **{"for": "feats"}),
+            Textarea(entered.get("feats") or "", id="feats", name="feats",
+                     placeholder="bijv. Great Weapon Master (level 4)"),
+            cls="field"),
+        Div(Button("Opslaan", type="submit", cls="primary"),
+            Span("Laatst bijgewerkt: %s" % ui.stamp(entered["updated_at"]),
+                 cls="small muted") if entered.get("updated_at") else None,
+            cls="inline", style="margin-top:12px"),
+        method="post", action="/personage/%s/blad" % quote(key), cls="card")
+
+
+@app.post("/personage/{key}/blad")
+async def save_sheet(sess, req, key: str):
+    form = await req.form()
+    scores = {}
+    for k in bg3_rules.ABILITY_KEYS:
+        raw = (form.get("s_" + k) or "").strip()
+        if not raw:
+            continue
+        try:
+            value = int(raw)
+        except ValueError:
+            return back_to("/personage/%s#blad" % quote(key), sess,
+                           "%s moet een getal zijn." % bg3_rules.ABILITY_NL[k],
+                           False)
+        if not 1 <= value <= 30:
+            return back_to("/personage/%s#blad" % quote(key), sess,
+                           "%s moet tussen 1 en 30 liggen."
+                           % bg3_rules.ABILITY_NL[k], False)
+        scores[k] = value
+
+    skills, expertise = [], []
+    for skill in bg3_rules.SKILL_NAMES:
+        choice = form.get("k_" + skill)
+        if choice in ("prof", "exp"):
+            skills.append(skill)
+        if choice == "exp":
+            expertise.append(skill)
+
+    groups = ["SimpleWeapons", "MartialWeapons"] + bg3_rules.ARMOUR
+    extra = [g for g in groups if form.get("x_" + g)]
+    extra += [t.strip() for t in (form.get("x_specifiek") or "").split(",")
+              if t.strip()]
+
+    db.save_sheet(key, {"scores": scores, "skills": skills,
+                        "expertise": expertise, "extra": extra,
+                        "feats": (form.get("feats") or "").strip()})
+    return back_to("/personage/%s#blad" % quote(key), sess, "Opgeslagen.")
 
 
 # ---------------------------------------------------------------- spullen
@@ -441,7 +717,7 @@ def items(sess, req):
     if missing:
         return missing
     meta = db.save_meta(save_id)
-    rows, info = ingest.item_rows(payload)
+    rows, info = ingest.item_rows(payload, party_model.members(payload))
 
     q = (req.query_params.get("q") or "").strip()
     owner = req.query_params.get("eigenaar") or ""
@@ -514,7 +790,8 @@ def items(sess, req):
                  header("Eigenaar", "eigenaar"),
                  header("Schade", "schade", True), header("AC", "ac", True),
                  header("Gewicht", "gewicht", True),
-                 header("Prijs", "prijs", True), header("Plan", "plan"))),
+                 header("Prijs", "prijs", True), Th("Wie kan het"),
+                 header("Plan", "plan"))),
         Tbody(*[Tr(
             cell(Div(A(i["name"], href="/spul/%s" % quote(i["id"])),
                      " ", tag("wiki ≈", warn=True)
@@ -529,6 +806,7 @@ def items(sess, req):
                  "Gewicht", num=True),
             cell(ui.num(i["price"]) if i["price"] is not None else None,
                  "Prijs", num=True),
+            cell(_users_short(i), "Wie kan het"),
             cell(tag(i["tag"], fill=True) if i["tag"] else None, "Plan"),
         ) for i in shown]),
         cls="stackable",
@@ -548,6 +826,49 @@ def items(sess, req):
                 subtitle=save_banner(meta))
 
 
+def _users_short(item):
+    """Wie van de party dit kan gebruiken, kort genoeg voor een tabelcel."""
+    if item["needs"] is None:
+        return None                       # onbekend: geen stats voor dit item
+    if not item["needs"]:
+        return Span("iedereen", cls="muted")
+    able = [label for label, _, ok in item["users"] if ok]
+    return ", ".join(able) if able else Span("niemand", cls="tag warn")
+
+
+def _users_card(item):
+    """
+    Per party-lid: kan hij dit gebruiken, en wat vraagt het voorwerp.
+
+    Wat het voorwerp vraagt komt uit zijn eigen Proficiency-veld in jouw
+    stats-export; wat het personage kan uit klasse, ras en subklasse plus wat
+    je zelf aanvulde. Zonder export valt er niets te zeggen, en dat staat er
+    dan ook.
+    """
+    needs = item["needs"]
+    if needs is None:
+        return Div(H3("Wie kan dit gebruiken"),
+                   P("Onbekend: voor dit voorwerp staan geen gegevens in je "
+                     "stats-export. Upload die onder Instellingen.",
+                     cls="small muted"), cls="card")
+    if not needs:
+        return Div(H3("Wie kan dit gebruiken"),
+                   P("Iedereen — hier is geen bekwaamheid voor nodig."),
+                   cls="card")
+    pretty = " of ".join(bg3_rules.ARMOUR_NL.get(n) or ingest.prettify(n)
+                         for n in sorted(needs))
+    return Div(
+        H3("Wie kan dit gebruiken"),
+        P(Span("Vraagt: ", cls="muted"), pretty),
+        Ul(*[Li(A(label, href="/personage/%s" % quote(key)), " — ",
+                B("ja") if ok else Span("nee", cls="tag warn"))
+             for label, key, ok in item["users"]]),
+        P("Zonder bekwaamheid kun je het vaak nog steeds dragen of vasthouden, "
+          "maar met nadelen: geen proficiency-bonus op aanvallen, of bij "
+          "wapenrusting nadeel op aanvallen en spreuken.", cls="small muted"),
+        cls="card")
+
+
 def _damage(item):
     if item["avg"] is None:
         return item["damage"]
@@ -560,7 +881,7 @@ def item_detail(sess, req, name: str):
     if missing:
         return missing
     meta = db.save_meta(save_id)
-    rows, _ = ingest.item_rows(payload)
+    rows, _ = ingest.item_rows(payload, party_model.members(payload))
     item = next((i for i in rows if i["id"] == name), None)
     if item is None:
         return page("Onbekend voorwerp",
@@ -599,9 +920,10 @@ def item_detail(sess, req, name: str):
     )
     special = Div(H3("Bijzonder"), P(item["special"]), cls="card") \
         if item["special"] else None
+    users = _users_card(item)
 
     return page(
-        item["name"], facts, special,
+        item["name"], facts, users, special,
         note_form("item", name, db.get_note("item", name),
                   back="/spul/%s" % quote(name), with_tag=True,
                   title="Wat jij met dit voorwerp wilt"),

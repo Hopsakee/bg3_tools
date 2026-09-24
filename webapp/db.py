@@ -62,6 +62,17 @@ CREATE TABLE IF NOT EXISTS blobs (
     payload    TEXT NOT NULL
 );
 
+-- Wat alleen jij weet en niet leesbaar in de save staat: ability scores,
+-- gekozen vaardigheden, expertise, extra bekwaamheden uit feats of items.
+-- Aan het personage gehangen, net als notities, zodat het een nieuwe save
+-- overleeft. Eén JSON-blok per personage: de vorm verandert vaker dan een
+-- tabelschema prettig vindt.
+CREATE TABLE IF NOT EXISTS sheets (
+    character  TEXT PRIMARY KEY,
+    data       TEXT NOT NULL,
+    updated_at TEXT NOT NULL
+);
+
 CREATE INDEX IF NOT EXISTS notes_kind ON notes (kind);
 CREATE INDEX IF NOT EXISTS saves_uploaded ON saves (uploaded_at DESC);
 """
@@ -253,4 +264,42 @@ def blob_info(key):
 
 def drop_blob(key):
     conn().execute("DELETE FROM blobs WHERE key = ?", (key,))
+    conn().commit()
+
+
+# ---------------------------------------------------------------- sheets
+
+EMPTY_SHEET = {"scores": {}, "skills": [], "expertise": [], "extra": [],
+               "feats": ""}
+
+
+def get_sheet(character):
+    row = conn().execute("SELECT data, updated_at FROM sheets WHERE character = ?",
+                         (character,)).fetchone()
+    if not row:
+        return dict(EMPTY_SHEET, updated_at=None)
+    data = dict(EMPTY_SHEET)
+    data.update(json.loads(row["data"]))
+    data["updated_at"] = row["updated_at"]
+    return data
+
+
+def all_sheets():
+    rows = conn().execute("SELECT character, data FROM sheets").fetchall()
+    out = {}
+    for row in rows:
+        data = dict(EMPTY_SHEET)
+        data.update(json.loads(row["data"]))
+        out[row["character"]] = data
+    return out
+
+
+def save_sheet(character, data):
+    clean = {k: data.get(k, EMPTY_SHEET[k]) for k in EMPTY_SHEET}
+    conn().execute(
+        """INSERT INTO sheets (character, data, updated_at) VALUES (?, ?, ?)
+           ON CONFLICT (character) DO UPDATE SET data = excluded.data,
+               updated_at = excluded.updated_at""",
+        (character, json.dumps(clean, ensure_ascii=False), now()),
+    )
     conn().commit()

@@ -30,6 +30,7 @@ NAV = [
     ("/notities", "Notities"),
     ("/saves", "Saves"),
     ("/instellingen", "Instellingen"),
+    ("/regels/", "Regels"),
 ]
 
 

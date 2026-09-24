@@ -22,12 +22,23 @@ fonts or CDNs. About 130 KB in total.
 ```
 index.html   all content
 style.css    styles (dark by default, light-mode toggle)
+theme.js     applies the saved theme before first paint
 app.js       navigation, progress tracking, glossary filter, small widgets
 ```
 
 Reading progress and the theme choice are stored in the browser's
 `localStorage`. If storage is blocked the page still works; it just won't
 remember.
+
+## Where it lives
+
+The partyboek webapp in this repo serves this folder at
+`https://bg3.hopsakee.top/regels/`, behind the same login, and it's linked from
+the app's menu as *Regels*. Nothing to deploy separately: the app's Docker image
+already contains the folder, so the regular bg3 deploy picks up any change here.
+The site's CSP only allows scripts from its own origin, which is why the theme
+loader is `theme.js` and not an inline script. `tests/test_webapp.py` checks
+that it stays that way.
 
 ## Run it locally
 

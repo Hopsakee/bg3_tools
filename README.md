@@ -17,7 +17,9 @@ uploadt.
 In [`rules-primer/`](rules-primer/README.md) staat los daarvan een statische
 Engelstalige cursus over hoe BG3 werkt: de D&D-regels eronder, gevechten,
 personages bouwen, uitrusting, verkennen en de systemen die alleen BG3 heeft.
-Gewoon `index.html` openen of de map op een statische host zetten.
+Online staat hij in de
+webapp onder `https://bg3.hopsakee.top/regels/`; lokaal kun je ook gewoon
+`index.html` openen.
 
 ```bash
 uv sync

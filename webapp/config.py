@@ -19,6 +19,8 @@ from pathlib import Path
 APP_DIR = Path(__file__).resolve().parent
 REPO_DIR = APP_DIR.parent
 STATIC_DIR = APP_DIR / "static"
+# De regelcursus: een losse statische site in de repo, geserveerd onder /regels.
+PRIMER_DIR = REPO_DIR / "rules-primer"
 
 APP_PORT = int(os.getenv("APP_PORT", "8080"))
 DB_PATH = Path(os.getenv("BG3_DB_PATH", REPO_DIR / "uitvoer" / "bg3web.db"))

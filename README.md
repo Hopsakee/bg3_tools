@@ -14,6 +14,11 @@ later. Die notities horen bij het personage of het voorwerp en niet bij een
 save, dus ze blijven staan als je de volgende keer een nieuwere savegame
 uploadt.
 
+In [`combat-guide/`](combat-guide/README.md) staat los daarvan een statische
+Engelstalige cursus over de regels van BG3 (ability scores, het d20-systeem,
+gevechten, spreuken en waar BG3 afwijkt van D&D 5e). Gewoon `index.html`
+openen of de map op een statische host zetten.
+
 ```bash
 uv sync
 SESSION_SECRET=$(openssl rand -hex 32) uv run python -m webapp.main

@@ -176,14 +176,56 @@ def wiki_cache():
 
 # ------------------------------------------------------------- afgeleiden
 
+def apply_stats(payload):
+    """
+    Leg de huidige itemstats over een momentopname heen.
+
+    Bij het inlezen worden de stats meegebakken in de momentopname. Upload je
+    de export pas daarna -- de normale volgorde, want je hebt hem meestal nog
+    niet als je je eerste save inleest -- dan blijft alles wat er al in staat
+    leeg. Dat was een voetangel waar je wel op móest stappen: uploaden leek te
+    lukken, en er veranderde niets.
+
+    Daarom worden ze hier, bij het tonen, opnieuw opgezocht. Een upload werkt
+    zo met terugwerkende kracht voor elke momentopname, en een nieuwere export
+    verbetert meteen ook de oude.
+
+    De sleutelnaam verandert onderweg: de export noemt het `display`, en dat is
+    wat `bg3_sheet.extract` als `fields` wegschrijft. Hier hetzelfde doen, want
+    `bg3_compare` leest `fields`.
+    """
+    table = db.get_blob(STATS_KEY)
+    if not table:
+        return payload
+
+    wanted = {name
+              for char in payload.get("party", [])
+              for names in (char.get("items_by_group") or {}).values()
+              for name in names}
+    found, missing = {}, []
+    for name in sorted(wanted):
+        entry = table.get(name)
+        if not isinstance(entry, dict):
+            missing.append(name)
+            continue
+        found[name] = {"type": entry.get("type"),
+                       "source": entry.get("source"),
+                       "fields": entry.get("display") or {}}
+
+    merged = dict(payload)
+    merged["item_stats"] = found
+    merged["item_stats_missing"] = missing
+    return merged
+
+
 def item_rows(payload):
     """
     Alle spullen van de party als vergelijkbare rijen, verrijkt met wat er is.
 
-    `bg3_compare.build_items` doet het koppelen; wij plakken er alleen jouw
-    eigen notities en plannen aan vast.
+    `bg3_compare.build_items` doet het koppelen; wij leggen de actuele
+    itemstats eroverheen en plakken er jouw eigen notities en plannen aan vast.
     """
-    items, meta = bg3_compare.build_items(payload, wiki_cache())
+    items, meta = bg3_compare.build_items(apply_stats(payload), wiki_cache())
     notes = db.notes_for("item")
     for item in items:
         note = notes.get(item["id"])

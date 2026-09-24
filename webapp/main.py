@@ -815,9 +815,18 @@ def drop_save(sess, save_id: int):
 
 @app.get("/party.json")
 def download(sess, req):
-    """De ruwe, complete uitlezing — zelfde bestand als de CLI maakt."""
+    """
+    De ruwe, complete uitlezing — zelfde bestand als de CLI maakt.
+
+    Met de actuele itemstats eroverheen, zodat wat je downloadt overeenkomt met
+    wat je op het scherm ziet. Anders zou een save die is ingelezen vóór je de
+    export uploadde hier leeg blijven terwijl de spullenpagina wel cijfers
+    toont.
+    """
     save_id = active_save(sess, req)
     payload = db.save_payload(save_id) if save_id else None
+    if payload:
+        payload = ingest.apply_stats(payload)
     if not payload:
         return JSONResponse({"error": "geen save geselecteerd"}, status_code=404)
     return JSONResponse(
@@ -879,9 +888,10 @@ def settings(sess, req):
         Form(Button("Verwijderen", type="submit", cls="small danger"),
              method="post", action="/instellingen/stats/wissen",
              style="margin-top:8px") if stats else None,
-        P("Let op: bestaande momentopnamen worden niet met terugwerkende "
-          "kracht verrijkt — lees die save opnieuw in als je de cijfers er "
-          "ook bij wilt.", cls="small muted"),
+        P("Geldt meteen voor alles wat er al in staat: de cijfers worden bij "
+          "het tonen opgezocht, niet bij het inlezen. Opnieuw inlezen hoeft "
+          "dus niet, en een nieuwere export verbetert ook je oude "
+          "momentopnamen.", cls="small muted"),
         cls="card",
     )
 

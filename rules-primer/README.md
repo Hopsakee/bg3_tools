@@ -1,12 +1,23 @@
 # BG3 Rules Primer
 
-A short, static course that teaches the rules behind Baldur's Gate 3 combat and
-character building, for people who have never played D&D. Ten lessons, from
-ability scores to the places where BG3 departs from tabletop 5e, plus a class
-overview and a searchable glossary.
+A short, static course that teaches how Baldur's Gate 3 works, for people who
+have never played D&D. Twenty-three lessons in six parts, plus a searchable
+glossary:
+
+1. **Core rules**: ability scores, proficiency, the d20 system
+2. **Combat**: turns and actions, attacks and AC, spellcasting, where BG3
+   departs from tabletop 5e, conditions
+3. **Building a character**: races, classes and subclasses, backgrounds and
+   skills, levelling, feats and multiclassing
+4. **Gear**: weapons and damage types, armour and magic items, potions,
+   scrolls and alchemy, inventory and trading
+5. **Exploring the world**: dialogue checks, stealth and light, locks, traps
+   and crime
+6. **BG3's own systems**: companions, approval and camp, Illithid powers,
+   difficulty modes
 
 Plain HTML, CSS and JavaScript. No build step, no dependencies, no external
-fonts or CDNs. About 70 KB in total.
+fonts or CDNs. About 130 KB in total.
 
 ```
 index.html   all content
@@ -41,10 +52,10 @@ caddy file-server --listen :8000
    branch (for example `main`) and the folder `/ (root)`, then save.
 4. After a minute the site is live at `https://<user>.github.io/<repo>/`.
 
-**If it stays in a subfolder of a larger repo** (as here, in `combat-guide/`):
+**If it stays in a subfolder of a larger repo** (as here, in `rules-primer/`):
 GitHub Pages can only serve the repo root or `/docs`. Either rename or copy
 the folder to `docs/` and pick `/docs` in step 3, or deploy it with a GitHub
-Actions workflow that uploads `combat-guide/` as the Pages artifact.
+Actions workflow that uploads `rules-primer/` as the Pages artifact.
 
 All links are relative, so the site works from any sub-path.
 
@@ -55,7 +66,7 @@ for Caddy:
 
 ```
 bg3-primer.example.com {
-    root * /srv/combat-guide
+    root * /srv/rules-primer
     file_server
 }
 ```

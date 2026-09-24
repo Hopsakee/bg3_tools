@@ -53,6 +53,13 @@
         btn.setAttribute("aria-pressed", String(isDone));
       }
     });
+    $$(".toc-part").forEach(function (part) {
+      var ids = $$("a[data-sec]", part).map(function (l) { return l.dataset.sec; });
+      var got = ids.filter(function (id) { return done[id]; }).length;
+      var el = $(".part-count", part);
+      el.textContent = got + "/" + ids.length;
+      el.classList.toggle("is-complete", got === ids.length);
+    });
     $("#progressText").textContent = n + " / " + lessons.length;
     $("#progressFill").style.width = (100 * n / lessons.length) + "%";
   }
@@ -73,11 +80,22 @@
   /* ── "you are here" ──────────────────── */
   var links = {};
   $$("#toc a").forEach(function (a) { links[a.dataset.sec] = a; });
+  var lastCurrent = null;
   function setCurrent(id) {
+    if (id === lastCurrent) return;
+    lastCurrent = id;
     Object.keys(links).forEach(function (k) {
       links[k].classList.toggle("is-current", k === id);
       if (k === id) links[k].setAttribute("aria-current", "location"); else links[k].removeAttribute("aria-current");
     });
+    // Keep the part holding the current lesson open, and its link in view in the sidebar.
+    var cur = links[id];
+    if (cur) {
+      var part = cur.closest("details");
+      if (part && !part.open) part.open = true;
+      var sb = $("#sidebar"), r = cur.getBoundingClientRect(), sr = sb.getBoundingClientRect();
+      if (r.top < sr.top || r.bottom > sr.bottom) sb.scrollTop += r.top - sr.top - sr.height / 3;
+    }
   }
   // The current lesson is the last one whose top has scrolled past a line near the top of the viewport.
   var ticking = false;

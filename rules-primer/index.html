@@ -1,0 +1,1156 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BG3 Rules Primer</title>
+<meta name="description" content="A short course on the rules of Baldur's Gate 3 (combat, characters, gear, exploration and BG3's own systems) for people who have never played D&amp;D.">
+<meta name="color-scheme" content="dark light">
+<link rel="stylesheet" href="style.css">
+<script>
+  // Apply the saved theme before first paint so the page doesn't flash.
+  try { var t = localStorage.getItem("bg3-theme"); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="topbar">
+  <button class="nav-toggle" id="navToggle" aria-controls="sidebar" aria-expanded="false" aria-label="Open navigation">
+    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+  </button>
+  <a class="brand" href="#overview"><span class="brand-die" aria-hidden="true">d20</span> BG3 Rules Primer</a>
+  <button class="theme-toggle" id="themeToggle" aria-label="Switch colour theme">
+    <svg class="i-sun" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="currentColor"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    <svg class="i-moon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z" fill="currentColor"/></svg>
+  </button>
+</header>
+
+<div class="layout">
+
+<nav class="sidebar" id="sidebar" aria-label="Course sections">
+  <div class="progress" aria-live="polite">
+    <div class="progress-label"><span>Course progress</span><span id="progressText">0 / 24</span></div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  </div>
+  <div class="toc" id="toc">
+  <details class="toc-part" open><summary><span class="part-name">Core rules</span><span class="part-count"></span></summary>
+  <ol>
+    <li><a href="#overview" data-sec="overview"><span class="tick" aria-hidden="true"></span><span class="num">1</span> Overview</a></li>
+    <li><a href="#abilities" data-sec="abilities"><span class="tick" aria-hidden="true"></span><span class="num">2</span> Ability scores</a></li>
+    <li><a href="#proficiency" data-sec="proficiency"><span class="tick" aria-hidden="true"></span><span class="num">3</span> Proficiency</a></li>
+    <li><a href="#d20" data-sec="d20"><span class="tick" aria-hidden="true"></span><span class="num">4</span> The d20 system</a></li>
+  </ol></details>
+  <details class="toc-part" open><summary><span class="part-name">Combat</span><span class="part-count"></span></summary>
+  <ol>
+    <li><a href="#combat" data-sec="combat"><span class="tick" aria-hidden="true"></span><span class="num">5</span> Combat fundamentals</a></li>
+    <li><a href="#attacks" data-sec="attacks"><span class="tick" aria-hidden="true"></span><span class="num">6</span> Attacks &amp; Armour Class</a></li>
+    <li><a href="#spells" data-sec="spells"><span class="tick" aria-hidden="true"></span><span class="num">7</span> Spellcasting</a></li>
+    <li class="toc-key"><a href="#bg3" data-sec="bg3"><span class="tick" aria-hidden="true"></span><span class="num">8</span> BG3 vs tabletop <span class="badge">key</span></a></li>
+    <li><a href="#conditions" data-sec="conditions"><span class="tick" aria-hidden="true"></span><span class="num">9</span> Conditions</a></li>
+  </ol></details>
+  <details class="toc-part" open><summary><span class="part-name">Building a character</span><span class="part-count"></span></summary>
+  <ol>
+    <li><a href="#races" data-sec="races"><span class="tick" aria-hidden="true"></span><span class="num">10</span> Races</a></li>
+    <li><a href="#classes" data-sec="classes"><span class="tick" aria-hidden="true"></span><span class="num">11</span> Classes</a></li>
+    <li><a href="#backgrounds" data-sec="backgrounds"><span class="tick" aria-hidden="true"></span><span class="num">12</span> Backgrounds &amp; skills</a></li>
+    <li><a href="#levelling" data-sec="levelling"><span class="tick" aria-hidden="true"></span><span class="num">13</span> Levels, feats, multiclass</a></li>
+  </ol></details>
+  <details class="toc-part" open><summary><span class="part-name">Gear</span><span class="part-count"></span></summary>
+  <ol>
+    <li><a href="#weapons" data-sec="weapons"><span class="tick" aria-hidden="true"></span><span class="num">14</span> Weapons &amp; damage</a></li>
+    <li><a href="#armour" data-sec="armour"><span class="tick" aria-hidden="true"></span><span class="num">15</span> Armour &amp; magic items</a></li>
+    <li><a href="#consumables" data-sec="consumables"><span class="tick" aria-hidden="true"></span><span class="num">16</span> Potions, scrolls, alchemy</a></li>
+    <li><a href="#inventory" data-sec="inventory"><span class="tick" aria-hidden="true"></span><span class="num">17</span> Inventory &amp; trading</a></li>
+  </ol></details>
+  <details class="toc-part" open><summary><span class="part-name">Exploring the world</span><span class="part-count"></span></summary>
+  <ol>
+    <li><a href="#dialogue" data-sec="dialogue"><span class="tick" aria-hidden="true"></span><span class="num">18</span> Dialogue &amp; checks</a></li>
+    <li><a href="#stealth" data-sec="stealth"><span class="tick" aria-hidden="true"></span><span class="num">19</span> Stealth, light, vision</a></li>
+    <li><a href="#locks" data-sec="locks"><span class="tick" aria-hidden="true"></span><span class="num">20</span> Locks, traps &amp; crime</a></li>
+  </ol></details>
+  <details class="toc-part" open><summary><span class="part-name">BG3's own systems</span><span class="part-count"></span></summary>
+  <ol>
+    <li><a href="#party" data-sec="party"><span class="tick" aria-hidden="true"></span><span class="num">21</span> Party &amp; camp</a></li>
+    <li><a href="#tadpoles" data-sec="tadpoles"><span class="tick" aria-hidden="true"></span><span class="num">22</span> Illithid powers</a></li>
+    <li><a href="#difficulty" data-sec="difficulty"><span class="tick" aria-hidden="true"></span><span class="num">23</span> Difficulty modes</a></li>
+  </ol></details>
+  <details class="toc-part" open><summary><span class="part-name">Reference</span><span class="part-count"></span></summary>
+  <ol>
+    <li><a href="#glossary" data-sec="glossary"><span class="tick" aria-hidden="true"></span><span class="num">24</span> Glossary</a></li>
+  </ol></details>
+</div>
+  <button class="reset" id="resetProgress" type="button">Reset progress</button>
+</nav>
+<div class="scrim" id="scrim" hidden></div>
+
+<main id="main" tabindex="-1">
+
+<!-- 1 · overview -->
+<section id="overview" class="lesson">
+  <p class="eyebrow">Lesson 1</p>
+  <h1>Overview: D&amp;D rules, video-game body</h1>
+  <p class="lead">Baldur's Gate 3 runs on a modified version of the <strong>Dungeons &amp; Dragons 5th Edition</strong> (5e) ruleset. Almost every number you see in the game (a hit chance, a damage range, a "DC 15" in dialogue) comes from those rules.</p>
+
+  <p>In tabletop D&amp;D, a human Dungeon Master reads the rules and rolls dice. In BG3 the computer does both. That's good news: you never have to do the maths yourself. But knowing <em>what</em> the game is calculating lets you understand why you missed, why a spell failed, or why a character "feels weak."</p>
+
+  <div class="callout">
+    <h3>The whole system in one sentence</h3>
+    <p>When the outcome of something is uncertain, the game rolls a <strong>20-sided die (d20)</strong>, adds some bonuses, and compares the total to a target number. Meet or beat the target: success.</p>
+  </div>
+
+  <p>Nearly everything else in the rules is detail about <em>which bonuses</em> get added and <em>what the target number is</em>.</p>
+
+  <h2>Course map</h2>
+  <ol class="course-map">
+    <li><strong>Core rules</strong> (lessons 1–4): the numbers behind everything.</li>
+    <li><strong>Combat</strong> (5–9): turns, attacks, spells, conditions, and where BG3 changes the tabletop rules.</li>
+    <li><strong>Building a character</strong> (10–13): race, class, background, levelling and feats.</li>
+    <li><strong>Gear</strong> (14–17): weapons, armour, magic items, potions, alchemy, inventory.</li>
+    <li><strong>Exploring the world</strong> (18–20): conversations, sneaking, locks, traps and crime.</li>
+    <li><strong>BG3's own systems</strong> (21–23): companions and camp, Illithid powers, difficulty.</li>
+  </ol>
+  <p>Then a glossary to look things up. If you're about to start playing, read 1–8 and 10–12 first; the rest makes more sense once you've seen it in the game.</p>
+
+  <details>
+    <summary>What does "modified" mean here?</summary>
+    <p>Larian kept the core of 5e (ability scores, proficiency, d20 rolls, spell slots, classes) but changed parts that work badly on a screen or that they wanted to be more tactical: height matters more, the environment reacts to elements, several actions got cheaper, and resting is tied to a camp. Lesson 8 covers these changes one by one, and later lessons point out others as they come up.</p>
+  </details>
+  <details>
+    <summary>How to read this course</summary>
+    <p>Each lesson is short. Open the collapsible panels for examples and extra detail. Tick <em>Mark as read</em> at the bottom of a lesson and the sidebar keeps track, per part and overall. Your progress is saved in this browser only.</p>
+  </details>
+
+  <button class="done-btn" type="button" data-done="overview">Mark as read</button>
+</section>
+
+<!-- 2 · abilities -->
+<section id="abilities" class="lesson">
+  <p class="eyebrow">Lesson 2</p>
+  <h1>Ability scores</h1>
+  <p class="lead">Every character has six <strong>ability scores</strong>, numbers usually between 8 and 20 that describe raw talent. You pick them at character creation and raise them at certain levels.</p>
+
+  <h2>Scores become modifiers</h2>
+  <p>The score itself is rarely used directly. What matters is the <strong>modifier</strong> it produces, the number actually added to rolls:</p>
+  <div class="formula">modifier = (score − 10) ÷ 2, rounded down</div>
+
+  <div class="table-wrap">
+  <table class="compact">
+    <thead><tr><th>Score</th><td>8–9</td><td>10–11</td><td>12–13</td><td>14–15</td><td>16–17</td><td>18–19</td><td>20</td></tr></thead>
+    <tbody><tr><th>Modifier</th><td>−1</td><td>+0</td><td>+1</td><td>+2</td><td>+3</td><td>+4</td><td>+5</td></tr></tbody>
+  </table>
+  </div>
+
+  <div class="widget" id="modCalc">
+    <label for="scoreInput">Try it: ability score <output id="scoreOut">15</output></label>
+    <input type="range" id="scoreInput" min="1" max="30" value="15">
+    <p class="widget-result">Modifier: <strong id="modOut">+2</strong></p>
+  </div>
+
+  <p class="tip"><strong>Practical takeaway:</strong> odd scores give the same modifier as the even number below them. Going from 16 to 17 changes nothing on its own; going from 17 to 18 gives +1. BG3 caps scores at 20 unless an item or potion says otherwise.</p>
+
+  <h2>What each ability does in BG3</h2>
+  <div class="ability-grid">
+    <article class="ability"><h3><abbr>STR</abbr> Strength</h3><p>Melee weapon hit and damage (non-finesse weapons), how far you <strong>Jump</strong>, how hard you <strong>Shove</strong>, how much you can carry before being slowed. Skill: Athletics.</p></article>
+    <article class="ability"><h3><abbr>DEX</abbr> Dexterity</h3><p>Ranged and finesse weapon hit and damage, <strong>initiative</strong>, and Armour Class in light or medium armour. Skills: Acrobatics, Sleight of Hand (lockpicking, pickpocketing, disarming traps), Stealth.</p></article>
+    <article class="ability"><h3><abbr>CON</abbr> Constitution</h3><p>Extra hit points every level, and saving throws to keep <strong>concentration</strong> on a spell when hit. No skills. Useful for everyone.</p></article>
+    <article class="ability"><h3><abbr>INT</abbr> Intelligence</h3><p>Spellcasting power for Wizards (and Eldritch Knight / Arcane Trickster subclasses). Skills: Arcana, History, Investigation, Nature, Religion.</p></article>
+    <article class="ability"><h3><abbr>WIS</abbr> Wisdom</h3><p>Spellcasting power for Clerics, Druids and Rangers; Monk AC and ki abilities. Skills: <strong>Perception</strong> (spotting traps and hidden things), Insight, Medicine, Survival, Animal Handling.</p></article>
+    <article class="ability"><h3><abbr>CHA</abbr> Charisma</h3><p>Spellcasting power for Bards, Paladins, Sorcerers and Warlocks. Skills: Persuasion, Deception, Intimidation, Performance. These are the main dialogue skills.</p></article>
+  </div>
+
+  <details>
+    <summary>Example: two fighters swing a greatsword</summary>
+    <p>Karlach has STR 17 (+3). Gale has STR 8 (−1). With the same sword, Karlach adds +3 to her attack roll and to her damage; Gale subtracts 1 from both. Over a fight, that 4-point gap means Karlach hits roughly 20% more often and each hit does 4 more damage.</p>
+  </details>
+  <details>
+    <summary>How scores are set at character creation</summary>
+    <p>BG3 uses a <strong>point-buy</strong> system: every score starts at 8 and you spend 27 points to raise them, with a maximum of 15 before bonuses. You then add a +2 and a +1 to any two abilities you choose. A common starting peak is therefore 17 in your main ability. Levels 4, 8 and 12 give a <strong>feat</strong>, and one option is "Ability Improvement": +2 to spend across your scores.</p>
+  </details>
+
+  <button class="done-btn" type="button" data-done="abilities">Mark as read</button>
+</section>
+
+<!-- 3 · proficiency -->
+<section id="proficiency" class="lesson">
+  <p class="eyebrow">Lesson 3</p>
+  <h1>Proficiency</h1>
+  <p class="lead">If ability scores are talent, <strong>proficiency</strong> is training. When your character is proficient in something, they add their <strong>proficiency bonus</strong> to the roll.</p>
+
+  <h2>How big is the bonus?</h2>
+  <p>It depends only on your total character level, not on class or ability scores. BG3's level cap is 12, so there are three steps:</p>
+  <div class="table-wrap">
+  <table class="compact">
+    <thead><tr><th>Level</th><td>1–4</td><td>5–8</td><td>9–12</td></tr></thead>
+    <tbody><tr><th>Proficiency bonus</th><td>+2</td><td>+3</td><td>+4</td></tr></tbody>
+  </table>
+  </div>
+
+  <h2>What it applies to</h2>
+  <ul class="checklist">
+    <li><strong>Attack rolls</strong> with weapons you are proficient with (your class decides which: a Wizard isn't proficient with greatswords, a Fighter is proficient with everything).</li>
+    <li><strong>Spell attack rolls</strong> and your <strong>spell save DC</strong>. Casters are always proficient with their own spells.</li>
+    <li><strong>Skills</strong> you picked from your class and background, such as Stealth or Persuasion.</li>
+    <li><strong>Saving throws</strong>: each class is proficient in two of the six (a Wizard in INT and WIS, a Fighter in STR and CON).</li>
+  </ul>
+
+  <details>
+    <summary>Example: Astarion picks a lock</summary>
+    <p>Astarion has DEX 17 (+3) and is proficient in Sleight of Hand. At level 3 his bonus is +3 (DEX) +2 (proficiency) = <strong>+5</strong>. At level 9 the same check is +3 +4 = <strong>+7</strong>, even if his DEX hasn't changed. Shadowheart, with DEX 13 (+1) and no proficiency, rolls with just +1.</p>
+  </details>
+  <details>
+    <summary>Expertise: double proficiency</summary>
+    <p>Rogues and Bards (and a few other features) can pick skills for <strong>Expertise</strong>, which doubles the proficiency bonus for those skills. A level 9 Rogue with Expertise in Sleight of Hand adds +8 from proficiency alone.</p>
+  </details>
+  <details>
+    <summary>Wearing armour you aren't proficient with</summary>
+    <p>You can put it on, but you get disadvantage on attacks and on STR/DEX checks and saves, and you can't cast spells. The game warns you in the equipment screen.</p>
+  </details>
+
+  <button class="done-btn" type="button" data-done="proficiency">Mark as read</button>
+</section>
+
+<!-- 4 · d20 -->
+<section id="d20" class="lesson">
+  <p class="eyebrow">Lesson 4</p>
+  <h1>The d20 system</h1>
+  <p class="lead">Every uncertain action follows the same recipe: <strong>roll a d20, add modifiers, compare to a target</strong>. The target is called a <strong>Difficulty Class (DC)</strong> for checks and saves, or <strong>Armour Class (AC)</strong> for attacks.</p>
+
+  <div class="formula">d20 + ability modifier + proficiency (if proficient) + other bonuses ≥ DC → success</div>
+
+  <div class="tabs" data-tabs>
+    <div class="tablist" role="tablist" aria-label="Kinds of d20 roll">
+      <button role="tab" aria-selected="true" aria-controls="tab-check" id="t-check">Ability checks</button>
+      <button role="tab" aria-selected="false" aria-controls="tab-adv" id="t-adv" tabindex="-1">Advantage</button>
+      <button role="tab" aria-selected="false" aria-controls="tab-passive" id="t-passive" tabindex="-1">Passive checks</button>
+    </div>
+    <div class="tabpanel" role="tabpanel" id="tab-check" aria-labelledby="t-check">
+      <p>An <strong>ability check</strong> tests whether you can do something: persuade a guard, force open a door, recall lore. In BG3 you see these most in dialogue, where a big die appears on screen with the DC shown before you roll.</p>
+      <p><strong>Example:</strong> a guard wants convincing, <em>Persuasion DC 15</em>. Your Bard has CHA +3 and is proficient (+2): total +5. You need to roll a 10 or higher on the die: 55% chance.</p>
+      <p>Before you roll, you can often add help: the <em>Guidance</em> cantrip adds 1d4, and spending <strong>Inspiration</strong> lets you re-roll a failed check.</p>
+    </div>
+    <div class="tabpanel" role="tabpanel" id="tab-adv" aria-labelledby="t-adv" hidden>
+      <p><strong>Advantage</strong>: roll two d20s and keep the higher. <strong>Disadvantage</strong>: roll two, keep the lower. They're applied by circumstance: attacking a sleeping target, attacking while blinded, a spell that grants it, and so on.</p>
+      <ul>
+        <li>They don't stack: three sources of advantage still means just two dice.</li>
+        <li>If you have both advantage and disadvantage, they cancel and you roll one die.</li>
+        <li>Advantage is worth roughly +3 to +5 on a typical roll.</li>
+      </ul>
+      <div class="widget" id="advRoller">
+        <p class="widget-title">Try it: roll a d20</p>
+        <div class="btn-row">
+          <button type="button" data-mode="normal">Normal</button>
+          <button type="button" data-mode="adv">Advantage</button>
+          <button type="button" data-mode="dis">Disadvantage</button>
+        </div>
+        <p class="widget-result" id="advOut" aria-live="polite">Press a button to roll.</p>
+      </div>
+    </div>
+    <div class="tabpanel" role="tabpanel" id="tab-passive" aria-labelledby="t-passive" hidden>
+      <p>A <strong>passive check</strong> is a check nobody actively asks for. In tabletop it's a flat number: 10 + your modifier. It represents "taking an average roll."</p>
+      <p>In BG3 the biggest one is <strong>Perception</strong>: as you walk around, the game quietly checks each party member's Perception against hidden traps, secret levers and buried chests. When one succeeds, a small icon pops up over that character's head. Nobody in the party has good WIS? You'll walk past a lot of loot, and into a lot of traps.</p>
+      <p>Passive values are also used as the target for some contested actions, such as Shove (your Athletics against the target's passive Athletics or Acrobatics).</p>
+    </div>
+  </div>
+
+  <details>
+    <summary>Natural 20s and natural 1s</summary>
+    <p>A <strong>natural 20</strong> means the die itself shows 20, before any bonuses. In BG3, a natural 20 on an ability check or an attack roll is always a success, and a natural 1 always fails, no matter the modifiers. (In the tabletop rules this only applies to attacks and, at many tables, death saves. See Lesson 8.)</p>
+  </details>
+
+  <button class="done-btn" type="button" data-done="d20">Mark as read</button>
+</section>
+
+<!-- 5 · combat -->
+<section id="combat" class="lesson">
+  <p class="eyebrow">Lesson 5</p>
+  <h1>Combat fundamentals</h1>
+  <p class="lead">Combat in BG3 is turn-based. Everyone rolls for position in the turn order, then each creature takes a turn with a small budget of things it may do.</p>
+
+  <h2>Initiative and turn order</h2>
+  <p>When a fight starts, every participant rolls <strong>initiative</strong> and the results are sorted into the portrait bar at the top of the screen. Highest goes first. In tabletop 5e that roll is d20 + DEX modifier; <strong>BG3 rolls only a d4 + DEX modifier</strong>, so DEX matters far more than luck. A creature that is <strong>Surprised</strong> (caught unaware) skips its first turn.</p>
+  <p class="tip"><strong>BG3 twist:</strong> party members who end up with the same initiative share a combined turn. You can switch between them freely and use their actions and movement in any order.</p>
+
+  <h2>Your turn budget</h2>
+  <div class="economy">
+    <div class="econ econ-action"><span class="econ-shape" aria-hidden="true">●</span><h3>Action</h3><p>The main thing you do: attack, cast most spells, Dash, Disengage, Hide, Help a downed ally.</p><p class="econ-count">1 per turn</p></div>
+    <div class="econ econ-bonus"><span class="econ-shape" aria-hidden="true">▲</span><h3>Bonus action</h3><p>Something quick: off-hand attack, drink a potion, Jump, Shove, some spells like <em>Healing Word</em>.</p><p class="econ-count">1 per turn</p></div>
+    <div class="econ econ-move"><span class="econ-shape" aria-hidden="true">➤</span><h3>Movement</h3><p>Usually 9 m (30 ft). You can split it up: move, attack, move again.</p><p class="econ-count">Your speed</p></div>
+    <div class="econ econ-react"><span class="econ-shape" aria-hidden="true">◆</span><h3>Reaction</h3><p>Used on <em>someone else's</em> turn when a trigger happens: an opportunity attack, the <em>Shield</em> spell, <em>Counterspell</em>.</p><p class="econ-count">1 per round</p></div>
+  </div>
+  <p>In the hotbar these show as coloured shapes: a green circle for the action, an orange triangle for the bonus action, a yellow bar for movement. Abilities are tagged with the shape they cost.</p>
+
+  <details>
+    <summary>Example turn</summary>
+    <ol>
+      <li>Shadowheart moves 4 m to get line of sight to the wounded Lae'zel (movement: 5 m left).</li>
+      <li>She casts <em>Healing Word</em> on Lae'zel (bonus action).</li>
+      <li>She casts <em>Guiding Bolt</em> at the goblin archer (action).</li>
+      <li>She uses her remaining 5 m to duck behind a pillar.</li>
+    </ol>
+    <p>Her reaction stays available for the enemy turns.</p>
+  </details>
+
+  <details>
+    <summary>How BG3's action economy differs from tabletop</summary>
+    <ul>
+      <li><strong>Drinking a potion</strong> is a bonus action (tabletop: an action). You can also throw a potion to heal an ally or smash it on a group.</li>
+      <li><strong>Shove</strong> and <strong>Jump</strong> are bonus actions (tabletop: Shove replaces one of your attacks; jumping is part of movement).</li>
+      <li><strong>Throw</strong>: you can pick up and throw almost anything, including crates, barrels and small enemies, as an action.</li>
+      <li><strong>Dip</strong>: a bonus action to coat your weapon in a nearby fire or poison surface for bonus damage.</li>
+      <li><strong>Weapon actions</strong>: special moves like <em>Topple</em>, <em>Cleave</em> or <em>Lacerate</em> come with weapons you're proficient in and recharge on a short rest.</li>
+      <li><strong>Reactions</strong> can be set to trigger automatically, prompt you, or stay off, in the Reactions panel.</li>
+    </ul>
+  </details>
+  <details>
+    <summary>Hit points, going down, and getting back up</summary>
+    <p>At 0 hit points a party member is <strong>Downed</strong>. On each of their turns they make a death saving throw (d20, 10+ succeeds). Three successes: stable. Three failures: dead. Taking damage while downed counts as a failure. Any ally can use the <strong>Help</strong> action on them to bring them back at 1 hit point, and any healing spell or potion does the same with more HP. A dead companion can be revived with a scroll of <em>Revivify</em> or by paying Withers in camp.</p>
+  </details>
+
+  <button class="done-btn" type="button" data-done="combat">Mark as read</button>
+</section>
+
+<!-- 6 · attacks -->
+<section id="attacks" class="lesson">
+  <p class="eyebrow">Lesson 6</p>
+  <h1>Attacks, Armour Class &amp; saving throws</h1>
+  <p class="lead">There are two ways the game decides whether harmful things land: <strong>you roll to hit</strong> (attack roll vs AC), or <strong>the target rolls to avoid it</strong> (saving throw vs DC).</p>
+
+  <h2>Attack rolls</h2>
+  <div class="formula">d20 + ability modifier + proficiency ≥ target's AC → hit</div>
+  <p>The ability is STR for most melee weapons, DEX for ranged weapons, and your choice of either for <em>finesse</em> weapons like daggers and rapiers. On a hit, you roll damage: the weapon's dice plus the same ability modifier.</p>
+
+  <h2>Armour Class (AC)</h2>
+  <p>AC is how hard you are to hit. It depends on what you wear:</p>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Armour</th><th>AC formula</th><th>Typical user</th></tr></thead>
+    <tbody>
+      <tr><td>None</td><td>10 + DEX</td><td>Wizard, Sorcerer (often boosted by <em>Mage Armour</em>)</td></tr>
+      <tr><td>Light</td><td>armour value + DEX</td><td>Rogue, Bard, Warlock</td></tr>
+      <tr><td>Medium</td><td>armour value + DEX (max +2)</td><td>Cleric, Druid, Ranger</td></tr>
+      <tr><td>Heavy</td><td>armour value only</td><td>Fighter, Paladin</td></tr>
+      <tr><td>Shield</td><td>+2 on top</td><td>anyone proficient</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <details open>
+    <summary>Example: Lae'zel attacks a goblin</summary>
+    <p>Lae'zel (level 4) swings a greatsword. STR 17 gives +3, proficiency +2: total <strong>+5</strong>. The goblin has <strong>AC 15</strong> (leather armour and a shield). She needs a 10 or more on the d20. That's the "55%" the game shows when you hover the target.</p>
+    <p>She rolls 13: 13 + 5 = 18, a hit. Damage is 2d6 + 3.</p>
+  </details>
+
+  <h2>Critical hits</h2>
+  <p>A natural 20 on an attack roll is a <strong>critical hit</strong>: it always hits, and all damage dice are rolled twice (2d6 becomes 4d6; the flat modifier is not doubled). A natural 1 always misses. Some features widen the range: the Champion Fighter crits on 19–20, for instance.</p>
+
+  <h2>Saving throws</h2>
+  <p>Many spells and traps don't use attack rolls. Instead the target makes a <strong>saving throw</strong>: d20 + the relevant ability modifier (+ proficiency if their class is proficient in that save) against a DC set by the attacker.</p>
+  <ul>
+    <li><strong>DEX save</strong>: dodge a <em>Fireball</em> or a falling rock. Success often means half damage.</li>
+    <li><strong>CON save</strong>: resist poison, or keep concentration.</li>
+    <li><strong>WIS save</strong>: resist being charmed or frightened (<em>Hold Person</em>, <em>Command</em>).</li>
+    <li><strong>STR, INT, CHA saves</strong>: rarer, for being pushed, mind-blasted, or banished.</li>
+  </ul>
+  <p class="tip"><strong>Rule of thumb:</strong> if the tooltip shows a hit chance, it's an attack roll. If it names an ability ("WIS save"), the target is doing the rolling.</p>
+
+  <button class="done-btn" type="button" data-done="attacks">Mark as read</button>
+</section>
+
+<!-- 7 · spells -->
+<section id="spells" class="lesson">
+  <p class="eyebrow">Lesson 7</p>
+  <h1>Spellcasting</h1>
+  <p class="lead">Spellcasters have a limited supply of magic per day, measured in <strong>spell slots</strong>. Choosing when to spend them is the main strategic decision for casters.</p>
+
+  <h2>Spell slots</h2>
+  <p>Spells have a level from 1 to 6 in BG3 (the tabletop goes to 9). To cast a level 1 spell you spend a level 1 slot. Slots come back after a <strong>long rest</strong> (Warlocks get theirs back on a short rest).</p>
+  <p>You can put a spell in a <em>higher</em> slot than it needs, called <strong>upcasting</strong>, to make it stronger. <em>Magic Missile</em> in a level 2 slot fires four darts instead of three.</p>
+
+  <h2>Cantrips vs leveled spells</h2>
+  <div class="two-col">
+    <div class="card"><h3>Cantrips</h3><p>Level 0 spells. Free, unlimited, cast any turn. They get stronger at character levels 5 and 10. Examples: <em>Fire Bolt</em>, <em>Eldritch Blast</em>, <em>Guidance</em>.</p></div>
+    <div class="card"><h3>Leveled spells</h3><p>Cost a spell slot. Much stronger effects: area damage, healing, control, summons. Examples: <em>Healing Word</em> (1), <em>Misty Step</em> (2), <em>Fireball</em> (3).</p></div>
+  </div>
+
+  <h2>Concentration</h2>
+  <p>Some spells last several turns and need <strong>concentration</strong> (marked on the tooltip). You can only concentrate on <em>one</em> spell at a time; casting a second one ends the first.</p>
+  <p>Each time you take damage while concentrating, you make a CON saving throw. The DC is 10 or half the damage taken, whichever is higher. Fail and the spell ends. This is why CON matters for casters, and why enemies target your concentrating Cleric first.</p>
+
+  <h2>Spell attack vs save DC</h2>
+  <p>Like weapons, spells either roll to hit or force a save. Both use your <strong>spellcasting ability</strong> (INT for Wizards, WIS for Clerics/Druids/Rangers, CHA for Bards/Paladins/Sorcerers/Warlocks):</p>
+  <div class="formula">Spell attack bonus = proficiency + casting modifier</div>
+  <div class="formula">Spell save DC = 8 + proficiency + casting modifier</div>
+
+  <details>
+    <summary>Example: Gale at level 5</summary>
+    <p>Gale has INT 18 (+4) and proficiency +3.</p>
+    <ul>
+      <li><em>Fire Bolt</em> (attack roll): d20 + 7 against the target's AC.</li>
+      <li><em>Fireball</em> (DEX save): every creature in the blast rolls a DEX save against DC <strong>15</strong> (8 + 3 + 4). Failures take full damage, successes take half.</li>
+    </ul>
+  </details>
+  <details>
+    <summary>Preparing spells and rituals in BG3</summary>
+    <p>Clerics, Druids, Paladins and Wizards <em>prepare</em> a subset of their spells. In BG3 you can change prepared spells any time you're out of combat, not only after a long rest. <strong>Ritual</strong> spells such as <em>Speak with Animals</em> or <em>Longstrider</em> can be cast outside combat without using a slot at all.</p>
+  </details>
+
+  <button class="done-btn" type="button" data-done="spells">Mark as read</button>
+</section>
+
+<!-- 8 · bg3 -->
+<section id="bg3" class="lesson lesson-key">
+  <p class="eyebrow">Lesson 8 · the important one</p>
+  <h1>Where BG3 breaks from tabletop 5e</h1>
+  <p class="lead">If you read one lesson, read this one. These changes are why tabletop habits (and some online advice) don't carry over, and why BG3 fights reward positioning and creativity.</p>
+
+  <div class="deviation">
+    <h2><span class="dev-num">1</span> Opportunity attacks and moving through a fight</h2>
+    <div class="dev-body">
+      <p>An enemy gets a free <strong>opportunity attack</strong> (using its reaction) only when you <strong>leave its melee reach</strong>. Walking past, around or between enemies while staying in reach, or moving past one whose reach you never entered, doesn't provoke anything. That rule is the same as tabletop; what's different is how many cheap ways BG3 gives you to break away:</p>
+      <ul>
+        <li><strong>Disengage</strong> (action; a bonus action for Rogues and some others) means no opportunity attacks for the rest of your turn.</li>
+        <li><strong>Misty Step</strong> and other teleports never provoke, because you don't move through the space.</li>
+        <li><strong>Jump</strong> doesn't cancel them: jumping out of an enemy's reach still counts as leaving it.</li>
+        <li>An enemy that has already spent its reaction this round can't take an opportunity attack at all.</li>
+      </ul>
+      <p class="tip">Hover an enemy while planning a move: if your path leaves its reach, the path line shows a warning icon.</p>
+    </div>
+  </div>
+
+  <div class="deviation">
+    <h2><span class="dev-num">2</span> Jump and Shove are cheap bonus actions</h2>
+    <div class="dev-body">
+      <p><strong>Jump</strong> costs a bonus action plus 3 m of movement and lets you leap gaps, reach ledges and cover more ground. Distance grows with STR. Many players effectively use it as a second movement.</p>
+      <p><strong>Shove</strong> is a bonus action with 1.5 m range: your Athletics check against the target's passive Athletics or Acrobatics. Success pushes them a few metres based on your STR and their weight. Pushing an enemy off a ledge deals fall damage; pushing it into a chasm usually kills it outright (but you lose its loot).</p>
+      <p class="tip">In tabletop, Shove replaces one of your attacks and only moves the target 5 ft. In BG3, pushing enemies off cliffs is a core tactic.</p>
+    </div>
+  </div>
+
+  <div class="deviation">
+    <h2><span class="dev-num">3</span> High ground is a real bonus</h2>
+    <div class="dev-body">
+      <p>Standing at least 2.5 m above your target gives <strong>+2 to attack rolls</strong> and extends the range of ranged attacks. Attacking from 2.5 m below gives <strong>−2</strong>. Tabletop 5e has no general height rule. Get your archers and casters on rooftops and cliffs; pull enemies off theirs.</p>
+    </div>
+  </div>
+
+  <div class="deviation">
+    <h2><span class="dev-num">4</span> Surfaces and elements react</h2>
+    <div class="dev-body">
+      <p>Spells, potions, broken barrels and blood leave <strong>surfaces</strong> on the ground and clouds in the air. Creatures standing in them get conditions, and surfaces combine with elements.</p>
+      <div class="table-wrap">
+      <table class="surfaces">
+        <thead><tr><th>Surface</th><th>Effect</th><th>Combines with</th></tr></thead>
+        <tbody>
+          <tr><td data-label="Surface"><span class="sw sw-fire"></span>Fire</td><td data-label="Effect">Burning: fire damage each turn.</td><td data-label="Combines with">Water puts it out; spreads through grease, webs, oil.</td></tr>
+          <tr><td data-label="Surface"><span class="sw sw-water"></span>Water</td><td data-label="Effect">Wet: extra damage from cold and lightning, resistant to fire, can't be set Burning.</td><td data-label="Combines with">Lightning electrifies it; cold freezes it to ice; fire turns it to steam.</td></tr>
+          <tr><td data-label="Surface"><span class="sw sw-elec"></span>Electrified water</td><td data-label="Effect">Lightning damage and Shocked (no reactions).</td><td data-label="Combines with">Anyone standing in the water is hit.</td></tr>
+          <tr><td data-label="Surface"><span class="sw sw-ice"></span>Ice</td><td data-label="Effect">DEX save or fall Prone. Difficult terrain.</td><td data-label="Combines with">Fire melts it back to water.</td></tr>
+          <tr><td data-label="Surface"><span class="sw sw-grease"></span>Grease</td><td data-label="Effect">DEX save or fall Prone. Difficult terrain.</td><td data-label="Combines with">Fire ignites it into a big blaze.</td></tr>
+          <tr><td data-label="Surface"><span class="sw sw-poison"></span>Poison / acid</td><td data-label="Effect">Damage over time; acid also lowers AC.</td><td data-label="Combines with">Some poison clouds are flammable and explode.</td></tr>
+          <tr><td data-label="Surface"><span class="sw sw-cloud"></span>Fog / darkness</td><td data-label="Effect">Heavily obscured: those inside are effectively blinded.</td><td data-label="Combines with">Blocks line of sight; ranged attackers can't see in.</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <details>
+        <summary>Example combo</summary>
+        <p>Karlach throws a water bottle at a group of hobgoblins (they're now Wet). Gale casts <em>Witch Bolt</em> or <em>Lightning Bolt</em> into the puddle: the water becomes electrified and the lightning damage is doubled against Wet targets. Next turn, Astarion shoots an explosive barrel next to anyone still standing.</p>
+      </details>
+    </div>
+  </div>
+
+  <div class="deviation">
+    <h2><span class="dev-num">5</span> Natural 20s and 1s on checks</h2>
+    <div class="dev-body">
+      <p>In BG3 a natural 20 on an ability check (dialogue, lockpicking) is an automatic success and a natural 1 an automatic failure. That means even an impossible-looking DC 30 has a 5% chance. Tabletop 5e only applies this to attack rolls.</p>
+    </div>
+  </div>
+
+  <div class="deviation">
+    <h2><span class="dev-num">6</span> Karmic Dice</h2>
+    <div class="dev-body">
+      <p>A setting in <em>Options → Gameplay</em>, <strong>on by default</strong>. It stops long bad-luck streaks: after several failures the game becomes more likely to give you a success on attacks, saves and dialogue checks. It also makes damage rolls cluster near the average. It helps enemies too. Turn it off if you want pure, honest dice.</p>
+    </div>
+  </div>
+
+  <div class="deviation">
+    <h2><span class="dev-num">7</span> Rests are tied to camp</h2>
+    <div class="dev-body">
+      <div class="two-col">
+        <div class="card">
+          <h3>Short rest</h3>
+          <p>Taken anywhere, out of combat, <strong>twice per long rest</strong> (tabletop: unlimited, one hour each). Heals up to half of max HP and restores short-rest resources: Warlock slots, ki, Channel Divinity, Action Surge, weapon actions.</p>
+        </div>
+        <div class="card">
+          <h3>Long rest</h3>
+          <p>Taken at <strong>camp</strong> and costs <strong>camp supplies</strong> (40 on normal difficulty, 80 on Tactician/Honour). Restores everything and resets your two short rests. Without enough supplies you can take a partial rest that restores only half. Long rests also advance companion stories and some timed quests.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="deviation">
+    <h2><span class="dev-num">8</span> Smaller changes worth knowing</h2>
+    <div class="dev-body">
+      <ul>
+        <li>Potions are bonus actions and can be thrown.</li>
+        <li>Anyone can <strong>Help</strong> a downed ally back to 1 HP with an action; no Medicine check needed.</li>
+        <li>Initiative is d4 + DEX instead of d20 + DEX, and party members on the same initiative share a turn.</li>
+        <li>Level cap is 12 and the highest spell level is 6.</li>
+        <li>HP gain per level is fixed, not rolled.</li>
+        <li>Attacking an enemy that can't see you (you're hidden or invisible) gives advantage, and <strong>Hide</strong> uses visible vision cones you can sneak around.</li>
+        <li>Melee attacks against a Prone or sleeping target have advantage; ranged attacks against a Prone target have disadvantage.</li>
+        <li>Most weapons come with special weapon actions (see Lesson 5).</li>
+      </ul>
+    </div>
+  </div>
+
+  <button class="done-btn" type="button" data-done="bg3">Mark as read</button>
+</section>
+
+<!-- 9 · conditions -->
+<section id="conditions" class="lesson">
+  <p class="eyebrow">Lesson 9</p>
+  <h1>Conditions</h1>
+  <p class="lead">A <strong>condition</strong> is a status effect with fixed rules attached. They show as small icons under a character's portrait; hover one to see what it does and how long it lasts. Knowing the common ones tells you who to target and who to save.</p>
+
+  <h2>The ones that take you out of the fight</h2>
+  <div class="table-wrap">
+  <table class="stack">
+    <thead><tr><th>Condition</th><th>What it does</th><th>Typical cause</th></tr></thead>
+    <tbody>
+      <tr><td data-label="Condition">Incapacitated</td><td data-label="Effect">No actions, bonus actions or reactions.</td><td data-label="Cause">Part of many stronger conditions below.</td></tr>
+      <tr><td data-label="Condition">Stunned</td><td data-label="Effect">Incapacitated, can't move, automatically fails STR and DEX saves; attacks against it have advantage.</td><td data-label="Cause">Monk's Stunning Strike, some monsters.</td></tr>
+      <tr><td data-label="Condition">Paralysed</td><td data-label="Effect">Like Stunned, and melee hits from close by are automatic critical hits.</td><td data-label="Cause"><em>Hold Person</em>, <em>Hold Monster</em>, ghoul claws.</td></tr>
+      <tr><td data-label="Condition">Asleep / Unconscious</td><td data-label="Effect">Out cold; melee hits are critical. Taking damage wakes a sleeper; an ally can wake them with Help or a Shove.</td><td data-label="Cause"><em>Sleep</em>, drugged drinks, being Downed.</td></tr>
+      <tr><td data-label="Condition">Charmed</td><td data-label="Effect">Can't attack the one who charmed it; some charms make the target fight for the enemy.</td><td data-label="Cause"><em>Charm Person</em>, <em>Dominate Person</em>, vampires.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h2>The ones that weaken you</h2>
+  <div class="table-wrap">
+  <table class="stack">
+    <thead><tr><th>Condition</th><th>What it does</th><th>Typical cause</th></tr></thead>
+    <tbody>
+      <tr><td data-label="Condition">Blinded</td><td data-label="Effect">Can't see: your attacks have disadvantage, attacks against you have advantage.</td><td data-label="Cause"><em>Darkness</em>, fog clouds, flash effects.</td></tr>
+      <tr><td data-label="Condition">Frightened</td><td data-label="Effect">Can't move, and disadvantage on attacks and ability checks.</td><td data-label="Cause"><em>Cause Fear</em>, dragons, Intimidation effects.</td></tr>
+      <tr><td data-label="Condition">Poisoned</td><td data-label="Effect">Disadvantage on attack rolls and ability checks, and often damage each turn.</td><td data-label="Cause">Poison coatings, spiders, poison clouds.</td></tr>
+      <tr><td data-label="Condition">Prone</td><td data-label="Effect">Knocked down: melee attacks against you have advantage, ranged ones disadvantage. Getting up uses half your movement.</td><td data-label="Cause">Ice, grease, Topple, falling, Shove.</td></tr>
+      <tr><td data-label="Condition">Restrained / Ensnared</td><td data-label="Effect">Can't move; your attacks and DEX saves have disadvantage, attacks against you have advantage.</td><td data-label="Cause">Webs, <em>Entangle</em>, nets.</td></tr>
+      <tr><td data-label="Condition">Threatened</td><td data-label="Effect">An enemy is next to you: your ranged attacks and ranged spells have disadvantage.</td><td data-label="Cause">Standing in melee range of a hostile.</td></tr>
+      <tr><td data-label="Condition">Silenced</td><td data-label="Effect">Can't cast spells with a spoken component (most of them).</td><td data-label="Cause"><em>Silence</em>.</td></tr>
+      <tr><td data-label="Condition">Slowed</td><td data-label="Effect">Half speed, −2 AC and DEX saves, fewer actions.</td><td data-label="Cause"><em>Slow</em>, some surfaces.</td></tr>
+      <tr><td data-label="Condition">Bleeding</td><td data-label="Effect">Damage each turn, and disadvantage on CON saves; healing stops it.</td><td data-label="Cause">Lacerate weapon action, some monsters.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h2>The good ones</h2>
+  <ul>
+    <li><strong>Hidden</strong>: enemies don't know where you are. Your next attack has advantage. See Lesson 19.</li>
+    <li><strong>Invisible</strong>: can't be seen. Advantage on your attacks, disadvantage on attacks against you. Attacking or casting usually ends the <em>Invisibility</em> spell.</li>
+    <li><strong>Hasted</strong>: double movement, +2 AC, and an extra (limited) action each turn. When it ends you are <em>Lethargic</em> and lose a turn.</li>
+    <li><strong>Blessed</strong>: +1d4 to attack rolls and saving throws (from <em>Bless</em>).</li>
+  </ul>
+
+  <details>
+    <summary>How to get rid of conditions</summary>
+    <ul>
+      <li><strong>Wait it out:</strong> most last a set number of turns, or allow a new saving throw at the end of each turn.</li>
+      <li><strong>Break concentration:</strong> many are spells. Hit the caster and they may lose concentration, ending the effect for everyone.</li>
+      <li><strong>Spells:</strong> <em>Lesser Restoration</em> removes blindness, disease, paralysis and poison. <em>Remove Curse</em> handles curses.</li>
+      <li><strong>Items:</strong> an <em>Antidote</em> cures poison; drinking or being hit by water ends Burning.</li>
+      <li><strong>Help action:</strong> wakes a sleeping ally and frees one who is stuck in a web or similar.</li>
+    </ul>
+  </details>
+
+  <button class="done-btn" type="button" data-done="conditions">Mark as read</button>
+</section>
+
+<!-- 10 · races -->
+<section id="races" class="lesson">
+  <p class="eyebrow">Lesson 10</p>
+  <h1>Races</h1>
+  <p class="lead">Your <strong>race</strong> (the game also calls it species) gives a handful of fixed traits: sight in the dark, a resistance, a few free spells or weapon proficiencies. It matters much less than your class, so pick what you like the look and story of.</p>
+
+  <p class="tip"><strong>Ability bonuses aren't tied to race.</strong> In BG3 every race gets +2 to one ability and +1 to another, and <em>you</em> choose which. There's no "wrong race" for a class.</p>
+
+  <h2>What to look for</h2>
+  <ul>
+    <li><strong>Darkvision</strong> (12 m) lets you see in darkness as if it were dim light. <strong>Superior darkvision</strong> reaches 24 m. Many dungeons are dark, so this is the most useful single trait. At least one party member should have it.</li>
+    <li><strong>Speed</strong>: most races move 9 m; Wood Elves 10.5 m; Dwarves, Gnomes and Halflings 7.5 m.</li>
+    <li><strong>Racial spells</strong>: some races get a cantrip, then extra spells at levels 3 and 5, each castable once per long rest.</li>
+    <li><strong>Weapon and armour proficiencies</strong>: handy for casters, who then get better gear without spending a feat.</li>
+  </ul>
+
+  <div class="table-wrap">
+  <table class="stack">
+    <thead><tr><th>Race</th><th>Standout traits</th><th>Subraces</th></tr></thead>
+    <tbody>
+      <tr><td data-label="Race">Human</td><td data-label="Traits">Extra skill proficiency, polearm and light armour/shield proficiency, 25% more carrying capacity. No darkvision.</td><td data-label="Subraces">none</td></tr>
+      <tr><td data-label="Race">Elf</td><td data-label="Traits">Darkvision, immune to magical sleep, advantage against charm, Perception proficiency, sword and bow proficiency.</td><td data-label="Subraces">High Elf (free Wizard cantrip), Wood Elf (faster, Stealth)</td></tr>
+      <tr><td data-label="Race">Drow</td><td data-label="Traits">Superior darkvision, elven charm/sleep protection, <em>Faerie Fire</em> and <em>Darkness</em> as racial spells.</td><td data-label="Subraces">Lolth-Sworn, Seldarine (differ in story reactions)</td></tr>
+      <tr><td data-label="Race">Half-Elf</td><td data-label="Traits">Darkvision, charm/sleep protection, light armour, shield and polearm proficiency: a solid all-rounder.</td><td data-label="Subraces">High, Wood, Drow</td></tr>
+      <tr><td data-label="Race">Half-Orc</td><td data-label="Traits">Darkvision, Intimidation, extra die on melee crits, and once per long rest drop to 1 HP instead of 0.</td><td data-label="Subraces">none</td></tr>
+      <tr><td data-label="Race">Dwarf</td><td data-label="Traits">Darkvision, advantage against and resistance to poison, axe and hammer proficiency.</td><td data-label="Subraces">Gold (+1 HP per level), Shield (medium armour), Duergar (superior darkvision, <em>Enlarge</em>, <em>Invisibility</em>)</td></tr>
+      <tr><td data-label="Race">Halfling</td><td data-label="Traits">Re-roll natural 1s on attacks, checks and saves; advantage against fear. Slow.</td><td data-label="Subraces">Lightfoot (better Stealth), Strongheart (poison resistance)</td></tr>
+      <tr><td data-label="Race">Gnome</td><td data-label="Traits">Advantage on INT, WIS and CHA saving throws. Slow.</td><td data-label="Subraces">Forest (talk to animals), Deep (superior darkvision, Stealth), Rock (History expertise)</td></tr>
+      <tr><td data-label="Race">Tiefling</td><td data-label="Traits">Darkvision, fire resistance, a set of racial spells depending on bloodline.</td><td data-label="Subraces">Asmodeus, Mephistopheles, Zariel</td></tr>
+      <tr><td data-label="Race">Githyanki</td><td data-label="Traits">Sword and medium armour proficiency, <em>Misty Step</em> and <em>Enhance Leap</em>, and each long rest choose an ability to become proficient in all of its skills. No darkvision.</td><td data-label="Subraces">none</td></tr>
+      <tr><td data-label="Race">Dragonborn</td><td data-label="Traits">A breath weapon and resistance to one element, set by the colour of your ancestor. No darkvision.</td><td data-label="Subraces">Ten colours, e.g. Red/Gold/Brass (fire), Blue/Bronze (lightning), Silver/White (cold)</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <details>
+    <summary>Custom character, Origin character or Dark Urge?</summary>
+    <ul>
+      <li><strong>Custom</strong>: you design everything. The usual choice for a first playthrough.</li>
+      <li><strong>Origin</strong>: play as one of the companions (Astarion, Shadowheart, Lae'zel and so on) with their own story. Their race is fixed; class can be changed.</li>
+      <li><strong>The Dark Urge</strong>: a custom-looking character with a fixed, darker backstory. Best saved for a second run.</li>
+    </ul>
+  </details>
+
+  <button class="done-btn" type="button" data-done="races">Mark as read</button>
+</section>
+
+<!-- 11 · classes -->
+<section id="classes" class="lesson">
+  <p class="eyebrow">Lesson 11</p>
+  <h1>The twelve classes</h1>
+  <p class="lead">Your <strong>class</strong> decides what your character does in a fight. Here is just enough to pick one, plus the subclasses you'll choose between. The "main ability" is where your highest score should go. Hit die is how tough the class is (bigger die, more HP per level).</p>
+
+  <div class="class-filter btn-row" role="group" aria-label="Filter classes">
+    <button type="button" class="chip is-on" data-role="all">All</button>
+    <button type="button" class="chip" data-role="melee">Melee</button>
+    <button type="button" class="chip" data-role="ranged">Ranged</button>
+    <button type="button" class="chip" data-role="caster">Full caster</button>
+    <button type="button" class="chip" data-role="support">Support</button>
+  </div>
+
+  <div class="class-grid" id="classGrid">
+    <article class="class-card" data-roles="melee"><header><h3>Barbarian</h3><span class="stat">STR</span></header><p>A furious front-liner. <strong>Rage</strong> gives bonus damage and halves physical damage taken, so Barbarians charge in and soak hits. No spellcasting and almost nothing to manage; a great first class.</p><footer>Hit die d12 · Saves STR, CON<br><span class="subs">Subclass at level 3: Berserker, Wildheart, Wild Magic, Giant</span></footer></article>
+    <article class="class-card" data-roles="caster support"><header><h3>Bard</h3><span class="stat">CHA</span></header><p>A versatile performer who mixes healing, crowd control and buffs with the best skill checks in the game. <strong>Bardic Inspiration</strong> adds dice to allies' rolls. Excellent party "face" for dialogue.</p><footer>Hit die d8 · Saves DEX, CHA<br><span class="subs">Subclass at level 3: Lore, Valour, Swords, Glamour</span></footer></article>
+    <article class="class-card" data-roles="caster support melee"><header><h3>Cleric</h3><span class="stat">WIS</span></header><p>A divine caster and the classic healer, but also a capable fighter in medium or heavy armour. The <strong>domain</strong> you choose at level 1 changes the class a lot, from Life (healing) to Tempest (lightning).</p><footer>Hit die d8 · Saves WIS, CHA<br><span class="subs">Subclass at level 1: Life, Light, Knowledge, Nature, Tempest, Trickery, War, Death</span></footer></article>
+    <article class="class-card" data-roles="caster support melee"><header><h3>Druid</h3><span class="stat">WIS</span></header><p>A nature caster with area control spells and summons, who can <strong>Wild Shape</strong> into animals like bears and spiders. Circle of the Moon druids fight mostly in beast form.</p><footer>Hit die d8 · Saves INT, WIS<br><span class="subs">Subclass at level 2: Land, Moon, Spores, Stars</span></footer></article>
+    <article class="class-card" data-roles="melee ranged"><header><h3>Fighter</h3><span class="stat">STR / DEX</span></header><p>The weapons expert: proficient with everything, gets <strong>Extra Attack</strong> at level 5 and <strong>Action Surge</strong> for a whole extra action. Simple, reliable, and strong at any level. Works with melee or bows.</p><footer>Hit die d10 · Saves STR, CON<br><span class="subs">Subclass at level 3: Battle Master, Champion, Eldritch Knight, Arcane Archer</span></footer></article>
+    <article class="class-card" data-roles="melee"><header><h3>Monk</h3><span class="stat">DEX + WIS</span></header><p>An unarmed martial artist who fights without armour and makes several punches per turn. Spends <strong>ki</strong> on flurries, stuns and mobility. Fast and fragile; rewards careful positioning.</p><footer>Hit die d8 · Saves STR, DEX<br><span class="subs">Subclass at level 3: Open Hand, Shadow, Four Elements, Drunken Master</span></footer></article>
+    <article class="class-card" data-roles="melee support"><header><h3>Paladin</h3><span class="stat">STR + CHA</span></header><p>A holy knight in heavy armour who spends spell slots on <strong>Divine Smite</strong> for huge burst damage, plus auras and some healing. Bound by an <strong>oath</strong>: break it and you lose powers.</p><footer>Hit die d10 · Saves WIS, CHA<br><span class="subs">Subclass at level 1: Devotion, Ancients, Vengeance, Crown (plus Oathbreaker)</span></footer></article>
+    <article class="class-card" data-roles="ranged melee"><header><h3>Ranger</h3><span class="stat">DEX + WIS</span></header><p>A hunter-scout, usually with a bow, backed by a handful of nature spells and sometimes an animal companion. Picks <strong>favoured enemies</strong> and terrain that give out-of-combat perks.</p><footer>Hit die d10 · Saves STR, DEX<br><span class="subs">Subclass at level 3: Hunter, Beast Master, Gloom Stalker, Swarmkeeper</span></footer></article>
+    <article class="class-card" data-roles="melee ranged"><header><h3>Rogue</h3><span class="stat">DEX</span></header><p>A skill specialist with <strong>Sneak Attack</strong>, big extra damage once per turn when attacking with advantage or when an ally stands next to the target. <strong>Cunning Action</strong> lets them Dash, Disengage or Hide as a bonus action. The party's lockpicker and trap-disarmer.</p><footer>Hit die d8 · Saves DEX, INT<br><span class="subs">Subclass at level 3: Thief, Assassin, Arcane Trickster, Swashbuckler</span></footer></article>
+    <article class="class-card" data-roles="caster ranged"><header><h3>Sorcerer</h3><span class="stat">CHA</span></header><p>A born caster with fewer spells than a Wizard but <strong>Metamagic</strong> to bend them: twin a spell onto two targets, cast it quicker, extend its range. Pure damage and control.</p><footer>Hit die d6 · Saves CON, CHA<br><span class="subs">Subclass at level 1: Draconic, Wild Magic, Storm, Shadow</span></footer></article>
+    <article class="class-card" data-roles="caster ranged"><header><h3>Warlock</h3><span class="stat">CHA</span></header><p>Gets magic from a patron. Only a couple of spell slots, but they return on a <strong>short rest</strong> and are always cast at max level. <strong>Eldritch Blast</strong> is the best damage cantrip in the game.</p><footer>Hit die d8 · Saves WIS, CHA<br><span class="subs">Subclass at level 1: Fiend, Archfey, Great Old One, Hexblade</span></footer></article>
+    <article class="class-card" data-roles="caster ranged"><header><h3>Wizard</h3><span class="stat">INT</span></header><p>The scholar with the biggest spell list, who can learn more by copying <strong>scrolls</strong> into a spellbook. Very fragile, but answers almost any problem with the right spell.</p><footer>Hit die d6 · Saves INT, WIS<br><span class="subs">Subclass at level 2: eight schools (Evocation, Abjuration, Necromancy…) and Bladesinging</span></footer></article>
+  </div>
+
+  <details>
+    <summary>Multiclassing, briefly</summary>
+    <p>BG3 lets you put levels into more than one class (for instance 2 Fighter / 10 Wizard). Lesson 13 explains how it works; on a first playthrough, sticking to one class is the safe choice.</p>
+  </details>
+
+  <button class="done-btn" type="button" data-done="classes">Mark as read</button>
+</section>
+
+<!-- 12 · backgrounds -->
+<section id="backgrounds" class="lesson">
+  <p class="eyebrow">Lesson 12</p>
+  <h1>Backgrounds, skills &amp; Inspiration</h1>
+  <p class="lead">Your <strong>background</strong> is who you were before the adventure. In game terms it gives you two skill proficiencies, some special dialogue lines, and a way to earn <strong>Inspiration</strong>.</p>
+
+  <h2>The eighteen skills</h2>
+  <p>Each skill belongs to one ability. You're proficient in the skills from your background plus a few chosen from your class list.</p>
+  <div class="table-wrap">
+  <table class="stack">
+    <thead><tr><th>Ability</th><th>Skills and when BG3 uses them</th></tr></thead>
+    <tbody>
+      <tr><td data-label="Ability">STR</td><td data-label="Skills"><strong>Athletics</strong>: Shove, resisting Shoves, forcing things, some climbing and grappling checks.</td></tr>
+      <tr><td data-label="Ability">DEX</td><td data-label="Skills"><strong>Acrobatics</strong>: resisting Shoves, keeping balance. <strong>Sleight of Hand</strong>: lockpicking, disarming traps, pickpocketing. <strong>Stealth</strong>: staying hidden.</td></tr>
+      <tr><td data-label="Ability">INT</td><td data-label="Skills"><strong>Arcana</strong>: magic objects and runes. <strong>History</strong>: recognising people and events. <strong>Investigation</strong>: examining clues and bodies. <strong>Nature</strong>: plants, beasts, terrain. <strong>Religion</strong>: gods and holy sites.</td></tr>
+      <tr><td data-label="Ability">WIS</td><td data-label="Skills"><strong>Perception</strong>: spotting traps, secrets, hidden enemies (the most important skill in the game). <strong>Insight</strong>: reading lies and motives. <strong>Medicine</strong>: examining the sick and dead. <strong>Survival</strong>: tracking. <strong>Animal Handling</strong>: calming beasts.</td></tr>
+      <tr><td data-label="Ability">CHA</td><td data-label="Skills"><strong>Persuasion</strong>, <strong>Deception</strong>, <strong>Intimidation</strong>: the three main ways to win an argument. <strong>Performance</strong>: music and acting, mostly for flavour and Bards.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h2>Backgrounds</h2>
+  <div class="bg-grid">
+    <div><strong>Acolyte</strong><span>Insight, Religion</span></div>
+    <div><strong>Charlatan</strong><span>Deception, Sleight of Hand</span></div>
+    <div><strong>Criminal</strong><span>Deception, Stealth</span></div>
+    <div><strong>Entertainer</strong><span>Acrobatics, Performance</span></div>
+    <div><strong>Folk Hero</strong><span>Animal Handling, Survival</span></div>
+    <div><strong>Guild Artisan</strong><span>Insight, Persuasion</span></div>
+    <div><strong>Haunted One</strong><span>Medicine, Intimidation</span></div>
+    <div><strong>Noble</strong><span>History, Persuasion</span></div>
+    <div><strong>Outlander</strong><span>Athletics, Survival</span></div>
+    <div><strong>Sage</strong><span>Arcana, History</span></div>
+    <div><strong>Soldier</strong><span>Athletics, Intimidation</span></div>
+    <div><strong>Urchin</strong><span>Sleight of Hand, Stealth</span></div>
+  </div>
+  <p class="tip"><strong>Picking one:</strong> choose skills your class list doesn't offer, or double up on your role. A CHA character who will do the talking wants Persuasion (Noble, Guild Artisan). A Rogue already gets Stealth, so Sage or Acolyte adds knowledge skills instead.</p>
+
+  <h2>Inspiration</h2>
+  <p>Each background has little goals: an Acolyte helping a priest, a Criminal getting away with a theft, a Sage finding a rare book. Doing one earns an <strong>Inspiration</strong> point. The whole party shares a pool of up to <strong>4</strong>.</p>
+  <p>Spend one after <em>failing</em> a visible check (mostly dialogue) to re-roll it, keeping all your bonuses. It can't re-roll attacks, saving throws or background rolls like passive Perception. If you're at 4, any extra ones are wasted, so don't hoard them.</p>
+
+  <button class="done-btn" type="button" data-done="backgrounds">Mark as read</button>
+</section>
+
+<!-- 13 · levelling -->
+<section id="levelling" class="lesson">
+  <p class="eyebrow">Lesson 13</p>
+  <h1>Levelling up, feats &amp; multiclassing</h1>
+  <p class="lead">You earn experience (XP) from fights, quests and clever solutions. Each new <strong>level</strong>, up to 12, brings more hit points and new class features. You choose when to level: a glowing icon on the portrait means it's ready.</p>
+
+  <h2>What you get along the way</h2>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>Level</th><th>Milestone</th></tr></thead>
+    <tbody>
+      <tr><td>1–3</td><td>Subclass choice (level 1, 2 or 3 depending on class, see below). Quick levels.</td></tr>
+      <tr><td>4</td><td>First <strong>feat</strong>.</td></tr>
+      <tr><td>5</td><td>The big power jump: proficiency +3, <strong>Extra Attack</strong> for martial classes, level 3 spells (<em>Fireball</em>) for casters, stronger cantrips.</td></tr>
+      <tr><td>6–7</td><td>Subclass features. Fighters get a bonus feat at 6.</td></tr>
+      <tr><td>8</td><td>Second feat.</td></tr>
+      <tr><td>9–11</td><td>Proficiency +4, level 5 and 6 spells, a third attack for Fighters at 11. Rogues get a bonus feat at 10; cantrips improve again at 10.</td></tr>
+      <tr><td>12</td><td>Third feat. Level cap.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h2>Feats</h2>
+  <p>At each feat level you pick either <strong>Ability Improvement</strong> (+2 to one score or +1 to two, max 20) or a <strong>feat</strong>: a special ability. Popular choices:</p>
+  <div class="feat-grid">
+    <div><strong>Great Weapon Master</strong><span>Trade −5 to hit for +10 damage with two-handed weapons; bonus attack after a crit or kill.</span></div>
+    <div><strong>Sharpshooter</strong><span>The same −5/+10 trade for ranged weapons, and no penalty from low ground.</span></div>
+    <div><strong>Alert</strong><span>+5 initiative and you can't be Surprised.</span></div>
+    <div><strong>War Caster</strong><span>Advantage on concentration saves. Great for Clerics and Druids.</span></div>
+    <div><strong>Tough</strong><span>+2 max HP per level.</span></div>
+    <div><strong>Lucky</strong><span>Three points per long rest to gain advantage or make an enemy re-roll.</span></div>
+    <div><strong>Resilient</strong><span>+1 to an ability and proficiency in its saving throw (CON is the classic choice).</span></div>
+    <div><strong>Polearm Master</strong><span>Bonus-action butt-end strike, and attack enemies as they walk into reach.</span></div>
+    <div><strong>Sentinel</strong><span>Punish enemies who attack your allies; opportunity attacks stop their movement.</span></div>
+    <div><strong>Dual Wielder</strong><span>Wield two non-light weapons, +1 AC while doing so.</span></div>
+  </div>
+  <p class="tip"><strong>Rule of thumb:</strong> if your main ability is odd (17), take a feat that also gives +1, or Ability Improvement to reach 18 or 20. Otherwise damage feats for fighters and War Caster or Resilient for casters.</p>
+
+  <h2>Subclasses</h2>
+  <p>Every class splits into several <strong>subclasses</strong> that change its style. Clerics, Paladins, Sorcerers and Warlocks choose at level 1; Druids and Wizards at 2; everyone else at 3. Lesson 11 lists them per class.</p>
+
+  <h2>Multiclassing</h2>
+  <p>When you level up you may take the new level in a <em>different</em> class. A Fighter 2 / Wizard 10 gets Action Surge and heavy weapon skills on top of wizard magic. BG3 has no ability score requirements for this (tabletop does), but:</p>
+  <ul>
+    <li>Every level outside your main class delays its big features (Extra Attack, level 3 spells).</li>
+    <li>Spell slots from different caster classes combine, but you learn spells separately per class.</li>
+    <li>Warlock slots stay separate and still come back on a short rest.</li>
+    <li>It's disabled on Explorer difficulty.</li>
+  </ul>
+  <p>Recommendation: stay single-class on your first run. It's always strong enough.</p>
+
+  <details>
+    <summary>Changing your mind: respec</summary>
+    <p>Talk to <strong>Withers</strong> in camp (you meet him early in Act 1). For 100 gold he resets a character to level 1 and lets you rebuild them: new class, abilities, even a new starting ability spread. Levels are then re-taken instantly. Race and background can't be changed.</p>
+  </details>
+
+  <button class="done-btn" type="button" data-done="levelling">Mark as read</button>
+</section>
+
+<!-- 14 · weapons -->
+<section id="weapons" class="lesson">
+  <p class="eyebrow">Lesson 14</p>
+  <h1>Weapons &amp; damage types</h1>
+  <p class="lead">Weapons are sorted into <strong>simple</strong> (clubs, daggers, spears, light crossbows) and <strong>martial</strong> (swords, axes, longbows). Casters are usually trained with simple weapons only; fighters with both. Beyond that, a weapon's <strong>properties</strong> decide how you use it.</p>
+
+  <h2>Weapon properties</h2>
+  <div class="table-wrap">
+  <table class="stack">
+    <thead><tr><th>Property</th><th>What it means</th></tr></thead>
+    <tbody>
+      <tr><td data-label="Property">Finesse</td><td data-label="Meaning">Uses the higher of STR or DEX. Daggers, rapiers, scimitars, shortswords.</td></tr>
+      <tr><td data-label="Property">Light</td><td data-label="Meaning">Can be dual-wielded: attack with the off-hand as a bonus action.</td></tr>
+      <tr><td data-label="Property">Heavy / Two-handed</td><td data-label="Meaning">Needs both hands, big damage dice. Greatswords, greataxes, mauls.</td></tr>
+      <tr><td data-label="Property">Versatile</td><td data-label="Meaning">One hand (with a shield) or two hands for a bigger die. Longswords, spears.</td></tr>
+      <tr><td data-label="Property">Reach</td><td data-label="Meaning">Hits enemies 2.5 m away instead of 1.5 m. Glaives, halberds, pikes.</td></tr>
+      <tr><td data-label="Property">Thrown</td><td data-label="Meaning">Can be thrown as a ranged attack. Daggers, handaxes, javelins.</td></tr>
+      <tr><td data-label="Property">+1, +2, +3</td><td data-label="Meaning">Magic enchantment: adds that number to attack <em>and</em> damage rolls.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p class="tip"><strong>BG3 convenience:</strong> each character has a <strong>melee set</strong> and a <strong>ranged set</strong> equipped at the same time. Using whichever you need costs nothing extra. Always give your melee fighters a bow for enemies out of reach.</p>
+
+  <h2>Damage types</h2>
+  <p>Every hit has a type. That matters because creatures can be <strong>resistant</strong> (take half), <strong>vulnerable</strong> (take double) or <strong>immune</strong> (take none).</p>
+  <div class="dmg-grid">
+    <div><strong>Physical</strong><span>Slashing, piercing, bludgeoning. From weapons. Skeletons are vulnerable to bludgeoning; many monsters resist non-magical physical damage.</span></div>
+    <div><strong>Elemental</strong><span>Fire, cold, lightning, acid, thunder. From spells and surfaces. Devils resist fire; Wet targets take extra cold and lightning.</span></div>
+    <div><strong>Magical</strong><span>Force (almost nothing resists it), radiant (great against undead), necrotic, poison (very commonly resisted), psychic.</span></div>
+  </div>
+
+  <details>
+    <summary>Fighting styles and dual-wielding</summary>
+    <p>Fighters, Paladins and Rangers pick a <strong>fighting style</strong>: Archery (+2 to hit with ranged weapons), Defence (+1 AC in armour), Duelling (+2 damage with a one-handed weapon and no second weapon), Great Weapon Fighting (re-roll 1s and 2s on damage), Protection, or Two-Weapon Fighting. Normally your off-hand attack doesn't add your ability modifier to damage; Two-Weapon Fighting fixes that.</p>
+  </details>
+  <details>
+    <summary>Weapon actions</summary>
+    <p>Being proficient with a weapon unlocks its special moves in the hotbar: <em>Topple</em> (knock prone) with quarterstaffs, <em>Cleave</em> (hit several enemies) with greataxes, <em>Lacerate</em> (bleeding) with slashing weapons, <em>Piercing Shot</em> with bows, and more. They're free extras that recharge on a short rest, so use them.</p>
+  </details>
+
+  <button class="done-btn" type="button" data-done="weapons">Mark as read</button>
+</section>
+
+<!-- 15 · armour -->
+<section id="armour" class="lesson">
+  <p class="eyebrow">Lesson 15</p>
+  <h1>Armour, equipment &amp; magic items</h1>
+  <p class="lead">Lesson 6 covered how armour sets your AC. This lesson is about the gear itself: what goes where, how to read rarity, and why magic items are the real power curve in BG3.</p>
+
+  <h2>Armour at a glance</h2>
+  <div class="table-wrap">
+  <table class="stack">
+    <thead><tr><th>Type</th><th>Examples (base AC)</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td data-label="Type">Light</td><td data-label="Examples">Padded 11, Leather 11, Studded leather 12</td><td data-label="Notes">Full DEX bonus. Best for high-DEX characters.</td></tr>
+      <tr><td data-label="Type">Medium</td><td data-label="Examples">Hide 12, Chain shirt 13, Scale 14, Breastplate 14, Half plate 15</td><td data-label="Notes">DEX bonus up to +2. Scale and half plate impose disadvantage on Stealth.</td></tr>
+      <tr><td data-label="Type">Heavy</td><td data-label="Examples">Ring mail 14, Chain mail 16, Splint 17, Plate 18</td><td data-label="Notes">No DEX bonus, disadvantage on Stealth. Best for STR characters.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h2>Equipment slots</h2>
+  <p>Head, cloak, body armour, gloves, boots, amulet, two rings, main hand and off hand (melee), and a ranged weapon set. There are also cosmetic camp clothes and a musical instrument slot that have no combat effect.</p>
+
+  <h2>Rarity</h2>
+  <p>Item names are coloured by rarity: <span class="r r-common">Common</span> <span class="r r-uncommon">Uncommon</span> <span class="r r-rare">Rare</span> <span class="r r-vrare">Very rare</span> <span class="r r-legend">Legendary</span>. Higher rarity usually means stronger or unique effects, but read the tooltip: a well-chosen uncommon ring can beat a rare one that doesn't suit the character.</p>
+
+  <p class="tip"><strong>BG3 vs tabletop:</strong> there's no attunement limit. In tabletop you can only use three magic items at once; in BG3 every slot can hold one. Builds often revolve around combining items, like a set of gear that adds lightning damage and another that triggers on it.</p>
+
+  <details>
+    <summary>Things to check in a tooltip</summary>
+    <ul>
+      <li>Is it a weapon or armour type this character is proficient with? (A warning appears if not.)</li>
+      <li>Passive effects: "+1 to saving throws", "resistance to fire".</li>
+      <li>Granted spells or actions, often usable once per short or long rest.</li>
+      <li>Conditions it applies: many items trigger on Wet, Burning or Radiating targets.</li>
+    </ul>
+  </details>
+
+  <button class="done-btn" type="button" data-done="armour">Mark as read</button>
+</section>
+
+<!-- 16 · consumables -->
+<section id="consumables" class="lesson">
+  <p class="eyebrow">Lesson 16</p>
+  <h1>Potions, scrolls &amp; alchemy</h1>
+  <p class="lead">Consumables are single-use items. The game hands you many, and new players tend to hoard them. Use them: most fights get easier and the supply keeps coming.</p>
+
+  <div class="two-col">
+    <div class="card"><h3>Potions</h3><p>Instant effects. Healing potions come in four sizes (from 2d4+2 up to 10d4+20 HP). Drinking one is a bonus action; you can also <em>throw</em> it to heal allies in a small area. Other potions give resistances, invisibility, flight or speed.</p></div>
+    <div class="card"><h3>Elixirs</h3><p>Last until your next long rest, but only one can be active at a time. Examples: Hill Giant Strength (STR 21), Bloodlust (temporary HP on kills), Viciousness (crit on 19). Drink one before a hard day.</p></div>
+    <div class="card"><h3>Scrolls</h3><p>A one-shot spell. In BG3 <strong>any</strong> character can read a scroll, even a Barbarian. Wizards can instead copy a scroll into their spellbook for gold to learn it permanently. Keep a <em>Revivify</em> scroll handy.</p></div>
+    <div class="card"><h3>Throwables &amp; arrows</h3><p>Grenades (Alchemist's Fire, Acid Vial, smokepowder bombs) are thrown with an action. Special arrows (fire, ice, lightning) are used from your bow. Coatings go on a weapon for extra poison or other damage for a few turns.</p></div>
+  </div>
+
+  <h2>Alchemy</h2>
+  <p>Out of combat, open the <strong>Alchemy</strong> panel (<kbd>H</kbd> on PC). The process has two steps:</p>
+  <ol>
+    <li><strong>Extract:</strong> turn three identical ingredients (herbs, mushrooms, monster parts) into one <em>extract</em>, like a Salt of Mugwort. This also cuts weight.</li>
+    <li><strong>Brew:</strong> combine a specific extract with a generic one (any "salt", "essence", "ash" etc.) to make potions, elixirs, grenades or coatings.</li>
+  </ol>
+  <p>Pick up every plant you see; ingredients go into a weightless alchemy pouch. No skill check is needed.</p>
+
+  <button class="done-btn" type="button" data-done="consumables">Mark as read</button>
+</section>
+
+<!-- 17 · inventory -->
+<section id="inventory" class="lesson">
+  <p class="eyebrow">Lesson 17</p>
+  <h1>Inventory, weight &amp; trading</h1>
+  <p class="lead">Everything has weight, and characters can only carry so much. Managing that, and turning loot into gold, is a small but constant part of the game.</p>
+
+  <h2>Carrying capacity</h2>
+  <div class="formula">capacity = 40 + 10 × STR (kg)</div>
+  <p>Above 80% of capacity you are <strong>Encumbered</strong> (slower, can jump less). Close to full you are <strong>Heavily Encumbered</strong>: you can barely move and can't jump. A STR 8 Wizard has a capacity of 120 kg and becomes Encumbered from about 96 kg; a STR 18 Barbarian has 220 kg and is fine up to about 176 kg.</p>
+
+  <h2>Keeping it manageable</h2>
+  <ul>
+    <li><strong>Send to Camp</strong>: right-click any item to move it into the traveller's chest at camp. Anyone can access that chest from camp.</li>
+    <li><strong>Food</strong> is heavy. Send camp supplies to camp as you find them; they're only used there.</li>
+    <li><strong>Containers</strong> like backpacks and pouches can hold items; mark stuff to sell with the <em>Wares</em> tag so the trade screen offers it first.</li>
+    <li>Heavy armour, weapons you won't use and ornaments sell well; drop or sell junk rather than carrying it around.</li>
+  </ul>
+
+  <h2>Trading</h2>
+  <p>Traders buy and sell at prices that depend on their <strong>attitude</strong> towards the character doing the trade. Attitude rises with good dialogue outcomes and with gifts of gold, and falls if you are rude or caught stealing. Let the character with the highest CHA do the shopping. Most traders also restock after each long rest.</p>
+
+  <button class="done-btn" type="button" data-done="inventory">Mark as read</button>
+</section>
+
+<!-- 18 · dialogue -->
+<section id="dialogue" class="lesson">
+  <p class="eyebrow">Lesson 18</p>
+  <h1>Dialogue &amp; skill checks</h1>
+  <p class="lead">Half of BG3 happens in conversations, and many of them can end a fight before it starts, or start one. Dialogue uses the same d20 check from Lesson 4, just shown on screen.</p>
+
+  <h2>Reading a dialogue option</h2>
+  <p>Options with a tag in brackets need a roll or a trait:</p>
+  <ul>
+    <li><strong>[Persuasion]</strong>, <strong>[Deception]</strong>, <strong>[Intimidation]</strong>, <strong>[Insight]</strong>, <strong>[Arcana]</strong>… a skill check.</li>
+    <li><strong>[Paladin]</strong>, <strong>[Drow]</strong>, <strong>[Noble]</strong>, <strong>[Sage]</strong>… an option only for that class, race or background, usually without a roll.</li>
+  </ul>
+  <p>When you pick a check, the dice screen shows the DC, your bonus, and any advantage. You can then add a bonus before rolling (for example from a Bard or the <em>Guidance</em> cantrip) and, if it fails, spend <strong>Inspiration</strong> to re-roll.</p>
+
+  <h2>Who is talking matters</h2>
+  <p>The check uses the stats of the character who <em>started</em> the conversation. Before walking up to anyone important, select your best talker (high CHA, proficient in Persuasion). Other party members can join with <em>Listen in</em>, but don't roll.</p>
+
+  <div class="two-col">
+    <div class="card"><h3>Buff before talking</h3><p>Cast <em>Guidance</em> (+1d4 to a check), <em>Enhance Ability</em> (advantage on a chosen ability's checks) or <em>Friends</em> (advantage on CHA checks) before starting the conversation.</p></div>
+    <div class="card"><h3>Failing isn't game over</h3><p>A failed check usually opens a different path, not a dead end. Many players reload to retry, which is allowed except in Honour mode; you'll often find the failure more interesting.</p></div>
+  </div>
+
+  <details>
+    <summary>Hidden checks during conversations</summary>
+    <p>Some checks happen automatically, without a dice screen: a passive Insight check to notice someone lying, or Perception during a scene. These can't be re-rolled with Inspiration.</p>
+  </details>
+
+  <button class="done-btn" type="button" data-done="dialogue">Mark as read</button>
+</section>
+
+<!-- 19 · stealth -->
+<section id="stealth" class="lesson">
+  <p class="eyebrow">Lesson 19</p>
+  <h1>Stealth, light &amp; vision</h1>
+  <p class="lead">Being unseen is one of the strongest positions in BG3. It lets you set up the start of a fight, steal, or skip one entirely.</p>
+
+  <h2>How hiding works</h2>
+  <ol>
+    <li>Toggle <strong>Sneak</strong> (or use the <em>Hide</em> action in combat).</li>
+    <li>Enemies now show <strong>vision cones</strong>. Stay out of them and you stay Hidden.</li>
+    <li>Walking into a cone starts a Stealth check against their Perception. Standing in plain sight right in front of them fails automatically.</li>
+    <li>Attacking from Hidden gives advantage and ends your hiding (unless you have a feature that says otherwise).</li>
+  </ol>
+
+  <h2>Light and obscurity</h2>
+  <div class="table-wrap">
+  <table class="stack">
+    <thead><tr><th>Area</th><th>Effect</th></tr></thead>
+    <tbody>
+      <tr><td data-label="Area">Clear (well lit)</td><td data-label="Effect">Anyone in line of sight is seen. Hiding here fails.</td></tr>
+      <tr><td data-label="Area">Lightly obscured (dim light, shadow)</td><td data-label="Effect">Stealth vs Perception decides whether you're noticed.</td></tr>
+      <tr><td data-label="Area">Heavily obscured (darkness, thick fog)</td><td data-label="Effect">Can't be seen by normal sight. Those inside are effectively blinded.</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>A small eye icon on the character portrait shows how obscured they are. <strong>Darkvision</strong> reduces obscurity by one step for the viewer, which is why cave-dwelling enemies spot you in the dark and why you want it in your own party.</p>
+
+  <h2>Starting fights on your terms</h2>
+  <p>If your party is hidden when a fight starts, enemies that didn't see you are <strong>Surprised</strong> and skip their first turn. Common opening: sneak everyone into position, ranged characters on high ground, then open with your strongest area spell.</p>
+
+  <details>
+    <summary>Invisibility vs hiding</summary>
+    <p><em>Invisibility</em> (spell or potion) means you can't be seen at all, even in the open, and you get advantage on your first attack. But enemies may still notice noise, and attacking or casting ends it. Hiding depends on cones and light; invisibility doesn't.</p>
+  </details>
+
+  <button class="done-btn" type="button" data-done="stealth">Mark as read</button>
+</section>
+
+<!-- 20 · locks -->
+<section id="locks" class="lesson">
+  <p class="eyebrow">Lesson 20</p>
+  <h1>Locks, traps, secrets &amp; crime</h1>
+  <p class="lead">Exploration is full of locked chests, trapped floors and hidden switches. Most of it runs on DEX and WIS checks, and on keeping the right tools in your pack.</p>
+
+  <div class="two-col">
+    <div class="card"><h3>Locks</h3><p>Pick with <strong>Thieves' Tools</strong> (consumed on a failed attempt): a Sleight of Hand check. No tools? Cast <em>Knock</em>, find the key, or just attack the lock or chest until it breaks (noisy, and a crime if it's someone's property).</p></div>
+    <div class="card"><h3>Traps</h3><p>Found by <strong>passive Perception</strong> as you walk near them; a red outline appears. Disarm with a <strong>Trap Disarm Toolkit</strong> (Sleight of Hand), jump over, walk around, or trigger it from a distance with a thrown object.</p></div>
+    <div class="card"><h3>Hidden things</h3><p>Levers, buried chests and secret doors are also found by passive Perception. Characters with high WIS spot the most. Buried chests need a shovel.</p></div>
+    <div class="card"><h3>Knowledge checks</h3><p>Books, runes, bodies and odd objects often offer an INT check: Arcana, History, Investigation, Religion or Nature. Success gives lore, a hint, or occasionally loot.</p></div>
+  </div>
+
+  <h2>Crime</h2>
+  <p>Items with <strong>red</strong> names or outlines belong to someone. Taking them is stealing; entering places with a red cursor is trespassing. If an NPC <em>sees</em> it, they turn hostile or call the guards, who ask you to pay a fine, talk your way out (Persuasion, Deception, Intimidation), or fight.</p>
+  <ul>
+    <li><strong>Pickpocketing</strong>: while Sneaking, use Pickpocket on an NPC and make Sleight of Hand checks per item.</li>
+    <li>Do crimes out of sight: check that nobody's vision cone covers you.</li>
+    <li>Criminal, Charlatan and Urchin backgrounds can earn Inspiration from getting away with it.</li>
+  </ul>
+
+  <button class="done-btn" type="button" data-done="locks">Mark as read</button>
+</section>
+
+<!-- 21 · party -->
+<section id="party" class="lesson">
+  <p class="eyebrow">Lesson 21</p>
+  <h1>Party, companions &amp; camp</h1>
+  <p class="lead">You travel with up to <strong>four</strong> active party members; the rest wait at camp. Each companion has a personality, a personal quest and opinions about what you do.</p>
+
+  <h2>Approval</h2>
+  <p>Every companion keeps an <strong>approval</strong> score for your character, from −50 to 100. It changes when they witness your choices: a small "Shadowheart approves" or "Lae'zel disapproves" note appears. Only companions close enough to see or hear the event react.</p>
+  <ul>
+    <li>High approval unlocks personal conversations, quest steps and <strong>romance</strong>.</li>
+    <li>Very low approval gets warnings; at −50 a companion leaves for good.</li>
+    <li>Check the current value on the companion's character sheet.</li>
+  </ul>
+  <p class="tip"><strong>Tip:</strong> companions have opposite values. Bringing the ones who will like a given choice to that scene (and leaving the others in camp) is a normal tactic.</p>
+
+  <h2>Camp</h2>
+  <p>Camp is the hub between adventures. There you long rest (Lesson 8), talk to companions (most story scenes happen here after a rest), manage the shared chest, and meet a few special characters.</p>
+  <ul>
+    <li><strong>Withers</strong>: respec a character (100 gold), revive dead companions (200 gold), and hire <strong>hirelings</strong>.</li>
+    <li><strong>Hirelings</strong>: blank-slate characters of any class you choose, without story or approval. Useful to fill a class your party lacks.</li>
+    <li><strong>Swapping companions</strong>: go to camp, or use the travel menu, to change who's in the active party.</li>
+  </ul>
+
+  <details>
+    <summary>If someone dies</summary>
+    <p>Party members who fail their death saves (or take huge damage while Downed) die and leave behind a dead body you can loot. Revive them with a <em>Revivify</em> scroll or spell (the body must be reachable), or bring them back later through Withers in camp. Death is almost never permanent outside Honour mode.</p>
+  </details>
+
+  <button class="done-btn" type="button" data-done="party">Mark as read</button>
+</section>
+
+<!-- 22 · tadpoles -->
+<section id="tadpoles" class="lesson">
+  <p class="eyebrow">Lesson 22</p>
+  <h1>Tadpoles &amp; Illithid powers</h1>
+  <p class="lead">A BG3 invention, with no tabletop equivalent. Your party carries a mind flayer parasite (a "tadpole"). Early in the game you'll find the chance to use its power, which opens a separate skill tree.</p>
+
+  <ul>
+    <li>Each <strong>Mind Flayer Parasite Specimen</strong> you find and consume unlocks one power in the tree.</li>
+    <li>Powers range from utility (charm a creature, favourable dialogue) to combat abilities that cost actions or bonus actions like any other.</li>
+    <li>Some companions use them eagerly, some need persuading, some refuse entirely.</li>
+    <li>Using them is a role-play choice: some companions have opinions, and taking a lot of them has story consequences (no spoilers here).</li>
+  </ul>
+  <p>You can skip the system entirely and still finish the game. It mostly gives flexibility and a small power boost.</p>
+
+  <button class="done-btn" type="button" data-done="tadpoles">Mark as read</button>
+</section>
+
+<!-- 23 · difficulty -->
+<section id="difficulty" class="lesson">
+  <p class="eyebrow">Lesson 23</p>
+  <h1>Difficulty modes</h1>
+  <p class="lead">You choose difficulty when starting a new game. It changes numbers, not rules, and can be changed later from the options (except Honour).</p>
+
+  <div class="table-wrap">
+  <table class="stack">
+    <thead><tr><th>Mode</th><th>What changes</th><th>For whom</th></tr></thead>
+    <tbody>
+      <tr><td data-label="Mode">Explorer</td><td data-label="Changes">Weaker enemies, a flat bonus to your rolls, cheaper traders, multiclassing off.</td><td data-label="For whom">You mainly want the story.</td></tr>
+      <tr><td data-label="Mode">Balanced</td><td data-label="Changes">The standard game. Camp rest costs 40 supplies.</td><td data-label="For whom">First playthrough. Recommended.</td></tr>
+      <tr><td data-label="Mode">Tactician</td><td data-label="Changes">Tougher, smarter enemies with +2 to hit and to their spell DCs; long rests cost 80 supplies; higher prices.</td><td data-label="For whom">You know the rules and want a challenge.</td></tr>
+      <tr><td data-label="Mode">Honour</td><td data-label="Changes">Tactician plus bosses with legendary actions, one save file that the game keeps overwriting, Karmic Dice off, and a party wipe ends the run.</td><td data-label="For whom">Veterans.</td></tr>
+      <tr><td data-label="Mode">Custom</td><td data-label="Changes">Set each option yourself.</td><td data-label="For whom">Fine-tuning.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p class="tip"><strong>Save often.</strong> Outside Honour mode you can quicksave (<kbd>F5</kbd> on PC) anywhere, including mid-fight. Keep several saves; decisions can have long-running consequences.</p>
+
+  <button class="done-btn" type="button" data-done="difficulty">Mark as read</button>
+</section>
+
+<!-- 24 · glossary -->
+<section id="glossary" class="lesson">
+  <p class="eyebrow">Lesson 24</p>
+  <h1>Quick-reference glossary</h1>
+  <p class="lead">Type to filter. Matches in both the term and its definition are shown.</p>
+
+  <div class="search">
+    <label for="glossSearch" class="visually-hidden">Filter the glossary</label>
+    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M15.5 15.5 21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    <input type="search" id="glossSearch" placeholder="Search terms, e.g. save, slot, advantage" autocomplete="off">
+    <span class="search-count" id="glossCount" aria-live="polite"></span>
+  </div>
+
+  <dl class="glossary" id="glossList">
+    <div><dt>Ability check</dt><dd>A d20 roll plus an ability modifier (and proficiency if trained) to see if you succeed at a task, against a DC.</dd></div>
+    <div><dt>Ability modifier</dt><dd>The bonus or penalty that an ability score adds to rolls: (score − 10) ÷ 2, rounded down.</dd></div>
+    <div><dt>Ability score</dt><dd>One of six numbers (STR, DEX, CON, INT, WIS, CHA) describing a character's raw aptitude.</dd></div>
+    <div><dt>Action</dt><dd>Your main activity on a turn, like attacking or casting a spell. One per turn.</dd></div>
+    <div data-keys="adv dis roll twice"><dt>Advantage / Disadvantage</dt><dd>Roll two d20s and keep the higher (advantage) or lower (disadvantage). Don't stack; one of each cancels out.</dd></div>
+    <div><dt>Approval</dt><dd>A companion's opinion of your character (−50 to 100). Changes with choices they witness; at −50 they leave.</dd></div>
+    <div data-keys="armor"><dt>Armour Class (AC)</dt><dd>The number an attack roll must meet or beat to hit you.</dd></div>
+    <div><dt>Attack roll</dt><dd>d20 + ability modifier + proficiency, compared to the target's AC.</dd></div>
+    <div><dt>Attitude</dt><dd>How a trader or NPC feels about a specific character. Affects prices; raised by gifts and good dialogue.</dd></div>
+    <div><dt>Background</dt><dd>Your character's pre-adventure life. Gives two skill proficiencies and Inspiration goals.</dd></div>
+    <div><dt>Bonus action</dt><dd>A second, smaller activity per turn: off-hand attack, potion, Jump, Shove, certain spells.</dd></div>
+    <div><dt>Camp supplies</dt><dd>Food items spent to take a long rest in BG3 (40 on normal difficulty).</dd></div>
+    <div><dt>Cantrip</dt><dd>A level 0 spell that costs no slot and can be cast every turn.</dd></div>
+    <div><dt>Concentration</dt><dd>Required to maintain some ongoing spells. Only one at a time; taking damage forces a CON save to keep it.</dd></div>
+    <div><dt>Condition</dt><dd>A status effect such as Prone, Blinded, Frightened, Wet or Burning, with specific rules attached.</dd></div>
+    <div><dt>Critical hit</dt><dd>A natural 20 on an attack roll. Always hits and doubles the damage dice.</dd></div>
+    <div><dt>Darkvision</dt><dd>Seeing in darkness as if it were dim light, usually to 12 m (24 m for superior darkvision).</dd></div>
+    <div data-keys="save"><dt>Death saving throw</dt><dd>A d20 roll a downed character makes each turn. Three successes (10+) stabilise, three failures kill.</dd></div>
+    <div><dt>Difficulty Class (DC)</dt><dd>The target number for an ability check or saving throw.</dd></div>
+    <div><dt>Disengage</dt><dd>An action that stops your movement from provoking opportunity attacks this turn.</dd></div>
+    <div data-keys="dying unconscious revive"><dt>Downed</dt><dd>BG3's state for a party member at 0 HP. Can be revived with the Help action or healing.</dd></div>
+    <div><dt>Elixir</dt><dd>A drink whose effect lasts until your next long rest. Only one can be active at a time.</dd></div>
+    <div><dt>Enchantment</dt><dd>A +1, +2 or +3 on a weapon or armour, added to attack and damage rolls or to AC.</dd></div>
+    <div><dt>Encumbered</dt><dd>Carrying more than 80% of your capacity (40 + 10 × STR kg). Slows you down.</dd></div>
+    <div><dt>Expertise</dt><dd>Doubles your proficiency bonus for a chosen skill. Rogues and Bards get it.</dd></div>
+    <div><dt>Extra Attack</dt><dd>A level 5 feature for martial classes: the Attack action makes two attacks instead of one.</dd></div>
+    <div><dt>Feat</dt><dd>A special ability chosen at levels 4, 8 and 12, or an increase to ability scores.</dd></div>
+    <div><dt>Fighting style</dt><dd>A combat specialisation for Fighters, Paladins and Rangers, such as Archery or Defence.</dd></div>
+    <div><dt>Finesse</dt><dd>Weapon property that lets you use DEX instead of STR for attack and damage (daggers, rapiers).</dd></div>
+    <div><dt>Hidden</dt><dd>Not detected by enemies. Your next attack has advantage; enemies can't target you directly.</dd></div>
+    <div><dt>High ground</dt><dd>BG3 rule: being 2.5 m or more above a target gives +2 to attack rolls; being below gives −2.</dd></div>
+    <div><dt>Hireling</dt><dd>A recruitable party member without story, bought from Withers in camp.</dd></div>
+    <div><dt>Hit die</dt><dd>A die that represents a class's toughness (d6 to d12). Determines HP per level.</dd></div>
+    <div><dt>Honour mode</dt><dd>The hardest difficulty: one save file, tougher bosses, and a party wipe ends the run.</dd></div>
+    <div><dt>Illithid powers</dt><dd>BG3 abilities unlocked by consuming mind flayer parasites.</dd></div>
+    <div><dt>Initiative</dt><dd>The roll that decides turn order when combat starts: d4 + DEX modifier in BG3 (d20 + DEX in tabletop).</dd></div>
+    <div><dt>Inspiration</dt><dd>A point earned by acting in line with your background. Spend it to re-roll a failed check.</dd></div>
+    <div><dt>Karmic Dice</dt><dd>BG3 option (on by default) that prevents long streaks of failed rolls.</dd></div>
+    <div data-keys="camp"><dt>Long rest</dt><dd>Rest at camp that restores all HP, spell slots and resources. Costs camp supplies.</dd></div>
+    <div><dt>Natural 20 / natural 1</dt><dd>The number on the die before modifiers. In BG3, a natural 20 always succeeds and a natural 1 always fails on attacks and checks.</dd></div>
+    <div><dt>Obscurity</dt><dd>How visible a spot is: clear, lightly obscured (dim) or heavily obscured (dark). Affects hiding.</dd></div>
+    <div><dt>Opportunity attack</dt><dd>A free melee attack, using a reaction, against a creature that moves out of your reach.</dd></div>
+    <div><dt>Passive check</dt><dd>A check made without an active roll, often 10 + modifier. BG3 uses it for noticing hidden things.</dd></div>
+    <div><dt>Point buy</dt><dd>The character-creation system: 27 points to raise ability scores from 8, max 15 before bonuses.</dd></div>
+    <div><dt>Proficiency bonus</dt><dd>+2 to +4 depending on level, added to things your character is trained in.</dd></div>
+    <div><dt>Prone</dt><dd>Knocked down. Melee attacks against you have advantage; standing up costs half your movement.</dd></div>
+    <div><dt>Race</dt><dd>Your character's species. Gives traits like darkvision or resistances; ability bonuses are chosen freely.</dd></div>
+    <div><dt>Rarity</dt><dd>Item quality tier: Common, Uncommon, Rare, Very Rare, Legendary.</dd></div>
+    <div><dt>Reaction</dt><dd>A response on someone else's turn to a trigger. One per round.</dd></div>
+    <div><dt>Resistance / Vulnerability</dt><dd>Taking half (resistance) or double (vulnerability) damage of a given type. Immunity means none.</dd></div>
+    <div><dt>Respec</dt><dd>Rebuilding a character from level 1, through Withers for 100 gold.</dd></div>
+    <div><dt>Ritual</dt><dd>A spell tag. In BG3, ritual spells cast outside combat don't use a spell slot.</dd></div>
+    <div data-keys="save"><dt>Saving throw</dt><dd>A d20 roll by the target to resist an effect, against the caster's DC.</dd></div>
+    <div><dt>Scroll</dt><dd>A single-use spell that any character can read in BG3. Wizards can copy it to learn the spell.</dd></div>
+    <div data-keys="camp"><dt>Short rest</dt><dd>A quick rest outside combat, twice per long rest in BG3. Restores some HP and short-rest resources.</dd></div>
+    <div><dt>Shove</dt><dd>Bonus action to push a creature away: Athletics vs their passive Athletics/Acrobatics.</dd></div>
+    <div><dt>Skill</dt><dd>A specific use of an ability, like Stealth (DEX) or Persuasion (CHA), that you can be proficient in.</dd></div>
+    <div><dt>Sneak Attack</dt><dd>Rogue feature: extra damage once per turn when attacking with advantage, or when an ally is next to the target.</dd></div>
+    <div><dt>Spell attack bonus</dt><dd>Proficiency + spellcasting modifier, added to spell attack rolls.</dd></div>
+    <div data-keys="saving throw"><dt>Spell save DC</dt><dd>8 + proficiency + spellcasting modifier. The number targets must meet on their saving throw.</dd></div>
+    <div><dt>Spell slot</dt><dd>A unit of magical energy of a given level (1–6 in BG3), spent to cast a leveled spell.</dd></div>
+    <div><dt>Spellcasting ability</dt><dd>The ability that powers a class's spells: INT, WIS or CHA.</dd></div>
+    <div><dt>Subclass</dt><dd>A specialisation within a class, chosen at level 1, 2 or 3 depending on the class.</dd></div>
+    <div><dt>Surface</dt><dd>A patch of fire, water, grease, ice, poison etc. on the ground in BG3 that applies effects and reacts to elements.</dd></div>
+    <div><dt>Surprised</dt><dd>A creature caught unaware at the start of combat. It skips its first turn.</dd></div>
+    <div><dt>Thieves' Tools</dt><dd>Consumable kit needed to pick locks with a Sleight of Hand check.</dd></div>
+    <div><dt>Threatened</dt><dd>BG3 condition when an enemy is next to you: ranged attacks and spells have disadvantage.</dd></div>
+    <div><dt>Upcasting</dt><dd>Casting a spell with a higher-level slot than required to strengthen it.</dd></div>
+    <div><dt>Weapon action</dt><dd>BG3 special moves (Topple, Cleave, Lacerate…) granted by proficient weapons. Recharge on a short rest.</dd></div>
+    <div><dt>Weapon sets</dt><dd>Each character has a melee and a ranged weapon equipped at once, usable without swapping.</dd></div>
+    <div><dt>Wet</dt><dd>BG3 condition from water: takes extra cold and lightning damage, resists fire, can't be set Burning. Also breaks invisibility.</dd></div>
+  </dl>
+  <p class="empty" id="glossEmpty" hidden>No terms match that search.</p>
+
+  <button class="done-btn" type="button" data-done="glossary">Mark as read</button>
+</section>
+
+<footer class="site-footer">
+  <p><strong>Sources &amp; licensing.</strong> Rules content is derived from the D&amp;D 5th Edition System Reference Document (SRD 5.1, released under Creative Commons CC-BY-4.0 by Wizards of the Coast) and the D&amp;D Basic Rules, plus publicly known Baldur's Gate 3 mechanics. All text here is written in original wording; nothing is reproduced verbatim.</p>
+  <p>Baldur's Gate 3 is a trademark of Larian Studios. Dungeons &amp; Dragons is a trademark of Wizards of the Coast. This is an unofficial fan study guide, not affiliated with or endorsed by either. Game numbers can change with patches; check in-game tooltips when in doubt.</p>
+</footer>
+
+</main>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

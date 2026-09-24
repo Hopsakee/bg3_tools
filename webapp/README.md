@@ -20,6 +20,39 @@ bedenken wie ook alweer wat kon.
 * Te installeren op je beginscherm (PWA). Pagina's die je al bekeken hebt,
   blijven zonder verbinding leesbaar.
 
+## De party naast elkaar
+
+De pagina **Party** is het karakterscherm uit het spel, maar dan iedereen
+tegelijk: kolommen zijn personages, rijen zijn vermogens, saving throws,
+vaardigheden, wapenrusting, wapens en kenmerken. Een ster staat bij de beste
+in die rij — zo zie je in één oogopslag wie de kluis moet openen en wie de
+Persuasion-check moet doen.
+
+Wat erin staat komt uit drie bronnen, en de pagina zegt welke:
+
+| Bron | Wat |
+| --- | --- |
+| de save | ras, klasse, subklasse, level |
+| de spelregels (`bg3_rules.py`) | bekwaamheden in wapens en wapenrusting, saving throws, hit die, spreukvermogen, kernkenmerken per level |
+| jij | ability scores, vaardigheden, expertise, feats, en bekwaamheden uit feats of voorwerpen |
+
+Het laatste rijtje moet je één keer overtypen uit het spel, per personage, op
+diens eigen pagina. Daarna rekent alles zichzelf uit — modifiers, saves,
+vaardigheidsbonussen, spell save DC, passieve waarneming, sterkste trek — en
+het blijft staan als je een nieuwere save uploadt.
+
+**Wie kan wat gebruiken.** Elk wapen en stuk wapenrusting in je stats-export
+draagt het veld `Proficiency` van het spel zelf, bijvoorbeeld
+`Longswords;MartialWeapons`. De regels gebruiken exact dezelfde namen. Op elke
+voorwerppagina en als kolom in de spullenlijst staat daarom per party-lid of
+hij het zonder nadelen kan gebruiken.
+
+Hoe zeker de regels zijn: de klassetabellen zijn standaard 5e en die volgt BG3.
+De indeling van wapens in simple en martial is nagelopen tegen alle 526 wapens
+in een echte export. Rassen en subklassen zijn met redelijke zekerheid
+overgenomen; wijkt iets af van wat je in het spel ziet, vink het dan aan bij
+"Extra bekwaamheden" van dat personage.
+
 ## Wat het niet doet
 
 Ability scores, hitpoints, vaardigheidsbonussen, spells en feats staan niet in

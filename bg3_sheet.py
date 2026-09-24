@@ -168,6 +168,10 @@ def extract(lsv_path, stats_sources=None, stats_table=None):
             "race": entry.get("Race"),
             "class": classes.get("Main"),
             "subclass": classes.get("Sub") or None,
+            # Alle klassen, niet alleen de eerste: bij multiclassen bepaalt de
+            # eerste de bekwaamheden, en geven de latere er een deel bij.
+            "classes": [{"class": c.get("Main"), "subclass": c.get("Sub") or None}
+                        for c in entry.get("Classes", []) if c.get("Main")],
             "level": entry.get("Level"),
             "xp_total": entry.get("Experience Points (Total)"),
             "xp_this_level": entry.get("Experience Points (Current level)"),

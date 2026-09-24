@@ -28,39 +28,11 @@ import json
 
 # --------------------------------------------------------------- 5e-regels
 
-ABILITIES = [
-    ("str", "Strength"), ("dex", "Dexterity"), ("con", "Constitution"),
-    ("int", "Intelligence"), ("wis", "Wisdom"), ("cha", "Charisma"),
-]
-
-SKILLS = [
-    ("Acrobatics", "dex"), ("Animal Handling", "wis"), ("Arcana", "int"),
-    ("Athletics", "str"), ("Deception", "cha"), ("History", "int"),
-    ("Insight", "wis"), ("Intimidation", "cha"), ("Investigation", "int"),
-    ("Medicine", "wis"), ("Nature", "int"), ("Perception", "wis"),
-    ("Performance", "cha"), ("Persuasion", "cha"), ("Religion", "int"),
-    ("Sleight of Hand", "dex"), ("Stealth", "dex"), ("Survival", "wis"),
-]
-
-HIT_DIE = {
-    "Barbarian": 12, "Fighter": 10, "Paladin": 10, "Ranger": 10,
-    "Bard": 8, "Cleric": 8, "Druid": 8, "Monk": 8, "Rogue": 8, "Warlock": 8,
-    "Sorcerer": 6, "Wizard": 6,
-}
-
-SAVE_PROFICIENCIES = {
-    "Barbarian": ("str", "con"), "Bard": ("dex", "cha"),
-    "Cleric": ("wis", "cha"), "Druid": ("int", "wis"),
-    "Fighter": ("str", "con"), "Monk": ("str", "dex"),
-    "Paladin": ("wis", "cha"), "Ranger": ("str", "dex"),
-    "Rogue": ("dex", "int"), "Sorcerer": ("con", "cha"),
-    "Warlock": ("wis", "cha"), "Wizard": ("int", "wis"),
-}
-
-SPELL_ABILITY = {
-    "Bard": "cha", "Cleric": "wis", "Druid": "wis", "Paladin": "cha",
-    "Ranger": "wis", "Sorcerer": "cha", "Warlock": "cha", "Wizard": "int",
-}
+# De tabellen staan in bg3_rules, zodat dit invulformulier en de webapp
+# dezelfde regels gebruiken en er niet twee versies uit elkaar kunnen lopen.
+from bg3_rules import (  # noqa: E402
+    ABILITIES, HIT_DIE, SAVE_PROFICIENCIES, SKILLS, SPELL_ABILITY,
+)
 
 
 def esc(x):

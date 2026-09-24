@@ -218,20 +218,34 @@ def apply_stats(payload):
     return merged
 
 
-def item_rows(payload):
+def item_rows(payload, members=None):
     """
     Alle spullen van de party als vergelijkbare rijen, verrijkt met wat er is.
 
     `bg3_compare.build_items` doet het koppelen; wij leggen de actuele
     itemstats eroverheen en plakken er jouw eigen notities en plannen aan vast.
+
+    Met `members` (uit webapp.party) komt er per voorwerp bij wie het kan
+    gebruiken. Wat een voorwerp vraagt komt uit zijn eigen `Proficiency`-veld
+    in de stats-export; wat een personage kan uit de regels plus jouw
+    aanvullingen. Zonder export is dat onbekend, en dan staat er ook niets.
     """
-    items, meta = bg3_compare.build_items(apply_stats(payload), wiki_cache())
+    enriched = apply_stats(payload)
+    items, meta = bg3_compare.build_items(enriched, wiki_cache())
+    stats = enriched.get("item_stats") or {}
     notes = db.notes_for("item")
+    import bg3_rules
     for item in items:
         note = notes.get(item["id"])
         item["tag"] = note["tag"] if note else ""
         item["note"] = note["body"] if note else ""
         item["label"] = note["label"] if note else ""
+        entry = stats.get(item["id"]) or {}
+        item["needs"] = bg3_rules.item_needs(entry.get("fields"), entry.get("type"))
+        item["users"] = ([(m["label"], m["key"],
+                           bg3_rules.can_use(item["needs"],
+                                             m["sheet"]["proficiencies"]))
+                          for m in members] if members is not None else [])
     return items, meta
 
 

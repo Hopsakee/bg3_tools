@@ -24,8 +24,8 @@ from starlette.staticfiles import StaticFiles
 from . import db, ingest, ui
 from . import party as party_model
 from .config import (
-    APP_PORT, MAX_SAVE_BYTES, MAX_STATS_BYTES, STATIC_DIR, USER_HEADER,
-    session_secret,
+    APP_PORT, MAX_SAVE_BYTES, MAX_STATS_BYTES, PRIMER_DIR, STATIC_DIR,
+    USER_HEADER, session_secret,
 )
 from .ui import bar, empty, kv, note_form, note_readout, num, page, tag
 
@@ -60,6 +60,13 @@ app, rt = fast_app(
 app.routes[:] = [r for r in app.routes
                  if getattr(r, "path", "") != "/{fname:path}.{ext:static}"]
 app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
+
+# De regelcursus uit `rules-primer/`: gewone HTML/CSS/JS, niets van de app.
+# Onder dezelfde oorsprong, dus achter dezelfde Authelia-poort en binnen de
+# service worker, die hem na één keer openen ook offline leesbaar houdt.
+# `html=True` geeft index.html terug voor /regels/.
+app.mount("/regels", StaticFiles(directory=str(PRIMER_DIR), html=True),
+          name="regelcursus")
 
 
 # --------------------------------------------------------------- helpers
@@ -1309,6 +1316,15 @@ def offline(req):
                       "Pagina's die je eerder hebt bekeken blijven wel "
                       "leesbaar zonder verbinding."),
                 current="/", user="")
+
+
+@app.get("/regels")
+def regels():
+    """
+    Met slash erachter, anders wijzen de relatieve links van de cursus
+    (style.css, app.js) naar de wortel van de app in plaats van naar zijn map.
+    """
+    return RedirectResponse("/regels/", status_code=301)
 
 
 @app.get("/gezond")

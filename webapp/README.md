@@ -53,6 +53,14 @@ in een echte export. Rassen en subklassen zijn met redelijke zekerheid
 overgenomen; wijkt iets af van wat je in het spel ziet, vink het dan aan bij
 "Extra bekwaamheden" van dat personage.
 
+## De regels
+
+Onder `/regels/` (in het menu: *Regels*) serveert de app de statische
+regelcursus uit [`rules-primer/`](../rules-primer/README.md): hoe BG3 werkt,
+van ability scores tot Illithid-krachten. De app doet er verder niets mee; het
+is een map met HTML, CSS en JS die toevallig op dezelfde oorsprong staat, en
+dus achter dezelfde login en binnen de service worker.
+
 ## Wat het niet doet
 
 Ability scores, hitpoints, vaardigheidsbonussen, spells en feats staan niet in

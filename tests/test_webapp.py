@@ -295,3 +295,45 @@ def test_screenshot_wordt_geserveerd(client, seeded):
     assert response.status_code == 200
     assert response.headers["content-type"] == "image/webp"
     assert client.get("/screenshot/9999").status_code == 404
+
+
+# ------------------------------------------------------------ regelcursus
+
+def test_regelcursus_wordt_geserveerd(client):
+    response = client.get("/regels/")
+    assert response.status_code == 200
+    assert "BG3 Rules Primer" in response.text
+    for asset in ("style.css", "app.js", "theme.js"):
+        assert client.get("/regels/" + asset).status_code == 200, asset
+
+
+def test_regels_zonder_slash_gaat_naar_de_map(client):
+    """Zonder slash lossen de relatieve links op tegen de wortel van de app."""
+    response = client.get("/regels", follow_redirects=False)
+    assert response.status_code == 301
+    assert response.headers["location"] == "/regels/"
+
+
+def test_regelcursus_blijft_binnen_zijn_map(client):
+    for attempt in ("/regels/../webapp/main.py", "/regels/..%2Fwebapp%2Fmain.py"):
+        assert client.get(attempt).status_code in (301, 302, 307, 400, 404)
+
+
+def test_regelcursus_past_binnen_de_csp():
+    """
+    Caddy zet voor bg3.hopsakee.top `script-src 'self'` zonder
+    'unsafe-inline'. Een inline <script> of onclick= in de cursus werkt dan
+    lokaal wel en op de server stilletjes niet.
+    """
+    import re
+    from pathlib import Path
+    root = Path(__file__).resolve().parents[1]
+    html = (root / "rules-primer" / "index.html").read_text(encoding="utf-8")
+    scripts = re.findall(r"<script\b[^>]*>", html)
+    assert scripts and all("src=" in tag for tag in scripts), scripts
+    assert not re.search(r"\son[a-z]+\s*=", html), "inline event handler"
+    assert not re.search(r"(?:src|href)=\"(?:https?:)?//", html), "externe bron"
+
+
+def test_regels_staat_in_het_menu(client, seeded):
+    assert 'href="/regels/"' in client.get("/").text
